@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NovelReader</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="download">下载</string>
+    <string name="detail">详情</string>
+    <string name="delete">删除</string>
+    
+    <string name="author">作者：</string>
+    
+    <string name="addtobookshelft">加入书架</string>
+    <string name="removebookshelft">移出书架</string>
+    
+    <string name="download_whole">全部缓存</string>
+    <string name="download_prepare">正在缓存</string>
+    <string name="download_continue">继续缓存</string>
+    <string name="download_complete">缓存完成</string>
+    
+    <string name="search">搜索</string>
+    <string name="search_hint">请输入要搜索的小说名或作者名</string>
+</resources>

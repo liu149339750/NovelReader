@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="thumb_width">58dp</dimen>
+    <dimen name="thumb_height">72dp</dimen>
+    <dimen name="thumb_detail_width">66dp</dimen>
+    <dimen name="thumb_detail_height">84dp</dimen>
+    <dimen name="novel_item_height">100dp</dimen>
+	<dimen name="novel_name_size">17sp</dimen>
+	<dimen name="novel_item_info_size">12sp</dimen>
+	<dimen name="unread_text_size">15sp</dimen>
+	<dimen name="length_2">2.0dip</dimen> 
+</resources>

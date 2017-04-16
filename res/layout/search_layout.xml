@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    
+    <LinearLayout 
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="fill_parent"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="?attr/colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        
+        <Button 
+            android:id="@+id/back"
+            android:layout_margin="10dp"
+            android:layout_weight="0"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:background="@drawable/kd_back_white"/>
+        <EditText 
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:singleLine="true"
+            android:hint="@string/search_hint"
+            android:id="@+id/search_edit"/>
+        
+        <TextView 
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_marginRight="5dp"
+            android:text="@string/search"/>
+    </LinearLayout>
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fastScrollEnabled="true"
+            android:scrollbarStyle="insideOverlay"
+             >
+        </ListView>
+</LinearLayout>

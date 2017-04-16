@@ -1,0 +1,20 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.lw.ui.activity.MainActivity"
+    tools:ignore="MergeRootFrame" >
+
+    
+    <include layout="@layout/bottom_button"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:id="@+id/buttom"
+        android:layout_alignParentBottom="true"/>
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_above="@id/buttom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
