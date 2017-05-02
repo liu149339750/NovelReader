@@ -1,5 +1,7 @@
 package com.lw.db;
 
+import com.lw.db.SqliteHelper.BookShelft;
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -31,7 +33,7 @@ public class NovelProvider extends ContentProvider{
 	public static final Uri CHAPTER_URI = Uri.parse("content://" + AUTHORITY + "/" + CHAPTER);
 	public static final Uri NOVEL_URI = Uri.withAppendedPath(BASE_URI, NOVEL);
 	public static final Uri BOOKSHELFT_URI = Uri.withAppendedPath(BASE_URI, BOOKSHELFT);
-	public static final Uri BOOKSHELFT_INFO_URI = Uri.withAppendedPath(BASE_URI, SHELFT_INFO);
+	public static final Uri BOOKSHELFT_VIEW_URI = Uri.withAppendedPath(BASE_URI, SHELFT_INFO);
 	
 	
 	@Override
@@ -155,6 +157,7 @@ public class NovelProvider extends ContentProvider{
 		int c = 0;
 		switch (code) {
 		case BOOKSHELFT_ID:
+			System.out.println("update count="+ values.getAsInteger(BookShelft.chapter_count));
 			c = mSql.getWritableDatabase().update(SqliteHelper.BOOKSHELFT_TABLE, values, selection, selectionArgs);
 			break;
 		case CHAPTER_ID:

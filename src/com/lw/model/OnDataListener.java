@@ -7,4 +7,5 @@ public interface OnDataListener {
 	
 	public void onSucess(NovelDetail novel);
 	public void onFail();
+	public void onCancel();
 }

@@ -18,6 +18,8 @@ public class SqliteHelper extends SQLiteOpenHelper{
 	public static final String BOOKSHELFT_TABLE = "BOOKSHELFT";
 	public static final String BOOKSHELFT_VIEW = "booshelft_info";
 	
+	public static final String ID = "ID";
+	
 	private static final String CREATE_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS HISTORY ("
 			+ "ID INTEGER PRIMARY KEY,"
 			+ "author varchar(50),"
@@ -134,7 +136,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 	
 	public static class BookShelft{
 		public static String BOOK_ID = "book_id";
-		public static String readtime = "readtime";
+		public static String readtime = "readtime"; //update time
 		public static String chapter_count = "chapter_count";
 		public static String current_chapter_id = "current_chapter_id";
 		public static String current_chapterposition = "current_chapterposition";

@@ -2,13 +2,10 @@ package com.lw.ui.fragment;
 
 import java.util.List;
 
-import org.greenrobot.eventbus.EventBus;
-
 import com.justwayward.reader.view.readview.SettingManager;
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.novel.common.FileUtil;
-import com.lw.novelreader.EventMessage;
 import com.lw.novelreader.R;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.activity.NovelReadActivity;
@@ -34,7 +31,7 @@ public class ChapterListFragment extends ListFragment{
 		super.onViewCreated(view, savedInstanceState);
 		mCurrentNovel = NovelManager.getInstance().getCurrentNovel();
 		curPos = SettingManager.getInstance().getReadProgress(mCurrentNovel.id + "")[0];
-		List<Chapter> data = NovelManager.getInstance().getChaper();
+		List<Chapter> data = NovelManager.getInstance().getChapers();
 //		for(Chapter chapter : data){
 //			chapter.isDownload = FileUtil.isChapterExist(chapter);
 //		}

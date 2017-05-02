@@ -1,10 +1,14 @@
 package com.lw.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.htmlparser.util.ParserException;
 
+import com.lw.bean.Chapter;
+import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.db.DBUtil;
-import com.lw.ttzw.NovelManager;
 import com.lw.ttzw.TTZWManager;
 
 import android.net.Uri;
@@ -29,27 +33,53 @@ public class NovelBiz implements INovelBiz {
 
 			@Override
 			protected NovelDetail doInBackground(String... params) {
-				
+				String url = params[0];
 				try {
-					System.out.println("begin query");
-					NovelDetail detail = DBUtil.queryNovelDetail(NovelManager.getInstance().getCurrentNovel());
-					if(detail != null) {
-						System.out.println("use DB");
-						caches.put(params[0], detail);
-						return detail;
-					}
+					
+//					System.out.println("begin query");
+//					NovelDetail detail = DBUtil.queryNovelDetail(NovelManager.getInstance().getCurrentNovel());
+//					if(detail != null) {
+//						System.out.println("use DB");
+//						caches.put(params[0], detail);
+//						return detail;
+//					}
 					System.out.println("begin read from net");
 					if(isCancel) {
+						listener.onCancel();
 						return null;
 					}
-					NovelDetail nd = TTZWManager.getNovelDetailByMeta(params[0]);
+					NovelDetail nd = TTZWManager.getNovelDetailByMeta(url);
 					System.out.println("read over");
-					Uri uri = DBUtil.saveBookInfo(nd.getNovel());
-					int id = Integer.parseInt(uri.getLastPathSegment());
-					nd.getNovel().setId(id);
-					int c = DBUtil.saveChaptersToDb(id, nd.getChapters());
+					Novel novel = nd.getNovel();
+//					DBUtil.deleteNovelByNameAndAuthor(novel.getName(), novel.getAuthor());
+					Novel old = DBUtil.queryNovelByUrl(url);
+					int id = 0;
+					int c = 0;
+					if(old == null) {
+						Uri uri = DBUtil.saveBookInfo(nd.getNovel());
+						id = Integer.parseInt(uri.getLastPathSegment());
+						c = DBUtil.saveChaptersToDb(id, nd.getChapters());
+					} else {
+						id = old.id;
+						DBUtil.updateNovelById(old.id, novel);
+						List<Chapter> chapters = DBUtil.queryNovelChapterList(id);
+						List<Chapter> newChapters = nd.getChapters();
+						if(chapters.size() < newChapters.size()) {
+							System.out.println("insert new > " + (newChapters.size() - chapters.size()));
+							List<Chapter> newInsert = new ArrayList<Chapter>();
+							for(int i=chapters.size();i<newChapters.size();i++) {
+								newInsert.add(newChapters.get(i));
+							}
+							c = DBUtil.saveChaptersToDb(id, newInsert);
+							if(c > 0) {
+								DBUtil.updateChapterCount(id, newChapters.size());
+							}
+						}
+					}
+					novel.setId(id);
+//					int c = DBUtil.saveChaptersToDb(id, nd.getChapters());
 					System.out.println("c="+c);
-					caches.put(params[0], nd);
+					caches.put(url, nd);
 					return nd;
 				} catch (ParserException e) {
 					// TODO Auto-generated catch block
@@ -58,19 +88,11 @@ public class NovelBiz implements INovelBiz {
 				return null;
 			}
 			
-			
-
-			@Override
-			protected void onProgressUpdate(Void... values) {
-				// TODO Auto-generated method stub
-				super.onProgressUpdate(values);
-			}
-
-
-
 			@Override
 			protected void onPostExecute(NovelDetail result) {
-				if(result != null && !isCancel) {
+				if(isCancel) {
+					listener.onCancel();
+				} else if(result != null) {
 					listener.onSucess(result);
 				} else {
 					listener.onFail();
@@ -82,7 +104,7 @@ public class NovelBiz implements INovelBiz {
 	}
 	@Override
 	public void cancel() {
-		
+		isCancel = true;
 	}
 
 }

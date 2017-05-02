@@ -47,11 +47,11 @@ public class NovelManager {
 		return mNovel;
 	}
 
-	public List<Chapter> getChaper() {
+	public List<Chapter> getChapers() {
 		return mChaper;
 	}
 
-	public void setChaper(List<Chapter> mChaper) {
+	public void setChapers(List<Chapter> mChaper) {
 		this.mChaper = mChaper;
 	}
 	

@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.justwayward.reader.view.readview.AppUtils;
+import com.justwayward.reader.view.readview.LogUtils;
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.bean.ShelftBook;
 import com.lw.db.SqliteHelper.BookShelft;
 import com.lw.db.SqliteHelper.Books;
+import com.lw.novelreader.BookShelftManager;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -19,6 +21,9 @@ import android.net.Uri;
 
 public class DBUtil {
 
+	private static final String TAG = "DBUtil";
+	
+	//-----------insert db ---------------
 	
 	public static Uri saveChapterToDb(ContentResolver cr,int novelId,Chapter chapter) {
 		ContentValues cv = new ContentValues();
@@ -78,10 +83,23 @@ public class DBUtil {
 		return false;
 	}
 	
+	public static void addSearchKeyword(String keyword) {
+		
+	}
+	
+	//--------------delete from db --------------
+	
 	public static void rmFromBookShelft (int bookId) {
 		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
 		cr.delete(NovelProvider.BOOKSHELFT_URI, BookShelft.BOOK_ID + " = " + bookId, null );
 	}
+	
+	public static void deleteNovelByNameAndAuthor(String name,String author){
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		cr.delete(NovelProvider.NOVEL_URI, Books.name + " = " + name + " and " + Books.author + " = " + author, null);
+	}
+	
+	//-------------query db ------------
 	
 	public static List<Chapter> queryNovelChapterList(int bookId) {
 		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
@@ -132,7 +150,7 @@ public class DBUtil {
 	public static List<ShelftBook> queryBookShelft() {
 		List<ShelftBook> novels = new ArrayList<ShelftBook>();
 		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
-		Cursor cursor = cr.query(NovelProvider.BOOKSHELFT_INFO_URI, null, null, null, null);
+		Cursor cursor = cr.query(NovelProvider.BOOKSHELFT_VIEW_URI, null, null, null, null);
 		while(cursor.moveToNext()) {
 			ShelftBook novel = new ShelftBook();
 			novel.id = cursor.getInt(cursor.getColumnIndex("ID"));
@@ -173,9 +191,26 @@ public class DBUtil {
 		return null;
 	}
 	
-	public static void addSearchKeyword(String keyword) {
-		
+	public static Novel queryNovelByUrl(String url) {
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		Cursor cursor = cr.query(NovelProvider.NOVEL_URI, null, Books.url + " = ?", new String[]{url}, null);
+		if(cursor.moveToNext()) {
+			Novel novel = new Novel();
+			novel.id = cursor.getInt(cursor.getColumnIndex(SqliteHelper.ID));;
+			novel.name = cursor.getString(cursor.getColumnIndex(SqliteHelper.Books.name));
+			novel.thumb = cursor.getString(cursor.getColumnIndex(SqliteHelper.Books.thumb));
+			novel.url = cursor.getString(cursor.getColumnIndex(SqliteHelper.Books.url));
+			novel.author = cursor.getString(cursor.getColumnIndex(SqliteHelper.Books.author));
+			novel.brief = cursor.getString(cursor.getColumnIndex(Books.detail));
+			novel.kind = cursor.getString(cursor.getColumnIndex(Books.kind));
+			novel.lastUpdateChapter = cursor.getString(cursor.getColumnIndex("lastUpdateChapter"));
+			novel.lastUpdateTime = cursor.getString(cursor.getColumnIndex("lastUpdateTime"));
+			return novel;
+		}
+		return null;
 	}
+	
+	//------------update db -------------
 
 	public static void updateReadtime(int bookid) {
 		String date = getCurrentReadTimeString();
@@ -184,6 +219,34 @@ public class DBUtil {
 		cv.put(BookShelft.readtime, date);
 		cr.update(NovelProvider.BOOKSHELFT_URI, cv, BookShelft.BOOK_ID + " = " + bookid, null);
 	}
+	
+	public static void updateNovelById(int id,Novel novel) {
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(Books.author, novel.getAuthor());
+		cv.put(Books.detail, novel.getBrief());
+		cv.put(Books.kind, novel.getKind());
+		cv.put(Books.name, novel.getName());
+		cv.put(Books.thumb, novel.getThumb());
+		cv.put(Books.url, novel.getUrl());
+		cv.put(Books.lastUpdateChapter, novel.getLastUpdateChapter());
+		cv.put(Books.lastUpdateTime, novel.getLastUpdateTime());
+		cr.update(NovelProvider.NOVEL_URI, cv, "ID = " + id, null);
+		if(BookShelftManager.instance().isInbookShelft(id)) {
+			cr.notifyChange(NovelProvider.BOOKSHELFT_URI, null);
+		}
+	}
+	
+	public static void updateChapterCount(int id,int count) {
+		LogUtils.v(TAG, "updateChapterCount = " + count);
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(BookShelft.chapter_count,count);
+		cv.put(BookShelft.readtime, getCurrentReadTimeString());
+		cr.update(NovelProvider.BOOKSHELFT_URI, cv, BookShelft.BOOK_ID + " = " + id, null);
+	}
+	
+	//----------------------------------------
 
 	private static String getCurrentReadTimeString() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

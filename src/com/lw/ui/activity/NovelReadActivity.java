@@ -103,7 +103,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 		intentFilter.addAction(Intent.ACTION_TIME_TICK);
 
 		if(NovelManager.getInstance().getChapterSize() == 0) {
-			NovelManager.getInstance().setChaper(DBUtil.queryNovelChapterList(bookId));
+			NovelManager.getInstance().setChapers(DBUtil.queryNovelChapterList(bookId));
 		}
 		initPagerWidget(bookId +"");
 		
@@ -122,9 +122,9 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 	private void initPagerWidget(String bookid) {
 		if (SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 0) == 0) {
 			Log.v(TAG, "new widget");
-			mPageWidget = new PageWidget(this, bookid, NovelManager.getInstance().getChaper(), new ReadListener());
+			mPageWidget = new PageWidget(this, bookid, NovelManager.getInstance().getChapers(), new ReadListener());
 		} else {
-			mPageWidget = new OverlappedWidget(this, bookid, NovelManager.getInstance().getChaper(), new ReadListener());
+			mPageWidget = new OverlappedWidget(this, bookid, NovelManager.getInstance().getChapers(), new ReadListener());
 		}
 		if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
 			mPageWidget.setTextColor(ContextCompat.getColor(this, R.color.chapter_content_night),

@@ -39,13 +39,19 @@ public class NovelInfoPresenter {
 				novel.setId(nd.getNovel().getId());
 				mIView.hideLoading();
 				mIView.showNovelInfo(nd.getNovel());
-				NovelManager.getInstance().setChaper(nd.getChapters());
+				NovelManager.getInstance().setChapers(nd.getChapters());
 //				NovelManager.getInstance().setCurrentNovel(novel.getNovel());
 			}
 			
 			@Override
 			public void onFail() {
 				mIView.hideLoading();
+				mIView.onLoadFail();
+			}
+
+			@Override
+			public void onCancel() {
+				
 			}
 		});
 	}
