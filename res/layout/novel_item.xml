@@ -31,7 +31,7 @@
                 android:paddingLeft="10dp" >
 
                  <TextView
-                    android:id="@+id/umread_chapter_count"
+                    android:id="@+id/unread_chapter_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -44,7 +44,7 @@
                     android:id="@+id/novel_name"
                     style="@style/novelNameStyle"
                     android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@id/umread_chapter_count"
+                    android:layout_toLeftOf="@id/unread_chapter_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="无限恐怖" />

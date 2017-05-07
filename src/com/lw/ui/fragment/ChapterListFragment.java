@@ -38,6 +38,8 @@ public class ChapterListFragment extends ListFragment{
 		mChapterAdapter = new ChapterAdapter(data);
 		getListView().setFastScrollEnabled(true);
 		setListAdapter(mChapterAdapter);
+		
+		setSelection(curPos - 1);
 	}
 	
 	@Override

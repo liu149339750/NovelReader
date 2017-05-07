@@ -36,7 +36,7 @@ public class DataManager {
 	
 	public DataManager() {
 		mShelftCache = DataCache.instance();
-		AppUtils.getAppContext().getContentResolver().registerContentObserver(NovelProvider.BOOKSHELFT_URI, false,mContentObserver);
+		AppUtils.getAppContext().getContentResolver().registerContentObserver(NovelProvider.BOOKSHELFT_URI, true,mContentObserver);
 	}
 	
 	public void setDataListener(OnDataChangeListener listener) {

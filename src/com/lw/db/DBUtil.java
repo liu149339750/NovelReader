@@ -242,7 +242,7 @@ public class DBUtil {
 		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
 		ContentValues cv = new ContentValues();
 		cv.put(BookShelft.chapter_count,count);
-		cv.put(BookShelft.readtime, getCurrentReadTimeString());
+//		cv.put(BookShelft.readtime, getCurrentReadTimeString());
 		cr.update(NovelProvider.BOOKSHELFT_URI, cv, BookShelft.BOOK_ID + " = " + id, null);
 	}
 	

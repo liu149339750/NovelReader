@@ -5,9 +5,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
+import com.lw.db.DBUtil;
 import com.lw.model.INovelBiz;
 import com.lw.model.NovelBiz;
 import com.lw.model.OnDataListener;
+import com.lw.novel.common.AsyncUtil;
 import com.lw.novelreader.DownloadMessage;
 import com.lw.novelreader.DownloadProgress;
 import com.lw.novelreader.DownloadService;
@@ -41,6 +43,14 @@ public class NovelInfoPresenter {
 				mIView.showNovelInfo(nd.getNovel());
 				NovelManager.getInstance().setChapers(nd.getChapters());
 //				NovelManager.getInstance().setCurrentNovel(novel.getNovel());
+				
+				AsyncUtil.run(new Runnable() {
+					
+					@Override
+					public void run() {
+						DBUtil.updateReadtime(mNovel.getId());
+					}
+				});;
 			}
 			
 			@Override

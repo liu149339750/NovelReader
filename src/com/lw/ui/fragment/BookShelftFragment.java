@@ -1,5 +1,6 @@
 package com.lw.ui.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.lw.bean.Novel;
@@ -7,6 +8,7 @@ import com.lw.bean.ShelftBook;
 import com.lw.novel.common.DataManager;
 import com.lw.novel.common.DataManager.OnDataChangeListener;
 import com.lw.novelreader.BookItemAdpater;
+import com.lw.presenter.BookShelftPresenter;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.activity.NovelReadActivity;
 
@@ -16,12 +18,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 
-public class BookShelftFragment extends BaseListFreshFragment implements OnDataChangeListener{
+public class BookShelftFragment extends BaseListFreshFragment implements OnDataChangeListener,IBookShelftView{
 
 	
 	
 	private BookItemAdpater mAdapter;
 	private int mY;
+	
+	private BookShelftPresenter mPresenter = new BookShelftPresenter(this);
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -152,12 +156,39 @@ public class BookShelftFragment extends BaseListFreshFragment implements OnDataC
 	
 	@Override
 	protected void pullRefreshData() {
-		super.pullRefreshData();
+		mPresenter.updateBookShelft();
 	}
 
 	@Override
 	public void onBookShelftChange() {
 		loadMyShelft(true);
+	}
+
+	@Override
+	public void showLoading() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hideLoading() {
+		System.out.println("hideLoading : " + Thread.currentThread().getName());
+//		super.pullRefreshData();
+		if(mSwipeRefresh != null) {
+			mSwipeRefresh.post(new Runnable() {
+				
+				@Override
+				public void run() {
+					mSwipeRefresh.setRefreshing(false);					
+				}
+			});
+		}
+	}
+
+	@Override
+	public List<Novel> getNeedUpdateNovels() {
+		// TODO Auto-generated method stub
+		return new ArrayList<Novel>(mAdapter.getNovels());
 	}
 	
 //	private ContentObserver mContentObserver = 	new ContentObserver(new Handler()) {

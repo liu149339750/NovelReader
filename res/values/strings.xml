@@ -21,4 +21,8 @@
     
     <string name="search">搜索</string>
     <string name="search_hint">请输入要搜索的小说名或作者名</string>
+    <string name="book_shelft">我的书架</string>
+    <string name="last_update">最近更新</string>
+    
+    <string name="unread_count">%d 未读</string>
 </resources>

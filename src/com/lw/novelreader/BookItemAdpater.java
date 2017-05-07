@@ -62,6 +62,7 @@ public class BookItemAdpater extends BaseAdapter {
 			holder.delete = (TextView) view.findViewById(R.id.delete);
 			holder.detail = (TextView) view.findViewById(R.id.detail);
 			holder.downloadText =  (DownloadText) view.findViewById(R.id.download);
+			holder.unReadCount = (TextView) view.findViewById(R.id.unread_chapter_count);
 			view.setTag(layoutId, holder);
 		} else {
 			holder = (ViewHolder) view.getTag(layoutId);
@@ -74,8 +75,15 @@ public class BookItemAdpater extends BaseAdapter {
 		if(novel instanceof ShelftBook) {
 			ShelftBook sb = (ShelftBook) novel;
 			holder.chapterCount.setText( sb.getCurrentChapterPosition()  + "/" + sb.chapterCount);
+			int c = sb.chapterCount - sb.getCurrentChapterPosition();
+			if(c > 0) {
+				holder.unReadCount.setVisibility(View.VISIBLE);
+				holder.unReadCount.setText(mInflater.getContext().getString(R.string.unread_count,c));
+			} else {
+				holder.unReadCount.setVisibility(View.INVISIBLE);
+			}
 		}
-		Glide.with(view.getContext()).load(novel.getThumb()).placeholder(R.drawable.default_cover).crossFade()
+		Glide.with(view.getContext()).load(novel.getThumb()).placeholder(R.drawable.default_cover).centerCrop()
 				.into(holder.thumb);
 		
 		
@@ -118,6 +126,7 @@ public class BookItemAdpater extends BaseAdapter {
 		 ToggleButton toggle_more;
 		 TextView lastUpdateTime;
 		 TextView chapterCount;
+		 TextView unReadCount;
 		 
 		 DownloadText downloadText;
 		 TextView detail;

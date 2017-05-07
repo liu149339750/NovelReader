@@ -102,6 +102,59 @@ public class NovelBiz implements INovelBiz {
 		}.execute(url);
 		
 	}
+	
+	
+	public NovelDetail getNovelInfo(String url) {
+//		NovelDetail n = caches.get(url);
+//		if(n != null) {
+//			System.out.println("use cache");
+//			return n;
+//		}
+		try {
+			System.out.println("begin read from net");
+			if(isCancel) {
+//				listener.onCancel();
+				return null;
+			}
+			NovelDetail nd = TTZWManager.getNovelDetailByMeta(url);
+			System.out.println("read over");
+			Novel novel = nd.getNovel();
+//			DBUtil.deleteNovelByNameAndAuthor(novel.getName(), novel.getAuthor());
+			Novel old = DBUtil.queryNovelByUrl(url);
+			int id = 0;
+			int c = 0;
+			if(old == null) {
+				Uri uri = DBUtil.saveBookInfo(nd.getNovel());
+				id = Integer.parseInt(uri.getLastPathSegment());
+				c = DBUtil.saveChaptersToDb(id, nd.getChapters());
+			} else {
+				id = old.id;
+				DBUtil.updateNovelById(old.id, novel);
+				List<Chapter> chapters = DBUtil.queryNovelChapterList(id);
+				List<Chapter> newChapters = nd.getChapters();
+				if(chapters.size() < newChapters.size()) {
+					System.out.println("insert new > " + (newChapters.size() - chapters.size()));
+					List<Chapter> newInsert = new ArrayList<Chapter>();
+					for(int i=chapters.size();i<newChapters.size();i++) {
+						newInsert.add(newChapters.get(i));
+					}
+					c = DBUtil.saveChaptersToDb(id, newInsert);
+					if(c > 0) {
+						DBUtil.updateChapterCount(id, newChapters.size());
+					}
+				}
+			}
+			novel.setId(id);
+			System.out.println("c="+c);
+			caches.put(url, nd);
+			return nd;
+		} catch (ParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@Override
 	public void cancel() {
 		isCancel = true;
