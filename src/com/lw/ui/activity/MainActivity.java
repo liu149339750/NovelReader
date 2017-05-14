@@ -3,12 +3,13 @@ package com.lw.ui.activity;
 import com.bumptech.glide.Glide;
 import com.lw.novelreader.R;
 import com.lw.ui.fragment.BookShelftFragment;
-import com.lw.ui.fragment.LastNovelListFragment;
+import com.lw.ui.fragment.LastUpdateMainFragment;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,17 +26,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		System.out.println(Glide.getPhotoCacheDir(this).getPath());
-		mLastUpdate = new LastNovelListFragment();
+//		mLastUpdate = new LastNovelListFragment();
+		mLastUpdate = new LastUpdateMainFragment();
 		mLastUpdate.setArguments(new Bundle());
 		mShelft = new BookShelftFragment();
 		mShelft.setArguments(new Bundle());
 		if (savedInstanceState == null) {
 			mCurrentFragment = mShelft;
-			getFragmentManager().beginTransaction().add(R.id.container, mShelft).commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.container, mShelft).commit();
 		}
 		
 		findViewById(R.id.shelft).setOnClickListener(this);
 		findViewById(R.id.books).setOnClickListener(this);
+		
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		toolbar.inflateMenu(R.menu.toobar_menu);
 	}
 
 	@Override
@@ -67,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 		fm.beginTransaction().hide(mCurrentFragment);
 		switch (id) {
 		case R.id.shelft:
@@ -75,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 			fm.beginTransaction().replace(R.id.container, mCurrentFragment).commit();
 			break;
 		case R.id.books:
-			mCurrentFragment = mLastUpdate;
+//			mCurrentFragment = mLastUpdate;
+			mCurrentFragment = new LastUpdateMainFragment();
 			fm.beginTransaction().replace(R.id.container, mCurrentFragment).commit();
 			break;
 

@@ -1,6 +1,11 @@
 package com.lw.novel.common;
 
+import com.lw.novelreader.R;
+import com.viewpagerindicator.TitlePageIndicator;
+import com.viewpagerindicator.TitlePageIndicator.IndicatorStyle;
+
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 
 public class Util {
@@ -22,4 +27,16 @@ public class Util {
     }
     
 
+    
+    public static void setIndicatorTheme(Context context,TitlePageIndicator indicator) {
+        final float density = context.getResources().getDisplayMetrics().density;
+        indicator.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+        indicator.setFooterColor(0xFFFFFFFF);
+        indicator.setFooterLineHeight(1 * density); //1dp
+        indicator.setFooterIndicatorHeight(5 * density); //3dp
+        indicator.setFooterIndicatorStyle(IndicatorStyle.Triangle);
+        indicator.setTextColor(0xAA000000);
+        indicator.setSelectedColor(0xFF000000);
+        indicator.setSelectedBold(true);
+    }
 }

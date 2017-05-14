@@ -25,7 +25,15 @@ public class LastNovelListFragment extends BaseListFreshFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
+	}
+	
+	public static LastNovelListFragment newInstance(String title,String url) {
+		LastNovelListFragment fragment = new LastNovelListFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("title", title);
+		bundle.putString("url", url);
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 	
 	@Override
@@ -62,13 +70,15 @@ public class LastNovelListFragment extends BaseListFreshFragment{
 	}
 
 	private void loadLastUpdataData() {
+		final String url = getArguments().getString("url");
 		new AsyncTask<Void, Void, List<Novel>>() {
 
 			@Override
 			protected  List<Novel> doInBackground(Void... params) {
 				List<Novel> data = new ArrayList<Novel>();
 				try {
-					data = TTZWManager.getLastUpdates(TTZWManager.BASE_URL);
+//					data = TTZWManager.getLastUpdates(TTZWManager.BASE_URL);
+					data = TTZWManager.getLastUpdates(url);
 				} catch (ParserException e) {
 					e.printStackTrace();
 				}

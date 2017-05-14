@@ -28,4 +28,13 @@
     <string name="prev_chapter">上一章</string>
     <string name="next_chapter">下一章</string>
     <string name="begin_download">开始下载</string>
+    
+    
+    <string name="xuanhuang">玄幻奇幻</string>
+    <string name="wuxia">武侠仙侠</string>
+    <string name="dushi">都市言情</string>
+    <string name="lishi">历史军事</string>
+    <string name="kehuang">科幻灵异</string>
+    <string name="wangyou">网游竞技</string>
+    <string name="nvsheng">女生小说</string>
 </resources>

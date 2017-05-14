@@ -1,8 +1,8 @@
 package com.lw.ui.fragment;
 
 import com.lw.novelreader.R;
-import android.app.ListFragment;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
@@ -39,10 +39,6 @@ public class BaseListFreshFragment extends ListFragment{
 				pullRefreshData();
 			}
 		});
-		
-		Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-		((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-		toolbar.inflateMenu(R.menu.toobar_menu);
 	}
 	
 
