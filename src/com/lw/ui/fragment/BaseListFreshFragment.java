@@ -42,10 +42,6 @@ public class BaseListFreshFragment extends ListFragment{
 	}
 	
 
-	
-	
-
-	
 	protected void pullRefreshData() {
 		mSwipeRefresh.setRefreshing(false);
 	}

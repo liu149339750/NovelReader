@@ -1,23 +1,29 @@
 package com.lw.ui.activity;
 
+import butterknife.ButterKnife;
+
 import com.bumptech.glide.Glide;
 import com.lw.novelreader.R;
 import com.lw.ui.fragment.BookShelftFragment;
 import com.lw.ui.fragment.LastUpdateMainFragment;
+import com.lw.ui.fragment.SortKindNovelFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnKeyListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
 	private Fragment mShelft;
 	private Fragment mLastUpdate;
+	private Fragment mOnlineKind;
 	
 	private Fragment mCurrentFragment;
 	
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		mLastUpdate.setArguments(new Bundle());
 		mShelft = new BookShelftFragment();
 		mShelft.setArguments(new Bundle());
+		mOnlineKind = new SortKindNovelFragment();
 		if (savedInstanceState == null) {
 			mCurrentFragment = mShelft;
 			getSupportFragmentManager().beginTransaction().add(R.id.container, mShelft).commit();
@@ -38,10 +45,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		
 		findViewById(R.id.shelft).setOnClickListener(this);
 		findViewById(R.id.books).setOnClickListener(this);
+		findViewById(R.id.online_novels).setOnClickListener(this);
 		
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		toolbar.inflateMenu(R.menu.toobar_menu);
+		
 	}
 
 	@Override
@@ -68,6 +77,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(mCurrentFragment instanceof OnKeyListener) {
+			boolean b = ((OnKeyListener) mCurrentFragment).onKey(null, keyCode, event);
+			if(b)
+				return b;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 
 	@Override
@@ -85,7 +104,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 			mCurrentFragment = new LastUpdateMainFragment();
 			fm.beginTransaction().replace(R.id.container, mCurrentFragment).commit();
 			break;
-
+		case R.id.online_novels:
+			mCurrentFragment = mOnlineKind;
+			fm.beginTransaction().replace(R.id.container, mCurrentFragment).commit();
+			break;
 		default:
 			break;
 		}

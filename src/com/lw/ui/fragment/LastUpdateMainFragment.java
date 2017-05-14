@@ -22,7 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class LastUpdateMainFragment extends Fragment{
+public class LastUpdateMainFragment extends BaseFragment{
 
 	@Bind(R.id.viewpager)
 	 ViewPager mPager;
@@ -56,7 +56,7 @@ public class LastUpdateMainFragment extends Fragment{
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		if(mPager == null) {
-			System.out.println("null");
+			System.out.println("in android studio,the mPager is not null,but in eclipse,it is null,why?");
 			mPager = (ViewPager) view.findViewById(R.id.viewpager);
 			mPageIndicator = (TitlePageIndicator) view.findViewById(R.id.titles);
 		}
