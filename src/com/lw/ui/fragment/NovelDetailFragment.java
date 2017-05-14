@@ -11,6 +11,7 @@ import com.lw.novelreader.R;
 import com.lw.presenter.NovelInfoPresenter;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.activity.NovelChapterListActivity;
+import com.lw.ui.activity.NovelReadActivity;
 import com.mingle.widget.LoadingView;
 
 import android.app.Fragment;
@@ -97,7 +98,8 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 
 	@Override
 	public void startRead() {
-		EventBus.getDefault().post(new EventMessage(EventMessage.START_READ, 0));
+//		EventBus.getDefault().post(new EventMessage(EventMessage.START_READ, 0));
+		NovelReadActivity.startNovelReadActivity(getContext(), 1);
 	}
 
 	@Override

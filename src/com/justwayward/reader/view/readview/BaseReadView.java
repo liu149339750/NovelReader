@@ -114,7 +114,6 @@ public abstract class BaseReadView extends View {
     private boolean cancel = false;
     private boolean center = false;
 
-    @SuppressLint("WrongCall")
 	@Override
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
@@ -265,16 +264,26 @@ public abstract class BaseReadView extends View {
         calcCornerXY(mTouch.x, mTouch.y);
     }
 
-    @SuppressLint("WrongCall")
+    /**总是打开第一个page*/
 	public void jumpToChapter(int chapter) {
+		if(chapter < 1 ) {
+			return;
+		}
         resetTouchPoint();
-        pagefactory.openBook(chapter, new int[]{0, 0});
+        int r = pagefactory.openBook(chapter, new int[]{0, 0});
+        if(r == 0) {
+        	pagefactory.onLoadChapterFailure(chapter);
+        }
         pagefactory.onDraw(mCurrentPageCanvas);
         pagefactory.onDraw(mNextPageCanvas);
         postInvalidate();
     }
     
+	/**往前翻页未下载的章节时，打开最后一个page*/
 	public void openLoadedChapter(int chapter) {
+		if(chapter < 1 ) {
+			return;
+		}
         resetTouchPoint();
         pagefactory.setLoadFinish(chapter, true);
         pagefactory.onDraw(mCurrentPageCanvas);

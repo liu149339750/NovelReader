@@ -35,7 +35,10 @@
             android:theme="@style/AppBaseTheme">
             
         </activity>
-        <activity android:name="com.lw.ui.activity.NovelReadActivity"></activity>
+        <activity android:name="com.lw.ui.activity.NovelReadActivity"
+            android:launchMode="singleTask">
+            
+        </activity>
         
         <service android:name="com.lw.novelreader.DownloadService"></service>
         

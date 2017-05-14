@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
+    android:layout_height="match_parent" >
 
-    
-     <com.mingle.widget.LoadingView
+    <com.mingle.widget.LoadingView
         android:id="@+id/loadView"
-        android:visibility="gone"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
-    
-	  <FrameLayout
+        android:layout_height="fill_parent"
+        android:visibility="gone" />
+
+    <FrameLayout
         android:id="@+id/page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false"
         android:focusable="false"
         android:layerType="hardware" >
+    </FrameLayout>
 
-	  </FrameLayout>
-	  <LinearLayout
+    <LinearLayout
         android:id="@+id/topview"
         android:layout_width="fill_parent"
         android:layout_height="?attr/actionBarSize"
@@ -31,25 +29,26 @@
         android:visibility="gone" >
 
         <LinearLayout
-            android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:orientation="horizontal" >
 
             <ImageView
                 android:id="@+id/back"
-                android:layout_marginLeft="10dp"
                 android:layout_width="35dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:clickable="true"
                 android:src="@drawable/kd_back_white" />
 
             <TextView
                 android:id="@+id/name"
-                android:layout_marginLeft="10dp"
                 style="@style/novelNameStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp" />
         </LinearLayout>
 
         <Button
@@ -59,91 +58,122 @@
             android:layout_weight="0"
             android:text="简介" />
     </LinearLayout>
-	 
-	<LinearLayout
-	    android:id="@+id/buttomview"
-	    android:visibility="gone"
-	    android:layout_alignParentBottom="true"
+
+    <LinearLayout
+        android:id="@+id/buttomview"
         android:layout_width="fill_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="gone" >
 
-        <LinearLayout
-            android:id="@+id/catalog"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_width="fill_parent"
+        <LinearLayout 
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <ImageView
-                android:src="@drawable/menu_icon_book_contents"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
+            android:background="@color/light_coffee"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            
+            <Button 
+                android:id="@+id/pre_chapter"
                 android:layout_height="wrap_content"
-                android:text="目录" />
+                android:layout_width="wrap_content"
+                android:text="@string/prev_chapter"/>
+            
+            <SeekBar 
+                android:id="@+id/progress"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"/>
+            <Button 
+                android:id="@+id/next_chapter"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/next_chapter"/>
         </LinearLayout>
-
         <LinearLayout
-            android:id="@+id/cache"
-            android:layout_weight="1"
-            android:gravity="center"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
 
-            <ImageView
-                android:src="@drawable/menu_icon_down_load"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/catalog"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="缓存" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/download"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/menu_icon_book_contents" />
 
-            <ImageView
-                android:src="@drawable/menu_icon_down_load"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="目录" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/cache"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="下载" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/font"
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/menu_icon_down_load" />
 
-            <ImageView
-                android:src="@drawable/menu_icon_font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="缓存" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/setting"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="字體" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/menu_icon_down_load" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/font"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/menu_icon_font" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="字體" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

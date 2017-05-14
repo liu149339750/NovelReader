@@ -25,4 +25,7 @@
     <string name="last_update">最近更新</string>
     
     <string name="unread_count">%d 未读</string>
+    <string name="prev_chapter">上一章</string>
+    <string name="next_chapter">下一章</string>
+    <string name="begin_download">开始下载</string>
 </resources>

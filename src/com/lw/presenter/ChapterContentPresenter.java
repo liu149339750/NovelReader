@@ -28,6 +28,7 @@ public class ChapterContentPresenter {
 					@Override
 					public void onFile(String path) {
 						if (TextUtils.isEmpty(path)) {
+							mChapterContentView.hideLoading();
 							mChapterContentView.onLoadFail(chapter);
 						} else {
 							System.out.println(path);

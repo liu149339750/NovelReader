@@ -181,8 +181,10 @@ public class PageFactory {
     	System.out.println("openBook");
         this.currentChapter = chapter;
         this.chapterSize = chaptersList.size();
-        if (currentChapter > chapterSize)
+        if (currentChapter > chapterSize) {
             currentChapter = chapterSize;
+            return 1;
+        }
         String path = getBookFile(currentChapter).getPath();
         try {
             File file = new File(path);
@@ -501,16 +503,16 @@ public class PageFactory {
         return BookStatus.LOAD_SUCCESS;
     }
     
-    public void setLoadFinish(int chapter,boolean sucess) {
+    public int setLoadFinish(int chapter,boolean sucess) {
     	System.out.println("chapter="+chapter+",currentChapter="+currentChapter);
-    	if(currentChapter == chapter) {
+//    	if(currentChapter == chapter) {
     		isLoading = false;
     		if(sucess) {
-    			int ret = openBook(currentChapter, new int[]{0, 0}); // 打开下一章
+    			int ret = openBook(chapter, new int[]{0, 0}); // 打开下一章
     			if( ret == 0) {
-    				
+    				onLoadChapterFailure(chapter);
     			} else {
-    				 onChapterChanged(currentChapter);
+    				 onChapterChanged(chapter);
     		         mLines.clear();
     		         if(isPreFail) {
     		        	 mLines = pageLast();
@@ -518,9 +520,11 @@ public class PageFactory {
     		         } else {
     		        	 mLines = pageDown(); // 读取一页内容
     		         }
+    		         return 1;
     			}
-    		}
+//    		}
     	}
+			return 0;
     }
 
     /**
@@ -657,7 +661,7 @@ public class PageFactory {
             listener.onPageChanged(chapter, page);
     }
 
-    private void onLoadChapterFailure(int chapter) {
+    public void onLoadChapterFailure(int chapter) {
         if (listener != null)
             listener.onLoadChapterFailure(chapter);
     }

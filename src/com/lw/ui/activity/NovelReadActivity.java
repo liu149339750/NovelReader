@@ -3,6 +3,10 @@ package com.lw.ui.activity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import com.justwayward.reader.view.loadding.CustomDialog;
 import com.justwayward.reader.view.readview.BaseReadView;
 import com.justwayward.reader.view.readview.Constant;
@@ -41,6 +45,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class NovelReadActivity extends Activity implements IChapterContentView {
@@ -82,6 +87,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 //			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 		}
 		setContentView(R.layout.chapter_content);
+		ButterKnife.bind(this);
 		bookId = NovelManager.getInstance().getCurrentNovel().getId();
 		isInBookShelft = BookShelftManager.instance().isInbookShelft(bookId);
 		
@@ -139,6 +145,13 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 	}
 	
 	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Log.v(TAG, "onNewIntent");
+		mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterId());
+	}
+	
+	@Override
 	protected void onStart() {
 		super.onStart();
 		registerReceiver(receiver, intentFilter);
@@ -150,6 +163,39 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 		unregisterReceiver(receiver);
 	}
 	
+	@OnClick(R.id.catalog)
+	public void showCatlog(View v) {
+		System.out.println("showCatlog");
+		NovelChapterListActivity.startChapterListActivity(this);
+	}
+	
+	@OnClick(R.id.back)
+	public void back(View v) {
+		finish();
+	}
+	
+	@OnClick(R.id.next_chapter)
+	public void nextChapter(View v) {
+		mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterId() + 1);
+//		mPageWidget.openLoadedChapter(NovelManager.getInstance().getChapterId() + 1);
+	}
+	
+	@OnClick(R.id.pre_chapter)
+	public void preChapter(View v) {
+//		mPageWidget.openLoadedChapter(NovelManager.getInstance().getChapterId() - 1);
+		mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterId() - 1);
+	}
+	
+	@OnClick(R.id.setting)
+	public void setting(View v) {
+		
+	}
+	
+	@OnClick(R.id.cache)
+	public void download(View v) {
+		DownloadService.addToDownload(new DownloadTask(NovelManager.getInstance().getCurrentNovel(), NovelManager.getInstance().getChapterId(), -1, true));
+		Toast.makeText(this, R.string.begin_download, Toast.LENGTH_SHORT).show();
+	}
 	
 	@Override
 	public void showLoading() {
