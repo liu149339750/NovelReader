@@ -51,6 +51,10 @@ public class NovelBiz implements INovelBiz {
 					NovelDetail nd = TTZWManager.getNovelDetailByMeta(url);
 					System.out.println("read over");
 					Novel novel = nd.getNovel();
+					if(novel.getName() == null) {
+						listener.onFail();
+						return null;
+					}
 //					DBUtil.deleteNovelByNameAndAuthor(novel.getName(), novel.getAuthor());
 					Novel old = DBUtil.queryNovelByUrl(url);
 					int id = 0;
@@ -119,6 +123,10 @@ public class NovelBiz implements INovelBiz {
 			NovelDetail nd = TTZWManager.getNovelDetailByMeta(url);
 			System.out.println("read over");
 			Novel novel = nd.getNovel();
+			if(novel.getName() == null) {
+				  
+				return null;
+			}
 //			DBUtil.deleteNovelByNameAndAuthor(novel.getName(), novel.getAuthor());
 			Novel old = DBUtil.queryNovelByUrl(url);
 			int id = 0;

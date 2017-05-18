@@ -23,6 +23,7 @@
     <string name="search_hint">请输入要搜索的小说名或作者名</string>
     <string name="book_shelft">我的书架</string>
     <string name="last_update">最近更新</string>
+    <string name="all">全部</string>
     
     <string name="unread_count">%d 未读</string>
     <string name="prev_chapter">上一章</string>
@@ -37,6 +38,8 @@
     <string name="kehuang">科幻灵异</string>
     <string name="wangyou">网游竞技</string>
     <string name="nvsheng">女生小说</string>
+    <string name="tongren">同人小说</string>
     
     <string name="online_novels">在线小说</string>
+    <string name="sort_kind_novel">分类小说</string>
 </resources>

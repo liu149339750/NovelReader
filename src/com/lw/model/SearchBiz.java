@@ -1,18 +1,16 @@
 package com.lw.model;
 
-import java.util.List;
-
 import org.htmlparser.util.ParserException;
 
+import com.lw.bean.Novels;
 import com.lw.db.DBUtil;
-import com.lw.ttzw.SearchResult;
 import com.lw.ttzw.TTZWManager;
 
 public class SearchBiz implements ISearchBiz{
 
 	@Override
-	public SearchResult search(String keyword) {
-		SearchResult sr = null;
+	public Novels search(String keyword) {
+		Novels sr = null;
 		try {
 			sr = TTZWManager.searchNovel(keyword);
 			DBUtil.addSearchKeyword(keyword);
@@ -22,5 +20,19 @@ public class SearchBiz implements ISearchBiz{
 		}
 		return sr;
 	}
+
+	@Override
+	public Novels loadSearchNovel(String source) {
+		Novels sr = null;
+		try {
+			sr = TTZWManager.loadSearchNovel(source);
+		} catch (ParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sr;
+	}
+	
+	
 
 }

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+/**当前只有书架使用*/
 public class BookItemAdpater extends BaseAdapter {
 
 	private List<Novel>  mNovels;

@@ -1,19 +1,22 @@
 package com.lw.ui.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.lw.bean.Novel;
+import com.lw.bean.Novels;
 import com.lw.novelreader.NovelListAdpater;
 import com.lw.novelreader.R;
 import com.lw.presenter.SearchPresenter;
-import com.lw.ttzw.NovelManager;
-import com.lw.ttzw.SearchResult;
-import com.lw.ui.fragment.NovelDetailFragment;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -30,6 +33,13 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 	
 	private SearchPresenter mSearchPresenter;
 	
+	private String mNextUrl;
+	
+	protected boolean isInEnd;
+	
+	private List<Novel> mListData;
+	private NovelListAdpater mAdapter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -44,11 +54,38 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 		mSearch.setOnClickListener(this);
 		
 		mSearchPresenter = new SearchPresenter(this);
-		
+		mListData = new ArrayList<Novel>();
+		mAdapter = new NovelListAdpater(this, new Novels(mListData));
+		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(this);
+		
+		mListView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				if(isInEnd && scrollState == SCROLL_STATE_IDLE) {
+					reloadMore();
+				}
+			}
+			
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				if(isInEnd)
+					return;
+				if(firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > visibleItemCount) {
+					isInEnd = true;
+				}
+			}
+		});
 	}
 	
 	
+	private void reloadMore() {
+		if(!TextUtils.isEmpty(mNextUrl)) {
+			mSearchPresenter.loadSearch(mNextUrl);
+		}
+	}
 	
 	public static void startSearchActivity(Context context) {
 		Intent intent = new Intent();
@@ -80,9 +117,11 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 
 
 	@Override
-	public void showSearchResult(SearchResult sr) {
-		System.out.println("?>>"+sr.getNextUrl());
-		mListView.setAdapter(new NovelListAdpater(this, sr.getNovels()));
+	public void showSearchResult(Novels sr) {
+		mNextUrl = sr.getNextUrl();
+		System.out.println(sr.getNovels().size() + "?>>"+sr.getNextUrl());
+		mListData.addAll(sr.getNovels());
+		mAdapter.notifyDataSetChanged();
 	}
 
 

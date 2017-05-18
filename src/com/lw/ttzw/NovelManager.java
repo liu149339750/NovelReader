@@ -36,8 +36,10 @@ public class NovelManager {
 
 	public void setCurrentNovel(Novel novel){
 		if(mNovel != null && mNovel.getId() == novel.getId()) {
+			System.out.println("setCurrentNovel return");
 			return;
 		}
+		System.out.println(novel.toString());
 		mNovel = novel;
 		mChaper = null;
 		chapterId = 1;

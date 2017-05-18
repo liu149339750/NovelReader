@@ -6,6 +6,7 @@ import java.util.List;
 import org.htmlparser.util.ParserException;
 
 import com.lw.bean.Novel;
+import com.lw.bean.Novels;
 import com.lw.novelreader.NovelListAdpater;
 import com.lw.ttzw.NovelManager;
 import com.lw.ttzw.TTZWManager;
@@ -38,7 +39,6 @@ public class LastNovelListFragment extends BaseListFreshFragment{
 	
 	@Override
 	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
 		super.onAttach(activity);
 		mActivity = activity;
 	}
@@ -52,7 +52,7 @@ public class LastNovelListFragment extends BaseListFreshFragment{
 		if(bundle != null) {
 			List<Novel> result = bundle.getParcelableArrayList("data");
 			if(result != null && result.size() > 0) {
-				setListAdapter(new NovelListAdpater(mActivity,result));
+				setListAdapter(new NovelListAdpater(mActivity,new Novels(result)));
 				System.out.println("use bundle");
 				return;
 			}
@@ -89,7 +89,7 @@ public class LastNovelListFragment extends BaseListFreshFragment{
 			protected void onPostExecute(List<Novel> result) {
 				if(isDetached())
 					return;
-				setListAdapter(new NovelListAdpater(mActivity,result));
+				setListAdapter(new NovelListAdpater(mActivity,new Novels(result)));
 				mSwipeRefresh.setRefreshing(false);
 				
 				Bundle b =getArguments();

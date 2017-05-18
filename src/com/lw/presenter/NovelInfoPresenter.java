@@ -43,7 +43,7 @@ public class NovelInfoPresenter {
 				mIView.showNovelInfo(nd.getNovel());
 				NovelManager.getInstance().setChapers(nd.getChapters());
 //				NovelManager.getInstance().setCurrentNovel(novel.getNovel());
-				
+				System.out.println("sucess");
 				AsyncUtil.run(new Runnable() {
 					
 					@Override

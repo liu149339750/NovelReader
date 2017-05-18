@@ -1,10 +1,10 @@
 package com.lw.ui.activity;
 
-import com.lw.ttzw.SearchResult;
+import com.lw.bean.Novels;
 
 public interface ISearchView {
 
 	
-	public void showSearchResult(SearchResult sr);
+	public void showSearchResult(Novels sr);
 	
 }

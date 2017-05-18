@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="novel_kinds">
+    <string-array name="last_novel_kinds">
         <item>@string/last_update</item>
         <item>@string/xuanhuang</item>
         <item>@string/wuxia</item>
@@ -11,7 +11,7 @@
         <item>@string/nvsheng</item>
     </string-array>
     
-    <string-array name="urls">
+    <string-array name="last_urls">
         <item >http://www.ttzw.com/</item>
         <item >http://www.ttzw.com/class_1/</item>
         <item >http://www.ttzw.com/class_2/</item>
@@ -20,5 +20,29 @@
         <item >http://www.ttzw.com/class_5/</item>
         <item >http://www.ttzw.com/class_6/</item>
         <item >http://www.ttzw.com/class_7/</item>
+    </string-array>
+    
+   <string-array name="sort_novel_kinds">
+        <item>@string/all</item>
+        <item>@string/xuanhuang</item>
+        <item>@string/wuxia</item>
+        <item>@string/dushi</item>
+        <item>@string/lishi</item>
+        <item>@string/kehuang</item>
+        <item>@string/wangyou</item>
+        <item>@string/nvsheng</item>
+        <item>@string/tongren</item>
+    </string-array>
+    
+    <string-array name="sort_urls">
+        <item >http://m.ttzw.com/class/0/1.html</item>
+        <item >http://m.ttzw.com/class/1/1.html</item>
+        <item >http://m.ttzw.com/class/2/1.html</item>
+        <item >http://m.ttzw.com/class/3/1.html</item>
+        <item >http://m.ttzw.com/class/4/1.html</item>
+        <item >http://m.ttzw.com/class/5/1.html</item>
+        <item >http://m.ttzw.com/class/6/1.html</item>
+        <item >http://m.ttzw.com/class/7/1.html</item>
+        <item >http://m.ttzw.com/class/66/1.html</item>
     </string-array>
 </resources>

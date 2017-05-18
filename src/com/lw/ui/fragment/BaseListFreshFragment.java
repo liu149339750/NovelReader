@@ -7,14 +7,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 
 public class BaseListFreshFragment extends ListFragment{
 
 	protected SwipeRefreshLayout mSwipeRefresh;
 	
+	protected boolean isInEnd;
 	
 	public BaseListFreshFragment() {
 		setArguments(new Bundle());
@@ -39,10 +43,39 @@ public class BaseListFreshFragment extends ListFragment{
 				pullRefreshData();
 			}
 		});
+		
+		getListView().setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				if(isInEnd ) {
+					reloadMore();
+				}
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//				Log.v("lw", "firstVisibleItem = " + firstVisibleItem + ",visibleItemCount = " + visibleItemCount + ",totalItemCount = " + totalItemCount);
+				
+				if(isInEnd)
+					return;
+				if(firstVisibleItem + visibleItemCount >= totalItemCount - getReloadSpace() && totalItemCount > visibleItemCount) {
+					isInEnd = true;
+				}
+			}
+
+		});
 	}
 	
+	protected void reloadMore() {
+		isInEnd = false;
+	}
 
 	protected void pullRefreshData() {
 		mSwipeRefresh.setRefreshing(false);
+	}
+	
+	protected int getReloadSpace() {
+		return 0;
 	}
 }

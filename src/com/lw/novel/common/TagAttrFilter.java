@@ -26,7 +26,6 @@ public class TagAttrFilter implements NodeFilter{
 		}
 		if(attr == null || attr.length%2 == 1)
 			return false;
-//		System.out.println("attr size = " + attr.length);
 		for(int i =0;i<attr.length;i+=2){
 			if(!attr[i + 1].equalsIgnoreCase(tn.getAttribute(attr[i])))
 				return false;

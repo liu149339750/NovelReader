@@ -1,8 +1,8 @@
 package com.lw.presenter;
 
+import com.lw.bean.Novels;
 import com.lw.model.ISearchBiz;
 import com.lw.model.SearchBiz;
-import com.lw.ttzw.SearchResult;
 import com.lw.ui.activity.ISearchView;
 
 import android.os.AsyncTask;
@@ -22,18 +22,36 @@ public class SearchPresenter {
 	public void search(String keyword) {
 		if(TextUtils.isEmpty(keyword))
 			return;
-		new AsyncTask<String, SearchResult, SearchResult>() {
+		new AsyncTask<String, Novels, Novels>() {
 
 			@Override
-			protected SearchResult doInBackground(String... params) {
+			protected Novels doInBackground(String... params) {
 				return mISearchBiz.search(params[0]);
 			}
 
 			@Override
-			protected void onPostExecute(SearchResult result) {
+			protected void onPostExecute(Novels result) {
 				mIview.showSearchResult(result);
 			}
 
 		}.execute(keyword);
+	}
+	
+	public void loadSearch(String url) {
+		if(TextUtils.isEmpty(url))
+			return;
+		new AsyncTask<String, Novels, Novels>() {
+
+			@Override
+			protected Novels doInBackground(String... params) {
+				return mISearchBiz.loadSearchNovel(params[0]);
+			}
+
+			@Override
+			protected void onPostExecute(Novels result) {
+				mIview.showSearchResult(result);
+			}
+
+		}.execute(url);
 	}
 }

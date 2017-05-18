@@ -11,6 +11,7 @@ import org.htmlparser.nodes.TagNode;
 import org.htmlparser.nodes.TextNode;
 import org.htmlparser.tags.Div;
 import org.htmlparser.tags.HeadingTag;
+import org.htmlparser.tags.ImageTag;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.tags.MetaTag;
 import org.htmlparser.tags.ParagraphTag;
@@ -21,8 +22,9 @@ import org.htmlparser.util.ParserException;
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
-import com.lw.novel.common.TagAttrFilter;
+import com.lw.bean.Novels;
 import com.lw.novel.common.HtmlUtil;
+import com.lw.novel.common.TagAttrFilter;
 
 import android.util.Log;
 
@@ -32,7 +34,8 @@ public class TTZWManager {
 	
 	private static final String s="4548207915219874571";
 	private static final String BASE_QUERY_URL = "http://zhannei.baidu.com/cse/";
-	public static final String BASE_URL = "http://www.ttzw.com";
+	public static final String BASE_URL = "http://www.ttzw.com/";
+	public static final String MBASE_URL = "http://m.ttzw.com/";
 	
 	private static String TEXT_1 = "类型：";
 	private static String TEXT_2 = "更新时间：";
@@ -45,13 +48,17 @@ public class TTZWManager {
 		return ttzwManager;
 	}
 
-	public static SearchResult searchNovel(String keyword)
+	public static Novels searchNovel(String keyword)
 			throws ParserException {
 		String url = BASE_QUERY_URL + "search?s="+s+"&q="+keyword; 
+		return loadSearchNovel(url);
+	}
+	
+	public static Novels loadSearchNovel(String source) throws ParserException {
 		List<Novel> novels = new ArrayList<Novel>();
-		SearchResult sr = new SearchResult();
+		Novels sr = new Novels();
 		sr.setNovels(novels);
-		Parser parser = new Parser(url);
+		Parser parser = new Parser(source);
 		parser.setEncoding("utf-8");
 		// get novel list;
 		NodeList nodeList = parser.parse(new TagAttrFilter("DIV", "class",
@@ -381,7 +388,7 @@ public class TTZWManager {
 					nn.setKind(text);
 				} else if ("s2".equals(atc)) {
 					nn.setName(text);
-					nn.setUrl(url + HtmlUtil.getFirstNodeAttr(span, "a", "href"));
+					nn.setUrl(BASE_URL + HtmlUtil.getFirstNodeAttr(span, "a", "href"));
 				} else if ("s3".equals(atc)) {
 					nn.setLastUpdateChapter(text);
 					nn.setLastUpdateChapterUrl(HtmlUtil.getFirstNodeAttr(span, "a", "href"));
@@ -395,5 +402,53 @@ public class TTZWManager {
 //			System.out.println(nn);
 		}
 		return novels;
+	}
+	
+	public static Novels getMSortKindNovels(String url) throws ParserException {
+		Novels novels = new Novels();
+		novels.setCurrentUrl(url);
+		List<Novel> listNovel = new ArrayList<Novel>();
+		novels.setNovels(listNovel);
+		Parser parser = new Parser(url);
+		NodeList nodelist = parser.parse(new TagAttrFilter("div", "class","hot_sale"));
+		for(int i=0;i<nodelist.size();i++) {
+			Node novelNode = nodelist.elementAt(i);
+			Novel novel = parseNovelNode(novelNode);
+			listNovel.add(novel);
+		}
+		parser.reset();
+		NodeList nl = parser.extractAllNodesThatMatch(new TagAttrFilter("a", "id","nextPage"));
+		if(nl.size() > 0) {
+			TagNode tag = (TagNode) nl.elementAt(0);
+			novels.setNextUrl(MBASE_URL + tag.getAttribute("href"));
+		}
+		return novels;
+	}
+
+	private static Novel parseNovelNode(Node node) {
+		NodeList nl = HtmlUtil.getAllTagNodeChildren(node);
+		Novel novel = new Novel();
+		for(int i=0;i<nl.size();i++) {
+			TagNode tag = (TagNode) nl.elementAt(i);
+			if(tag.isEndTag()) {
+				continue;
+			}
+			if(tag instanceof LinkTag) {
+				novel.setUrl(BASE_URL + tag.getAttribute("href"));
+			} else if(tag instanceof ImageTag) {
+				novel.setThumb(tag.getAttribute("data-original"));
+			} else if(tag instanceof ParagraphTag) {
+				String classAttr = tag.getAttribute("class");
+				if("author".equals(classAttr)) {
+					String author = tag.toPlainTextString().trim();
+					novel.setAuthor(author.substring(author.indexOf("：") + 1));
+				} else if("title".equals(classAttr)) {
+					novel.setName(tag.toPlainTextString().trim());
+				} else if("review".equals(classAttr)) {
+					novel.setBrief(tag.toPlainTextString().trim().replace("&nbsp;", " "));
+				}
+			} 
+		}
+		return novel;
 	}
 }

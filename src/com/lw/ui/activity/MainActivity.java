@@ -6,7 +6,8 @@ import com.bumptech.glide.Glide;
 import com.lw.novelreader.R;
 import com.lw.ui.fragment.BookShelftFragment;
 import com.lw.ui.fragment.LastUpdateMainFragment;
-import com.lw.ui.fragment.SortKindNovelFragment;
+import com.lw.ui.fragment.SortKindNovelMainFragment;
+import com.lw.ui.fragment.WebNovelFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	private Fragment mShelft;
 	private Fragment mLastUpdate;
 	private Fragment mOnlineKind;
+	private Fragment mSortKindNovel;
 	
 	private Fragment mCurrentFragment;
 	
@@ -37,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		mLastUpdate.setArguments(new Bundle());
 		mShelft = new BookShelftFragment();
 		mShelft.setArguments(new Bundle());
-		mOnlineKind = new SortKindNovelFragment();
+		mOnlineKind = new WebNovelFragment();
+		mSortKindNovel = new SortKindNovelMainFragment();
 		if (savedInstanceState == null) {
 			mCurrentFragment = mShelft;
 			getSupportFragmentManager().beginTransaction().add(R.id.container, mShelft).commit();
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		findViewById(R.id.shelft).setOnClickListener(this);
 		findViewById(R.id.books).setOnClickListener(this);
 		findViewById(R.id.online_novels).setOnClickListener(this);
+		findViewById(R.id.sort_kind_novel).setOnClickListener(this);
 		
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -106,6 +110,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 			break;
 		case R.id.online_novels:
 			mCurrentFragment = mOnlineKind;
+			fm.beginTransaction().replace(R.id.container, mCurrentFragment).commit();
+			break;
+		case R.id.sort_kind_novel:
+			mCurrentFragment = mSortKindNovel;
 			fm.beginTransaction().replace(R.id.container, mCurrentFragment).commit();
 			break;
 		default:

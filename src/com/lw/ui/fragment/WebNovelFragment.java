@@ -16,7 +16,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-public class SortKindNovelFragment extends BaseFragment {
+public class WebNovelFragment extends BaseFragment {
 
 	@Bind(R.id.webview)
 	WebView mWebView;
@@ -45,7 +45,9 @@ public class SortKindNovelFragment extends BaseFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mWebView = (WebView) view.findViewById(R.id.webview);
+		if(mWebView == null) {
+			mWebView = (WebView) view.findViewById(R.id.webview);
+		}
 		mProgress = (TextView) view.findViewById(R.id.progress);
 		mWebView.loadUrl("http://m.ttzw.com/class/0/1.html");
 		mWebView.getSettings().setJavaScriptEnabled(true);
@@ -102,9 +104,7 @@ public class SortKindNovelFragment extends BaseFragment {
 
 	@Override
 	protected boolean onBackPress() {
-		System.out.println("onBackPress");
 		if (mWebView.canGoBack()) {
-			System.out.println("goback");
 			mWebView.goBack();
 			return true;
 		}

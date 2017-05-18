@@ -1,8 +1,10 @@
 package com.lw.novelreader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.lw.bean.Novel;
+import com.lw.bean.Novels;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,21 +13,74 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 public class NovelListAdpater extends BaseAdapter {
-		private List<Novel> result;
+//		private List<Novel> result;
+		private List<Novels> mNovels;
 		private LayoutInflater mInflater;
-		public NovelListAdpater(Context context,List<Novel> result) {
-			this.result = result;
+		private int mLayout;
+//		public NovelListAdpater(Context context,List<Novel> result) {
+//			this.result = result;
+//			mInflater = LayoutInflater.from(context);
+//			mLayout = R.layout.search_item;
+//		}
+//		
+//		public NovelListAdpater(Context context,List<Novel> result,int layout) {
+//			this.result = result;
+//			mInflater = LayoutInflater.from(context);
+//			mLayout = layout;
+//		}
+		
+		public NovelListAdpater(Context context,Novels result) {
+			this.mNovels = new ArrayList<Novels>();
+			mNovels.add(result);
 			mInflater = LayoutInflater.from(context);
+			mLayout = R.layout.search_item;
+		}
+		
+		public NovelListAdpater(Context context,Novels result,int layout) {
+			this.mNovels = new ArrayList<Novels>();
+			mNovels.add(result);
+			mInflater = LayoutInflater.from(context);
+			mLayout = layout;
+		}
+		
+		public NovelListAdpater(Context context,List<Novels> result) {
+			this.mNovels = result;
+			mInflater = LayoutInflater.from(context);
+			mLayout = R.layout.search_item;
+		}
+		
+		public NovelListAdpater(Context context,List<Novels> result,int layout) {
+			this.mNovels = result;
+			mInflater = LayoutInflater.from(context);
+			mLayout = layout;
 		}
 		
 		@Override
 		public int getCount() {
-			return result.size();
+			int c = 0;
+			if(mNovels != null) {
+				for(Novels n : mNovels) {
+					c += n.getNovels().size();
+				}
+			}
+			return c;
 		}
 
 		@Override
 		public Novel getItem(int arg0) {
-			return result.get(arg0);
+			int c = 0;
+			Novel novel = null;
+			if(mNovels != null) {
+				for(Novels n : mNovels) {
+					int size = n.getNovels().size();
+					if(arg0 < c + size) {
+						novel = n.getNovels().get(arg0 - c);
+						break;
+					}
+					c = c + size;
+				}
+			}
+			return novel;
 		}
 
 		@Override
@@ -37,7 +92,7 @@ public class NovelListAdpater extends BaseAdapter {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			NovelItem item = null;
 			if(convertView == null) {
-				convertView = mInflater.inflate(R.layout.search_item, null);
+				convertView = mInflater.inflate(mLayout, null);
 				item = new NovelItem(convertView);
 				convertView.setTag(item);
 			} else {
