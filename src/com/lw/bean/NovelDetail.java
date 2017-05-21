@@ -6,6 +6,15 @@ public class NovelDetail {
 
 	private Novel novel;
 	private List<Chapter> chapters;
+	private String chapterUrl;
+	
+	
+	public String getChapterUrl() {
+		return chapterUrl;
+	}
+	public void setChapterUrl(String chapterUrl) {
+		this.chapterUrl = chapterUrl;
+	}
 	public Novel getNovel() {
 		return novel;
 	}

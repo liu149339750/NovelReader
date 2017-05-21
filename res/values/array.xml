@@ -45,4 +45,59 @@
         <item >http://m.ttzw.com/class/7/1.html</item>
         <item >http://m.ttzw.com/class/66/1.html</item>
     </string-array>
+    
+    
+    <string-array name="xs84_sort_novel_kinds">
+        <item>@string/all</item>
+        <item>@string/xuanhuang</item>
+        <item>@string/wuxia</item>
+        <item>@string/dushi</item>
+        <item>@string/lishi</item>
+        <item>@string/chuanyue</item>
+        <item>@string/wangyou</item>
+        <item>@string/kehuangxiaoshuo</item>
+        <item>@string/tongrendongman</item>
+        <item>@string/shehui</item>
+        <item>@string/zonghe</item>
+    </string-array>
+    
+    <string-array name="xs84_sort_urls">
+        <item >http://m.xs84.me/fenlei/0-1.html</item>
+        <item >http://m.xs84.me/fenlei/1-1.html</item>
+        <item >http://m.xs84.me/fenlei/2-1.html</item>
+        <item >http://m.xs84.me/fenlei/3-1.html</item>
+        <item >http://m.xs84.me/fenlei/4-1.html</item>
+        <item >http://m.xs84.me/fenlei/5-1.html</item>
+        <item >http://m.xs84.me/fenlei/6-1.html</item>
+        <item >http://m.xs84.me/fenlei/7-1.html</item>
+        <item >http://m.xs84.me/fenlei/8-1.html</item>
+        <item >http://m.xs84.me/fenlei/9-1.html</item>
+        <item >http://m.xs84.me/fenlei/10-1.html</item>
+    </string-array>
+    
+     <string-array name="xs84_last_novel_kinds">
+        <item>@string/all</item>
+        <item>@string/xuanhuang</item>
+        <item>@string/wuxia</item>
+        <item>@string/dushi</item>
+        <item>@string/lishi</item>
+        <item>@string/wangyou</item>
+        <item>@string/kehuangxiaoshuo</item>
+        <item>@string/tongren</item>
+        <item>@string/kongbulingyi</item>
+        <item>@string/qitaleixing</item>
+    </string-array>
+    
+    <string-array name="xs84_last_urls">
+        <item >http://www.xs84.me/</item>
+        <item >http://www.xs84.me/fenlei/1-1.html</item>
+        <item >http://www.xs84.me/fenlei/2-1.html</item>
+        <item >http://www.xs84.me/fenlei/3-1.html</item>
+        <item >http://www.xs84.me/fenlei/4-1.html</item>
+        <item >http://www.xs84.me/fenlei/5-1.html</item>
+        <item >http://www.xs84.me/fenlei/6-1.html</item>
+        <item >http://www.xs84.me/fenlei/7-1.html</item>
+        <item >http://www.xs84.me/fenlei/8-1.html</item>
+        <item >http://www.xs84.me/fenlei/9-1.html</item>
+    </string-array>
 </resources>

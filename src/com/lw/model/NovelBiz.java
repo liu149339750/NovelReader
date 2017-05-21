@@ -9,7 +9,7 @@ import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.db.DBUtil;
-import com.lw.ttzw.TTZWManager;
+import com.lw.ttzw.DataQueryManager;
 
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -48,7 +48,7 @@ public class NovelBiz implements INovelBiz {
 						listener.onCancel();
 						return null;
 					}
-					NovelDetail nd = TTZWManager.getNovelDetailByMeta(url);
+					NovelDetail nd = DataQueryManager.instance().getNovelDetail(url);
 					System.out.println("read over");
 					Novel novel = nd.getNovel();
 					if(novel.getName() == null) {
@@ -120,7 +120,7 @@ public class NovelBiz implements INovelBiz {
 //				listener.onCancel();
 				return null;
 			}
-			NovelDetail nd = TTZWManager.getNovelDetailByMeta(url);
+			NovelDetail nd = DataQueryManager.instance().getNovelDetail(url);
 			System.out.println("read over");
 			Novel novel = nd.getNovel();
 			if(novel.getName() == null) {

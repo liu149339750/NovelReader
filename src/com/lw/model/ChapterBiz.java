@@ -7,7 +7,7 @@ import org.htmlparser.util.ParserException;
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.novel.common.FileUtil;
-import com.lw.ttzw.TTZWManager;
+import com.lw.ttzw.DataQueryManager;
 
 import android.os.AsyncTask;
 
@@ -22,7 +22,7 @@ public class ChapterBiz implements IChapterBiz {
 				String path = null;
 				try {
 					path = FileUtil.saveChapter(novel.getName(), novel.getAuthor(), chapter.getTitle(),
-							TTZWManager.getChapterContent(chapter.getUrl()));
+							DataQueryManager.instance().getChapterContent(chapter.getUrl()));
 					chapter.setContentPath(path);
 				} catch (ParserException e) {
 					e.printStackTrace();

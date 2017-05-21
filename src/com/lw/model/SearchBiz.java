@@ -4,7 +4,7 @@ import org.htmlparser.util.ParserException;
 
 import com.lw.bean.Novels;
 import com.lw.db.DBUtil;
-import com.lw.ttzw.TTZWManager;
+import com.lw.ttzw.DataQueryManager;
 
 public class SearchBiz implements ISearchBiz{
 
@@ -12,7 +12,7 @@ public class SearchBiz implements ISearchBiz{
 	public Novels search(String keyword) {
 		Novels sr = null;
 		try {
-			sr = TTZWManager.searchNovel(keyword);
+			sr = DataQueryManager.instance().search(keyword);
 			DBUtil.addSearchKeyword(keyword);
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
@@ -25,7 +25,7 @@ public class SearchBiz implements ISearchBiz{
 	public Novels loadSearchNovel(String source) {
 		Novels sr = null;
 		try {
-			sr = TTZWManager.loadSearchNovel(source);
+			sr = DataQueryManager.instance().loadSearchNovel(source);
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

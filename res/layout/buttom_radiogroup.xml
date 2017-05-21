@@ -1,49 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@drawable/buttom_buttons_bg"
     android:layout_height="match_parent"
-	android:background="@drawable/buttom_buttons_bg"
     android:orientation="vertical" >
     
-    
-    <View 
-        android:visibility="gone"
-        android:layout_width="fill_parent"
-        android:background="#777777"
-        android:layout_height="1px"/>
-    
-    <LinearLayout 
-        android:padding="5dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-    <Button
+    <RadioGroup 
+        android:checkedButton="@id/shelft"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        
+     <RadioButton
         android:id="@+id/shelft"
         android:layout_weight="1"
+        android:gravity="center"
+        android:button="@null"
+        android:drawableTop="@drawable/book_sheflt_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/book_shelft" />
     
-    <Button
+    <RadioButton
         android:id="@+id/sort_kind_novel"
         android:layout_weight="1"
+        android:gravity="center"
+        android:button="@null"
+        android:drawableTop="@drawable/sort_kind_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sort_kind_novel" />
 
-    <Button
+    <RadioButton
         android:id="@+id/books"
         android:layout_weight="1"
+        android:gravity="center"
+        android:button="@null"
+        android:drawableTop="@drawable/last_update_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/last_update" />
     
-   <Button
+   <RadioButton
         android:id="@+id/online_novels"
         android:layout_weight="1"
+        android:gravity="center"
+        android:button="@null"
+        android:drawableTop="@drawable/web_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/online_novels" />
-    </LinearLayout>
+    </RadioGroup>
 </LinearLayout>

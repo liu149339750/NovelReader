@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
-import com.lw.bean.ShelftBook;
 import com.lw.novelreader.BookShelftManager;
 
 import android.content.Context;

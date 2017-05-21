@@ -1,5 +1,6 @@
 package com.lw.ttzw;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,6 @@ public class TTZWManager {
 	private static final String s="4548207915219874571";
 	private static final String BASE_QUERY_URL = "http://zhannei.baidu.com/cse/";
 	public static final String BASE_URL = "http://www.ttzw.com/";
-	public static final String MBASE_URL = "http://m.ttzw.com/";
 	
 	private static String TEXT_1 = "类型：";
 	private static String TEXT_2 = "更新时间：";
@@ -77,7 +77,7 @@ public class TTZWManager {
 					// get the pic src
 					if ("result-game-item-pic".equals(attClass)) {
 						//here,we can also use nodelist's extractAllNodesThatMatch to get this
-						List<Node> img = HtmlUtil.getNodesByTag(node, "img");
+						List<TagNode> img = HtmlUtil.getNodesByTag(node, "img");
 						if (img.size() > 0) {
 							novel.thumb = ((TagNode)img.get(0)).getAttribute("src");
 						}
@@ -182,21 +182,7 @@ public class TTZWManager {
 		if (nodeList.size() != 0) {
 			Node node = nodeList.elementAt(0);
 			// chapter.setContent(node.toPlainTextString());
-			int size = node.getChildren().size();
-			for (int i = 0; i < size; i++) {
-				// System.out.println(node.getChildren().elementAt(i).getClass().getName());
-				Node cn = node.getChildren().elementAt(i);
-				if (cn instanceof TextNode) {
-					content += cn.toPlainTextString().replace("&nbsp;", " ");
-//					System.out.println(cn.toPlainTextString());
-				} else if (cn instanceof TagNode) {
-					TagNode tn = (TagNode) cn;
-					if ("br".equalsIgnoreCase(tn.getTagName())) {
-						content += "\n";
-					}
-					// System.out.println(tn.getTagName());
-				}
-			}
+			content = HtmlUtil.parseContent(node);
 		}
 		// System.out.println(chapter.getContent());
 		return content;
@@ -218,7 +204,6 @@ public class TTZWManager {
 			chapter.setUrl(url + "/" +HtmlUtil.getFirstNodeAttr(dd, "a", "href"));
 			chapter.setTitle(dd.toPlainTextString());
 			chapters.add(chapter);
-			System.out.println(chapter);
 		}
 		return chapters;
 	}
@@ -343,7 +328,7 @@ public class TTZWManager {
 	}
 
 	/** get the last update novels */
-	public static List<Novel> getLastUpdates(String url)
+	public static List<Novel> getLastUpdates(String baseUrl,String url)
 			throws ParserException {
 		System.out.println("getLastUpdates");
 		List<Novel> novels = new ArrayList<Novel>();
@@ -356,7 +341,7 @@ public class TTZWManager {
 			fnode = nodeList.elementAt(i);
 			Div div = (Div) fnode;
 			if ("newscontent".equals(div.getAttribute("id"))) {
-				List<Node> notes = HtmlUtil.getNodesByTag(div, "div");
+				List<TagNode> notes = HtmlUtil.getNodesByTag(div, "div");
 				for (int j = 0; j < notes.size(); j++) {
 					if ("l".equals(((TagNode) notes.get(j))
 							.getAttribute("class"))) {
@@ -388,7 +373,13 @@ public class TTZWManager {
 					nn.setKind(text);
 				} else if ("s2".equals(atc)) {
 					nn.setName(text);
-					nn.setUrl(BASE_URL + HtmlUtil.getFirstNodeAttr(span, "a", "href"));
+					String link = HtmlUtil.getFirstNodeAttr(span, "a", "href");
+					URI uri = URI.create(link);
+					if(uri.isAbsolute()) {
+						nn.setUrl(link);
+					} else {
+						nn.setUrl(baseUrl + link);
+					}
 				} else if ("s3".equals(atc)) {
 					nn.setLastUpdateChapter(text);
 					nn.setLastUpdateChapterUrl(HtmlUtil.getFirstNodeAttr(span, "a", "href"));
@@ -404,51 +395,4 @@ public class TTZWManager {
 		return novels;
 	}
 	
-	public static Novels getMSortKindNovels(String url) throws ParserException {
-		Novels novels = new Novels();
-		novels.setCurrentUrl(url);
-		List<Novel> listNovel = new ArrayList<Novel>();
-		novels.setNovels(listNovel);
-		Parser parser = new Parser(url);
-		NodeList nodelist = parser.parse(new TagAttrFilter("div", "class","hot_sale"));
-		for(int i=0;i<nodelist.size();i++) {
-			Node novelNode = nodelist.elementAt(i);
-			Novel novel = parseNovelNode(novelNode);
-			listNovel.add(novel);
-		}
-		parser.reset();
-		NodeList nl = parser.extractAllNodesThatMatch(new TagAttrFilter("a", "id","nextPage"));
-		if(nl.size() > 0) {
-			TagNode tag = (TagNode) nl.elementAt(0);
-			novels.setNextUrl(MBASE_URL + tag.getAttribute("href"));
-		}
-		return novels;
-	}
-
-	private static Novel parseNovelNode(Node node) {
-		NodeList nl = HtmlUtil.getAllTagNodeChildren(node);
-		Novel novel = new Novel();
-		for(int i=0;i<nl.size();i++) {
-			TagNode tag = (TagNode) nl.elementAt(i);
-			if(tag.isEndTag()) {
-				continue;
-			}
-			if(tag instanceof LinkTag) {
-				novel.setUrl(BASE_URL + tag.getAttribute("href"));
-			} else if(tag instanceof ImageTag) {
-				novel.setThumb(tag.getAttribute("data-original"));
-			} else if(tag instanceof ParagraphTag) {
-				String classAttr = tag.getAttribute("class");
-				if("author".equals(classAttr)) {
-					String author = tag.toPlainTextString().trim();
-					novel.setAuthor(author.substring(author.indexOf("：") + 1));
-				} else if("title".equals(classAttr)) {
-					novel.setName(tag.toPlainTextString().trim());
-				} else if("review".equals(classAttr)) {
-					novel.setBrief(tag.toPlainTextString().trim().replace("&nbsp;", " "));
-				}
-			} 
-		}
-		return novel;
-	}
 }

@@ -8,8 +8,8 @@ import org.htmlparser.util.ParserException;
 import com.lw.bean.Novel;
 import com.lw.bean.Novels;
 import com.lw.novelreader.NovelListAdpater;
+import com.lw.ttzw.DataQueryManager;
 import com.lw.ttzw.NovelManager;
-import com.lw.ttzw.TTZWManager;
 import com.lw.ui.activity.NovelDetailActivity;
 
 import android.app.Activity;
@@ -77,8 +77,7 @@ public class LastNovelListFragment extends BaseListFreshFragment{
 			protected  List<Novel> doInBackground(Void... params) {
 				List<Novel> data = new ArrayList<Novel>();
 				try {
-//					data = TTZWManager.getLastUpdates(TTZWManager.BASE_URL);
-					data = TTZWManager.getLastUpdates(url);
+					data = DataQueryManager.instance().getLastUpdates(url);
 				} catch (ParserException e) {
 					e.printStackTrace();
 				}

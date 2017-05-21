@@ -12,7 +12,7 @@ import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.db.DBUtil;
 import com.lw.novel.common.FileUtil;
-import com.lw.ttzw.TTZWManager;
+import com.lw.ttzw.DataQueryManager;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -115,7 +115,7 @@ public class DownloadTask implements Runnable {
 							Request request = new Request.Builder().url(chapter.getUrl()).build();
 							try {
 								Response response = client.newCall(request).execute();
-								String content = TTZWManager.getChapterContent(response.body().string());
+								String content = DataQueryManager.instance().getChapterContent(response.body().string());
 								FileUtil.saveChapter(novel.getName(), novel.getAuthor(), chapter.getTitle(), content);
 								cids.remove(new Integer(a));
 								return null;
@@ -148,7 +148,7 @@ public class DownloadTask implements Runnable {
 		Request request = new Request.Builder().url(chapter.getUrl()).build();
 		try {
 			Response response = client.newCall(request).execute();
-			String content = TTZWManager.getChapterContent(response.body().string());
+			String content = DataQueryManager.instance().getChapterContent(response.body().string());
 			FileUtil.saveChapter(novel.getName(), novel.getAuthor(), chapter.getTitle(), content);
 			return true;
 		} catch (SocketTimeoutException e) {

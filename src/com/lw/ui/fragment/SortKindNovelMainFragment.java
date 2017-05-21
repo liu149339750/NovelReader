@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.lw.novel.common.Util;
 import com.lw.novelreader.R;
+import com.lw.ttzw.DataQueryManager;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,10 +60,10 @@ public class SortKindNovelMainFragment extends BaseFragment{
 			mPageIndicator = (TitlePageIndicator) view.findViewById(R.id.titles);
 		}
 		mPagerAdapter = new MyPagerAdapter(getChildFragmentManager());
-		String kinds[] = getResources().getStringArray(R.array.sort_novel_kinds);
-		String urls[] = getResources().getStringArray(R.array.sort_urls);
-		for(int i=0;i<kinds.length;i++) {
-			mPagerAdapter.add(SortNovelListFragment.newInstance(kinds[i],urls[i],R.layout.sort_kind_novel_item));
+		List<Pair<String, String>> data = DataQueryManager.instance().getSortKindUrlPairs();
+		for(int i=0;i<data.size();i++) {
+			Pair<String, String>p = data.get(i);
+			mPagerAdapter.add(SortNovelListFragment.newInstance(p.first,p.second,R.layout.sort_kind_novel_item));
 		}
 		mPager.setAdapter(mPagerAdapter);
 		mPageIndicator.setViewPager(mPager);

@@ -8,8 +8,8 @@ import org.htmlparser.util.ParserException;
 import com.lw.bean.Novel;
 import com.lw.bean.Novels;
 import com.lw.novelreader.NovelListAdpater;
+import com.lw.ttzw.DataQueryManager;
 import com.lw.ttzw.NovelManager;
-import com.lw.ttzw.TTZWManager;
 import com.lw.ui.activity.NovelDetailActivity;
 
 import android.app.Activity;
@@ -111,7 +111,7 @@ public class SortNovelListFragment extends BaseListFreshFragment{
 				int i = 0;
 				while (i < 3) {
 				try {
-					data = TTZWManager.getMSortKindNovels(url);
+					data = DataQueryManager.instance().getSortKindNovels(url);
 					break;
 				} catch (ParserException e) {
 					e.printStackTrace();
