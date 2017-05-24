@@ -6,7 +6,6 @@ import com.bumptech.glide.Glide;
 import com.lw.bean.Novel;
 import com.lw.novelreader.BookShelftManager;
 import com.lw.novelreader.DownloadStatus;
-import com.lw.novelreader.EventMessage;
 import com.lw.novelreader.R;
 import com.lw.presenter.NovelInfoPresenter;
 import com.lw.ttzw.NovelManager;
@@ -14,6 +13,7 @@ import com.lw.ui.activity.NovelChapterListActivity;
 import com.lw.ui.activity.NovelReadActivity;
 import com.mingle.widget.LoadingView;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -46,9 +46,17 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 	
 	private int downloadStatus;
 	
+	private Activity mActivity;
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mActivity = activity;
 	}
 	
 	@Override
@@ -99,7 +107,7 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 	@Override
 	public void startRead() {
 //		EventBus.getDefault().post(new EventMessage(EventMessage.START_READ, 0));
-		NovelReadActivity.startNovelReadActivity(getContext(), 1);
+		NovelReadActivity.startNovelReadActivity(mActivity, -1);
 	}
 
 	@Override

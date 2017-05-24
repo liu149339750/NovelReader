@@ -1,11 +1,14 @@
 package com.lw.novel.common;
 
+import java.net.URI;
+
 import com.lw.novelreader.R;
 import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TitlePageIndicator.IndicatorStyle;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 
 public class Util {
@@ -39,4 +42,13 @@ public class Util {
         indicator.setSelectedColor(0xFF000000);
         indicator.setSelectedBold(true);
     }
+    
+	public static  boolean isPhoneUrl(String url) {
+		URI uri = URI.create(url); 
+		String host = uri.getHost();
+		if(!TextUtils.isEmpty(host) && host.startsWith("m")) {
+			return true;
+		}
+		return false;
+	}
 }

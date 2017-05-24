@@ -15,6 +15,7 @@ import com.lw.novelreader.DownloadProgress;
 import com.lw.novelreader.DownloadService;
 import com.lw.novelreader.DownloadStatus;
 import com.lw.novelreader.DownloadTask;
+import com.lw.novelreader.SearchSourceService;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.fragment.INovelInfoView;
 
@@ -76,6 +77,7 @@ public class NovelInfoPresenter {
 			mIView.removeBookShelt(mNovel.id);
 		} else {
 			mIView.addBookShelft(mNovel.id);
+			SearchSourceService.postBackgroundSearch(mNovel);
 		}
 	}
 	

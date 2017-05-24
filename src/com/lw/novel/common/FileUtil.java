@@ -57,6 +57,9 @@ public class FileUtil {
 		fos.write(content.getBytes("utf-8"));
 		fos.flush();
 		fos.close();
+		if(distFile.length() == 0) {
+			return null;
+		}
 		return distFile.getPath();
 	}
 	

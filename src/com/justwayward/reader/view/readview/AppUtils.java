@@ -15,6 +15,9 @@
  */
 package com.justwayward.reader.view.readview;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
@@ -27,14 +30,21 @@ public class AppUtils {
     private static Thread mUiThread;
 
     private static Handler sHandler = new Handler(Looper.getMainLooper());
+    
+    private static Executor mExecutor;
 
     public static void init(Context context) {
         mContext = context;
         mUiThread = Thread.currentThread();
+        mExecutor = Executors.newFixedThreadPool(5);
     }
 
     public static Context getAppContext() {
         return mContext;
+    }
+    
+    public static Executor getExecutor() {
+    	return mExecutor;
     }
 
     public static AssetManager getAssets() {

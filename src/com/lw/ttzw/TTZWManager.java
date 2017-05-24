@@ -202,13 +202,14 @@ public class TTZWManager {
 			Chapter chapter = new Chapter();
 			TagNode dd = (TagNode) nodeList.elementAt(i);
 			chapter.setUrl(url + "/" +HtmlUtil.getFirstNodeAttr(dd, "a", "href"));
-			chapter.setTitle(dd.toPlainTextString());
+			chapter.setTitle(dd.toPlainTextString().trim());
 			chapters.add(chapter);
 		}
 		return chapters;
 	}
 	
 	public static NovelDetail getNovelDetailByMeta(String url) throws ParserException {
+		System.out.println("getNovelDetailByMeta >"+url);
 		NovelDetail detail = new NovelDetail();
 		List<Chapter> chapters = new ArrayList<Chapter>();
 		Novel novel = new Novel();
@@ -225,7 +226,7 @@ public class TTZWManager {
 			Chapter chapter = new Chapter();
 			TagNode dd = (TagNode) nodeList.elementAt(i);
 			chapter.setUrl(url + "/" + HtmlUtil.getFirstNodeAttr(dd, "a", "href"));
-			chapter.setTitle(dd.toPlainTextString());
+			chapter.setTitle(dd.toPlainTextString().trim());
 			chapters.add(chapter);
 		}
 		parser.reset();
@@ -256,6 +257,8 @@ public class TTZWManager {
 				novel.setLastUpdateChapterUrl(content);
 			}
 		}
+		detail.setChapterUrl(url);
+		novel.setChapterUrl(url);
 		return detail;
 	}
 	

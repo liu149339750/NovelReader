@@ -156,7 +156,7 @@ public class PageFactory {
     	File file = FileUtil.getChapterFile(bookId, chapter);
         if (file != null && file.length() > 10) {
             // 解决空文件造成编码错误的问题
-            charset = FileUtils.getCharset(file.getAbsolutePath());
+//            charset = FileUtils.getCharset(file.getAbsolutePath()); //识别不准确
         }
         LogUtils.i("charset=" + charset);
         return file;

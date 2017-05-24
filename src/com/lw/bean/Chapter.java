@@ -1,11 +1,11 @@
 package com.lw.bean;
 
-public class Chapter {
+public class Chapter extends BaseBean{
 
 	public String title;
 	private String url;
 	private String contentPath;
-	
+	private int bookId;
 	public boolean isDownload;
 	
 	public Chapter() {
@@ -34,6 +34,16 @@ public class Chapter {
 
 	public void setContentPath(String contentPath) {
 		this.contentPath = contentPath;
+	}
+	
+	
+	
+	public int getBookId() {
+		return bookId;
+	}
+
+	public void setBookId(int bookId) {
+		this.bookId = bookId;
 	}
 
 	@Override

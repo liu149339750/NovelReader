@@ -72,7 +72,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 	 private View topView;
 	 private View buttomView;
 	 
-	 
+	 private static final String CHAPTER_EXTRA = "chapter";
 	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -138,9 +138,9 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 		}
 		flReadWidget.removeAllViews();
 		flReadWidget.addView(mPageWidget);
-		
-		if(NovelManager.getInstance().getChapterId() > 1)
-			mPageWidget.setCurrentChapter(NovelManager.getInstance().getChapterId());
+		int chapter = getIntent().getIntExtra(CHAPTER_EXTRA, -1);
+		if(chapter > 0)
+			mPageWidget.setCurrentChapter(chapter);
 		mPageWidget.init(SettingManager.getInstance().getReadTheme());
 	}
 	
@@ -418,7 +418,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 	public static void startNovelReadActivity(Context context,int chapter) {
 		Intent intent = new Intent();
 		Bundle bundle = new Bundle();
-		bundle.putInt("chapter", chapter);
+		bundle.putInt(CHAPTER_EXTRA, chapter);
 		intent.putExtras(bundle);
 		intent.setClass(context, NovelReadActivity.class);
 		context.startActivity(intent);

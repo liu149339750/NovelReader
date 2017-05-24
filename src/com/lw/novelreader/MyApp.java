@@ -4,6 +4,7 @@ import com.justwayward.reader.view.readview.AppUtils;
 import com.justwayward.reader.view.readview.SharedPreferencesUtil;
 import com.lw.novel.common.FileUtil;
 import com.lw.ttzw.NovelManager;
+import com.lw.ttzw.SourceSelector;
 
 import android.app.Application;
 import android.content.Context;
@@ -18,10 +19,12 @@ public class MyApp extends Application{
 		System.out.println("MyApp::onCreate");
 		FileUtil.init();
 		AppUtils.init(this);
+		SourceSelector.init();
 		NovelManager.getInstance().init(this);
 		SharedPreferencesUtil.init(this, getPackageName(), Context.MODE_PRIVATE);
 		
 		startService(new Intent(this, DownloadService.class));
+		startService(new Intent(this, SearchSourceService.class));
 	}
 	
 

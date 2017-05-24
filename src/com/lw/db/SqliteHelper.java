@@ -16,6 +16,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 	public static final String CHAPTER_TABLE = "CHAPTERS";
 	public static final String CHAPTER_URL_TABLE = "CHAPTER_URL";
 	public static final String BOOKSHELFT_TABLE = "BOOKSHELFT";
+	public static final String SOURCE_TABLE = "SOURCE";
 	public static final String BOOKSHELFT_VIEW = "booshelft_info";
 	
 	public static final String ID = "ID";
@@ -38,6 +39,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 			+ "lastUpdateTime varchar(100),"
 			+ "lastUpdateChapter varchar(100),"
 			+ "thumb varchar(100),"
+			+  Books.CHAPTER_URL + " varchar(100),"
 			+ "detail text)";
 	
 	private static final String CREATE_CHAPTERS_TABLE = "CREATE TABLE if not exists CHAPTERS ("
@@ -45,12 +47,14 @@ public class SqliteHelper extends SQLiteOpenHelper{
 			+ "book_id INTEGER,"
 			+ "chapter_title char(100),"
 			+ "chapter_content_uri char(100),"
+			+ "source varchar(20),"
 			+ "chapter_url char(100))";
 	
 	private static final String CREATE_CHAPTER_URL_TABLE = "CREATE TABLE if not exists CHAPTER_URL ("
 			+ "ID INTEGER PRIMARY KEY,"
+			+ "book_id INTEGER,"
 			+ "chapter_id INTEGER,"
-			+ "network_site varchar(20),"
+			+ "source varchar(20),"
 			+ "URL CHAR(100),"
 			+ "PREF INTEGER DEFAULT 0)";
 	
@@ -59,6 +63,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 			+ "book_id INTEGER,"
 			+ "readtime varchar(50),"
 			+ "chapter_count INTEGER default 0,"
+			+ "source varchar(20),"
 			+ "current_chapter_id INTEGER default 1,"
 			+ "current_chapterposition INTEGER default 1)";
 	
@@ -78,10 +83,16 @@ public class SqliteHelper extends SQLiteOpenHelper{
 
 	private static final String CREATE_BOOKSHELFT_VIEW = "CREATE view if not exists booshelft_info AS "
 			+ "SELECT BOOKS.ID as ID,author,name,url,kind,lastUpdateTime,lastUpdateChapter,thumb,detail,readtime,chapter_count,"
-			+ "current_chapterposition "
-			+ "FROM BOOKS,BOOKSHELFT WHERE BOOKS.ID = BOOKSHELFT.book_id";
+			+ "current_chapterposition," + Books.CHAPTER_URL
+			+ " FROM BOOKS,BOOKSHELFT WHERE BOOKS.ID = BOOKSHELFT.book_id";
 	
-	
+	private static final String CREATE_SOURCE_TABLE = "create table if not exists " + SOURCE_TABLE + " ("
+			+ ID + " INTEGER PRIMARY KEY,"
+			+ "book_id INTEGER,"
+			+ "source varchar(20),"
+			+ "url varchar(100),"
+			+ "chapter_url varchar(100))";
+			
 	
 	public SqliteHelper(Context context) {
 		super(context, FileUtil.getBaseDir() + "/" + DB_NAME, null, 1);
@@ -108,6 +119,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_CHAPTERS_TABLE);
 		db.execSQL(CREATE_CHAPTER_URL_TABLE);
 		db.execSQL(CREATE_MY_BOOKSHELFT);
+		db.execSQL(CREATE_SOURCE_TABLE);
 	}
 
 	@Override
@@ -125,6 +137,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 		public static String detail = "detail";
 		public static String lastUpdateTime = "lastUpdateTime";
 		public static String lastUpdateChapter = "lastUpdateChapter";
+		public static String CHAPTER_URL = "chapter_url";
 	}
 	
 	public static class Chapter {
@@ -132,16 +145,31 @@ public class SqliteHelper extends SQLiteOpenHelper{
 		public static String chapter_title = "chapter_title";
 		public static String chapter_content_uri = "chapter_content_uri";
 		public static String chapter_url = "chapter_url";
+		public static String SOURCE = "source";
 	}
 	
 	public static class BookShelft{
 		public static String BOOK_ID = "book_id";
 		public static String readtime = "readtime"; //update time
 		public static String chapter_count = "chapter_count";
+		public static String SOURCE = "source";
 		public static String current_chapter_id = "current_chapter_id";
 		public static String current_chapterposition = "current_chapterposition";
 	}
 
+	public static class ChapterURL {
+		public static String CHAPTER_ID = "chapter_id";
+		public static String URL = "URL";
+		public static String SOURCE = "source";
+		public static String BOOK_ID = "book_id";
+	}
+	
+	public static class Source {
+		public static String BOOK_ID = "book_id";
+		public static String URL = "url";
+		public static String SOURCE = "source";
+		public static String CHAPTER_URL = "chapter_url";
+	}
 	
 	private static final String SQL_QUERY_IS_IN_BOOKSHELFT = "";
 }

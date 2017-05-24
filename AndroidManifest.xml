@@ -41,6 +41,7 @@
         </activity>
         
         <service android:name="com.lw.novelreader.DownloadService"></service>
+        <service android:name="com.lw.novelreader.SearchSourceService"></service>
         
         <activity android:name="com.lw.ui.activity.SearchActvity"></activity>
         <activity android:name="com.lw.ui.activity.NovelChapterListActivity"></activity>

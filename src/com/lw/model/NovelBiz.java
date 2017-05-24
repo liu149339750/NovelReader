@@ -45,14 +45,12 @@ public class NovelBiz implements INovelBiz {
 //					}
 					System.out.println("begin read from net");
 					if(isCancel) {
-						listener.onCancel();
 						return null;
 					}
 					NovelDetail nd = DataQueryManager.instance().getNovelDetail(url);
 					System.out.println("read over");
 					Novel novel = nd.getNovel();
 					if(novel.getName() == null) {
-						listener.onFail();
 						return null;
 					}
 //					DBUtil.deleteNovelByNameAndAuthor(novel.getName(), novel.getAuthor());

@@ -3,6 +3,7 @@ package com.lw.presenter;
 import java.util.List;
 import rx.Observable;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -25,7 +26,6 @@ public class BookShelftPresenter {
 	
 	
 	public void updateBookShelft() {
-		System.out.println(Thread.currentThread().getName());
 		List<Novel> updateNovels = mView.getNeedUpdateNovels();
 		Observable
 				.from(updateNovels)
@@ -58,7 +58,7 @@ public class BookShelftPresenter {
 					}
 				})
 				.subscribeOn(Schedulers.newThread())
-				.observeOn(Schedulers.immediate())
+				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(new Observer<NovelDetail>() {
 
 					@Override

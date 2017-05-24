@@ -23,11 +23,15 @@ public class NovelProvider extends ContentProvider{
 	public static final String CHAPTER = "chapter";
 	public static final String NOVEL = "book";
 	public static final String SHELFT_INFO = "bookshelft/info";
+	public static final String CHAPTER_URL = "chapter_url";
+	public static final String SOURCE = "source";
 	
 	public static final int BOOKSHELFT_ID = 1;
 	private static final int CHAPTER_ID = 2;
 	private static final int NOVEL_ID = 3;
 	private static final int SHELFT_INFO_ID = 4;
+	private static final int CHAPTER_URL_ID = 5;
+	private static final int SOURCE_ID = 6;
 	
 	private static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
 	public static final Uri CHAPTER_URI = Uri.parse("content://" + AUTHORITY + "/" + CHAPTER);
@@ -35,6 +39,8 @@ public class NovelProvider extends ContentProvider{
 	public static final Uri BOOKSHELFT_URI = Uri.withAppendedPath(BASE_URI, BOOKSHELFT);
 	public static final Uri BOOKSHELFT_VIEW_URI = Uri.withAppendedPath(BASE_URI, SHELFT_INFO);
 	
+	public static final Uri CHAPTER_URL_URI = Uri.withAppendedPath(BASE_URI, CHAPTER_URL);
+	public static final Uri SOURCE_URI = Uri.withAppendedPath(BASE_URI, SOURCE);
 	
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
@@ -78,6 +84,9 @@ public class NovelProvider extends ContentProvider{
 		case NOVEL_ID:
 			id = sql.insert(SqliteHelper.BOOK_TABLE, null, values);
 			break;
+		case SOURCE_ID:
+			id = sql.insert(SqliteHelper.SOURCE_TABLE, null, values);
+			break;
 		default:
 			break;
 		}
@@ -105,7 +114,16 @@ public class NovelProvider extends ContentProvider{
 				}
 				db.setTransactionSuccessful();
 				break;
-
+			case CHAPTER_URL_ID:
+				for(ContentValues cv : values) {
+					long i = db.insert(SqliteHelper.CHAPTER_URL_TABLE, null, cv);
+					if(i > 0)
+						count ++;
+					else
+						System.err.println("insert Fail!!");
+				}
+				db.setTransactionSuccessful();
+				break;
 			default:
 				break;
 			}
@@ -125,6 +143,8 @@ public class NovelProvider extends ContentProvider{
 		mUriMatcher.addURI(AUTHORITY, CHAPTER, CHAPTER_ID);
 		mUriMatcher.addURI(AUTHORITY, NOVEL, NOVEL_ID);
 		mUriMatcher.addURI(AUTHORITY, SHELFT_INFO, SHELFT_INFO_ID);
+		mUriMatcher.addURI(AUTHORITY, CHAPTER_URL, CHAPTER_URL_ID);
+		mUriMatcher.addURI(AUTHORITY, SOURCE, SOURCE_ID);
 		return false;
 	}
 
@@ -145,6 +165,11 @@ public class NovelProvider extends ContentProvider{
 		case SHELFT_INFO_ID:
 			cursor = mSql.getReadableDatabase().query(SqliteHelper.BOOKSHELFT_VIEW, projection, selection, selectionArgs, null, null, sortOrder);
 			break;
+		case SOURCE_ID:
+			cursor = mSql.getReadableDatabase().query(SqliteHelper.SOURCE_TABLE, projection, selection, selectionArgs, null, null, sortOrder);
+			break;
+		case CHAPTER_URL_ID:
+			cursor = mSql.getReadableDatabase().query(SqliteHelper.CHAPTER_URL_TABLE, projection, selection, selectionArgs, null, null, sortOrder);
 		default:
 			break;
 		}

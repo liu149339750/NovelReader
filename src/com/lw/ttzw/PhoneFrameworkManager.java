@@ -17,6 +17,7 @@ import org.htmlparser.tags.ParagraphTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
+import com.justwayward.reader.view.readview.LogUtils;
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
@@ -86,7 +87,6 @@ public class PhoneFrameworkManager {
 	
 	
 	public static NovelDetail getNovelDetail(String baseUrl,String url) throws ParserException {
-		System.out.println(url);
 		Novel novel = new Novel();
 		NovelDetail detail = new NovelDetail();
 		detail.setNovel(novel);
@@ -171,10 +171,10 @@ public class PhoneFrameworkManager {
 			}
 		}
 		if(TextUtils.isEmpty(detail.getChapterUrl())) {
-			Log.e(TAG, "parser html fail,not get the chapter list");
+			Log.e(TAG, "parser html fail,not get the chapter list,url = " +url);
 			detail.setChapterUrl(url + "all.html");
 		}
-		detail.setChapters(getNovelChapers(baseUrl, HtmlUtil.readHtml(detail.getChapterUrl())));;
+		novel.setChapterUrl(detail.getChapterUrl());
 		return detail;
 	}
 	

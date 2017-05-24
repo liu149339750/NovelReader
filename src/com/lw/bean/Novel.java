@@ -1,19 +1,18 @@
 package com.lw.bean;
 
-import java.io.Serializable;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Novel implements Parcelable{
+public class Novel extends BaseBean implements Parcelable{
 
-	public int id;
 	public String name;
 	public String author;
 	public String brief;
 	public String thumb;
 	public String url;
 	public String kind;
+	public String ChapterUrl;
 
 	public String lastUpdateTime;
 	public String lastUpdateChapter;
@@ -98,6 +97,14 @@ public class Novel implements Parcelable{
 
 	public void setLastUpdateChapterUrl(String lastUpdateChapterUrl) {
 		this.lastUpdateChapterUrl = lastUpdateChapterUrl;
+	}
+
+	public String getChapterUrl() {
+		return ChapterUrl;
+	}
+
+	public void setChapterUrl(String chapterUrl) {
+		ChapterUrl = chapterUrl;
 	}
 
 	@Override

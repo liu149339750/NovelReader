@@ -109,13 +109,10 @@ public class DownloadTask implements Runnable {
 
 					@Override
 					protected Void doInBackground(Void... params) {
-						OkHttpClient client = new OkHttpClient();
 						for (int i = 0; i < 3; i++) {
 							Log.v(TAG, "USE async download again! chapter = " + chapter.getTitle() + ",i=" + i);
-							Request request = new Request.Builder().url(chapter.getUrl()).build();
 							try {
-								Response response = client.newCall(request).execute();
-								String content = DataQueryManager.instance().getChapterContent(response.body().string());
+								String content = DataQueryManager.instance().getChapterContent(chapter.getUrl());
 								FileUtil.saveChapter(novel.getName(), novel.getAuthor(), chapter.getTitle(), content);
 								cids.remove(new Integer(a));
 								return null;
@@ -145,10 +142,10 @@ public class DownloadTask implements Runnable {
 
 	private boolean download(Chapter chapter) {
 		System.out.println("Download " + chapter.getTitle() + ",url = " + chapter.getUrl());
-		Request request = new Request.Builder().url(chapter.getUrl()).build();
+//		Request request = new Request.Builder().url(chapter.getUrl()).build();
 		try {
-			Response response = client.newCall(request).execute();
-			String content = DataQueryManager.instance().getChapterContent(response.body().string());
+//			Response response = client.newCall(request).execute();
+			String content = DataQueryManager.instance().getChapterContent(chapter.getUrl());
 			FileUtil.saveChapter(novel.getName(), novel.getAuthor(), chapter.getTitle(), content);
 			return true;
 		} catch (SocketTimeoutException e) {
