@@ -27,8 +27,10 @@ import android.view.WindowManager;
 
 import java.lang.reflect.Field;
 
+import com.lw.novel.common.AppUtils;
+
 /**
- * 屏幕亮度工具�?
+ * 屏幕亮度工具�?
  *
  * @author yuyh.
  * @date 16/4/10.
@@ -36,15 +38,15 @@ import java.lang.reflect.Field;
 public class ScreenUtils {
 
     public enum EScreenDensity {
-        XXHDPI,    //超高分辨�?    1080×1920
-        XHDPI,    //超高分辨�?    720×1280
+        XXHDPI,    //超高分辨�?    1080×1920
+        XHDPI,    //超高分辨�?    720×1280
         HDPI,    //高分辨率         480×800
         MDPI,    //中分辨率         320×480
     }
 
     public static EScreenDensity getDisply(Context context) {
         EScreenDensity eScreenDensity;
-        //初始化屏幕密�?
+        //初始化屏幕密�?
         DisplayMetrics dm = context.getApplicationContext().getResources().getDisplayMetrics();
         int densityDpi = dm.densityDpi;
 
@@ -107,7 +109,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 将px值转换为sp�?
+     * 将px值转换为sp�?
      *
      * @param pxValue
      * @return
@@ -117,7 +119,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 将sp值转换为px�?
+     * 将sp值转换为px�?
      *
      * @param spValue
      * @return
@@ -162,7 +164,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 当前是否是横�?
+     * 当前是否是横�?
      *
      * @param context context
      * @return boolean
@@ -172,7 +174,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 当前是否是竖�?
+     * 当前是否是竖�?
      *
      * @param context context
      * @return boolean
@@ -182,7 +184,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 调整窗口的�?�明�?  1.0f,0.5f 变暗
+     * 调整窗口的�?�明�?  1.0f,0.5f 变暗
      *
      * @param from    from>=0&&from<=1.0f
      * @param to      to>=0&&to<=1.0f
@@ -205,7 +207,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 判断是否�?启了自动亮度调节
+     * 判断是否�?启了自动亮度调节
      *
      * @param activity
      * @return
@@ -234,7 +236,7 @@ public class ScreenUtils {
     }
 
     /**
-     * �?启亮度自动调�?
+     * �?启亮度自动调�?
      *
      * @param activity
      */
@@ -246,7 +248,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 获得当前屏幕亮度�?
+     * 获得当前屏幕亮度�?
      *
      * @param mContext
      * @return 0~100
@@ -262,7 +264,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 设置当前屏幕亮度�?
+     * 设置当前屏幕亮度�?
      *
      * @param paramInt 0~100
      * @param mContext
@@ -280,7 +282,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 设置Activity的亮�?
+     * 设置Activity的亮�?
      *
      * @param paramInt
      * @param mActivity

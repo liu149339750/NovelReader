@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.htmlparser.util.ParserException;
 
-import com.justwayward.reader.view.readview.AppUtils;
 import com.justwayward.reader.view.readview.LogUtils;
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.bean.Novels;
+import com.lw.novel.common.AppUtils;
 import com.lw.novel.common.HtmlUtil;
 import com.lw.novel.common.Util;
 import com.lw.novelreader.R;
@@ -83,7 +83,7 @@ public class XS84Impl implements DataInterface{
 		LogUtils.v(TAG, "getNovelChapers::url = " + source);
 		if(TextUtils.isEmpty(source))
 			return null;
-		return PhoneFrameworkManager.getNovelChapers(BASE_XS86_URL, source);
+		return PhoneFrameworkManager.getNovelChapers(BASE_XS86_URL, source,getTag());
 	}
 
 	@Override

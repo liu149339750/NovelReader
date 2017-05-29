@@ -7,6 +7,7 @@ public class ChapterUrl extends BaseBean{
 	private int chapterId;
 	private String url;
 	private String source;
+	private String title;
 	public int getBookId() {
 		return bookId;
 	}
@@ -30,6 +31,12 @@ public class ChapterUrl extends BaseBean{
 	}
 	public void setSource(String source) {
 		this.source = source;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 	

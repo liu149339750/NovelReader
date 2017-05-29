@@ -194,6 +194,9 @@ public class NovelProvider extends ContentProvider{
 		case SHELFT_INFO_ID:
 			c = mSql.getWritableDatabase().update(SqliteHelper.BOOKSHELFT_VIEW, values, selection, selectionArgs);
 			break;
+		case CHAPTER_URL_ID:
+			c = mSql.getWritableDatabase().update(SqliteHelper.CHAPTER_URL_TABLE, values, selection, selectionArgs);
+			break;
 		default:
 			break;
 		}

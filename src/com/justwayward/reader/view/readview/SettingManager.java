@@ -18,6 +18,8 @@ package com.justwayward.reader.view.readview;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lw.novel.common.AppUtils;
+
 /**
  * @author yuyh.
  * @date 2016/9/23.

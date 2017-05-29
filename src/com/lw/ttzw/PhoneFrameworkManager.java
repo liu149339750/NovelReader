@@ -49,7 +49,7 @@ public class PhoneFrameworkManager {
 	public static final String BASE_QUERY_URL = "http://zhannei.baidu.com/cse/search";
 	
 	
-	public static List<Chapter> getNovelChapers(String baseUrl,String source) throws ParserException {
+	public static List<Chapter> getNovelChapers(String baseUrl,String source,String tag) throws ParserException {
 		List<Chapter> chapters = new ArrayList<Chapter>();
 		Parser parser = new Parser(source);
 		NodeList nodeList = parser
@@ -65,6 +65,7 @@ public class PhoneFrameworkManager {
 			Chapter chapter = new Chapter();
 			chapter.setUrl(baseUrl  + link);
 			chapter.setTitle(p.toPlainTextString().trim());
+			chapter.setSource(tag);
 			chapters.add(chapter);
 //			System.out.println(chapter);
 		}
@@ -137,7 +138,7 @@ public class PhoneFrameworkManager {
 						if ("sort".equals(clas)) {
 							novel.setKind(tag.toPlainTextString().trim().replace(KIND, ""));
 						} else if ("author".equals(clas)) {
-							novel.setAuthor(tag.toPlainTextString().trim());
+							novel.setAuthor(tag.toPlainTextString().replace(AUTHOR, "").trim());
 						} else {
 							String planText = tag.toPlainTextString();
 							if (planText.contains(RE_NEW)) {

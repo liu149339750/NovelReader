@@ -30,6 +30,7 @@ public interface DataInterface {
 	public List<Pair<String, String>> getSortKindUrlPairs();
 	public List<Pair<String, String>> getLastUpdateUrlPairs();
 	
+	/**get the novel's chapters url by the novel url*/
 	public String getChapterUrl(String url);
 	public String getTag();
 	public DataInterface select(String url);

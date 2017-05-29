@@ -6,7 +6,9 @@ import java.util.List;
 import com.bumptech.glide.Glide;
 import com.lw.bean.Novel;
 import com.lw.bean.ShelftBook;
+import com.lw.ttzw.NovelManager;
 import com.lw.ui.activity.NovelDetailActivity;
+import com.lw.ui.activity.NovelReadActivity;
 import com.lw.widget.DownloadText;
 
 import android.view.LayoutInflater;
@@ -64,6 +66,7 @@ public class BookItemAdpater extends BaseAdapter {
 			holder.detail = (TextView) view.findViewById(R.id.detail);
 			holder.downloadText =  (DownloadText) view.findViewById(R.id.download);
 			holder.unReadCount = (TextView) view.findViewById(R.id.unread_chapter_count);
+			holder.cardview = view.findViewById(R.id.cardview);
 			view.setTag(layoutId, holder);
 		} else {
 			holder = (ViewHolder) view.getTag(layoutId);
@@ -83,6 +86,9 @@ public class BookItemAdpater extends BaseAdapter {
 			} else {
 				holder.unReadCount.setVisibility(View.INVISIBLE);
 			}
+		}
+		if(holder.cardview != null) {
+			holder.cardview.setOnClickListener(new ClickListener(novel));
 		}
 		Glide.with(view.getContext()).load(novel.getThumb()).placeholder(R.drawable.default_cover).centerCrop()
 				.into(holder.thumb);
@@ -132,6 +138,8 @@ public class BookItemAdpater extends BaseAdapter {
 		 DownloadText downloadText;
 		 TextView detail;
 		 TextView delete;
+		 
+		 View cardview;
 	}
 
 	@Override
@@ -177,6 +185,10 @@ public class BookItemAdpater extends BaseAdapter {
 				break;
 			case R.id.detail:
 				NovelDetailActivity.startDetailActivity(v.getContext(), mNovel);
+				break;
+			case R.id.cardview:
+				NovelManager.getInstance().setCurrentNovel(mNovel);
+				NovelReadActivity.startNovelReadActivity(mInflater.getContext(), -1);
 				break;
 			default:
 				break;

@@ -48,6 +48,9 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 	
 	private Activity mActivity;
 	
+	private final int RETRY_COUNT = 3;
+	private int retry;
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -204,8 +207,12 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 
 	@Override
 	public void onLoadFail() {
-		// TODO Auto-generated method stub
-		
+		if(retry < RETRY_COUNT) {
+			showLoading();
+			mPresenter.getNovelInfo();
+		} else {
+			//show load fail pager
+		}
 	}
 	
 	@Override

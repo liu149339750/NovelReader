@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.justwayward.reader.view.readview.AppUtils;
 import com.justwayward.reader.view.readview.LogUtils;
 import com.lw.bean.BookSource;
 import com.lw.bean.Chapter;
@@ -16,6 +15,7 @@ import com.lw.db.SqliteHelper.BookShelft;
 import com.lw.db.SqliteHelper.Books;
 import com.lw.db.SqliteHelper.ChapterURL;
 import com.lw.db.SqliteHelper.Source;
+import com.lw.novel.common.AppUtils;
 import com.lw.novelreader.BookShelftManager;
 import com.lw.ttzw.SourceSelector;
 
@@ -49,7 +49,7 @@ public class DBUtil {
 			cv.put(com.lw.db.SqliteHelper.Chapter.chapter_title, chapter.getTitle());
 			cv.put(com.lw.db.SqliteHelper.Chapter.chapter_url, chapter.getUrl());
 			cv.put(com.lw.db.SqliteHelper.Chapter.chapter_content_uri, chapter.getContentPath());
-			cv.put(com.lw.db.SqliteHelper.Chapter.SOURCE, SourceSelector.getDefaultSourceTag());
+			cv.put(com.lw.db.SqliteHelper.Chapter.SOURCE, chapter.getSource());
 			values[i] = cv;
 		}
 		return cr.bulkInsert(NovelProvider.CHAPTER_URI, values);
@@ -66,6 +66,7 @@ public class DBUtil {
 			cv.put(com.lw.db.SqliteHelper.ChapterURL.URL, chapter.getUrl());
 			cv.put(com.lw.db.SqliteHelper.ChapterURL.SOURCE, source);
 			cv.put(com.lw.db.SqliteHelper.ChapterURL.BOOK_ID, bookId);
+			cv.put(com.lw.db.SqliteHelper.ChapterURL.TITLE, chapter.getTitle());
 			values[i] = cv;
 		}
 		return cr.bulkInsert(NovelProvider.CHAPTER_URL_URI, values);
@@ -176,7 +177,7 @@ public class DBUtil {
 		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
 		Cursor cursor = cr.query(NovelProvider.CHAPTER_URI,
 				new String[] { com.lw.db.SqliteHelper.Chapter.chapter_title, com.lw.db.SqliteHelper.Chapter.chapter_url,
-						com.lw.db.SqliteHelper.Chapter.chapter_content_uri, SqliteHelper.ID },
+						com.lw.db.SqliteHelper.Chapter.chapter_content_uri, SqliteHelper.ID,com.lw.db.SqliteHelper.Chapter.SOURCE },
 				"book_id = ?", new String[] { bookId + "" }, null);
 		List<Chapter> chapters = new ArrayList<Chapter>();
 		while (cursor.moveToNext()) {
@@ -185,6 +186,7 @@ public class DBUtil {
 			chapter.setUrl(cursor.getString(1));
 			chapter.setContentPath(cursor.getString(2));
 			chapter.setId(cursor.getInt(3));
+			chapter.setSource(cursor.getString(4));
 			chapter.setBookId(bookId);
 			chapters.add(chapter);
 		}
@@ -224,6 +226,26 @@ public class DBUtil {
 			chapter.setSource(cursor.getString(1));
 			chapter.setUrl(cursor.getString(2));
 			chapter.setId(cursor.getInt(3));
+			chapters.add(chapter);
+		}
+		cursor.close();
+		return chapters;
+	}
+	
+	public static List<ChapterUrl> queryNovelChapterURLByChapterID(int chapterId) {
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		Cursor cursor = cr.query(NovelProvider.CHAPTER_URL_URI,
+				new String[] { ChapterURL.BOOK_ID, ChapterURL.SOURCE, ChapterURL.URL,SqliteHelper.ID,ChapterURL.TITLE }, ChapterURL.CHAPTER_ID + " = ?",
+				new String[] { chapterId + "" }, null);
+		List<ChapterUrl> chapters = new ArrayList<ChapterUrl>();
+		while (cursor.moveToNext()) {
+			ChapterUrl chapter = new ChapterUrl();
+			chapter.setChapterId(chapterId);
+			chapter.setBookId(cursor.getInt(0));
+			chapter.setSource(cursor.getString(1));
+			chapter.setUrl(cursor.getString(2));
+			chapter.setId(cursor.getInt(3));
+			chapter.setTitle(cursor.getString(4));
 			chapters.add(chapter);
 		}
 		cursor.close();
@@ -363,6 +385,25 @@ public class DBUtil {
 		cv.put(BookShelft.chapter_count, count);
 		// cv.put(BookShelft.readtime, getCurrentReadTimeString());
 		cr.update(NovelProvider.BOOKSHELFT_URI, cv, BookShelft.BOOK_ID + " = " + id, null);
+	}
+	
+	public static void updateChapterInfo(Chapter chapter) {
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(com.lw.db.SqliteHelper.Chapter.chapter_title, chapter.getTitle());
+		cv.put(com.lw.db.SqliteHelper.Chapter.chapter_url, chapter.getUrl());
+		cv.put(com.lw.db.SqliteHelper.Chapter.chapter_content_uri, chapter.getContentPath());
+		cv.put(com.lw.db.SqliteHelper.Chapter.SOURCE, chapter.getSource());
+		cr.update(NovelProvider.CHAPTER_URI, cv, SqliteHelper.ID + " = " + chapter.getId(), null);
+	}
+	
+	public static void updateChapterUrlInfo(int id,String source,String title,String url) {
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(ChapterURL.SOURCE, source);
+		cv.put(ChapterURL.TITLE, title);
+		cv.put(ChapterURL.URL, url);
+		cr.update(NovelProvider.CHAPTER_URL_URI, cv, SqliteHelper.ID + " = " + id, null);
 	}
 
 	// ----------------------------------------

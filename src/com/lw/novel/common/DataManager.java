@@ -2,7 +2,6 @@ package com.lw.novel.common;
 
 import java.util.List;
 
-import com.justwayward.reader.view.readview.AppUtils;
 import com.lw.bean.ShelftBook;
 import com.lw.db.DBUtil;
 import com.lw.db.NovelProvider;

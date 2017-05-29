@@ -208,7 +208,7 @@ public class TTZWManager {
 		return chapters;
 	}
 	
-	public static NovelDetail getNovelDetailByMeta(String url) throws ParserException {
+	public static NovelDetail getNovelDetailByMeta(String url,String tag) throws ParserException {
 		System.out.println("getNovelDetailByMeta >"+url);
 		NovelDetail detail = new NovelDetail();
 		List<Chapter> chapters = new ArrayList<Chapter>();
@@ -227,6 +227,7 @@ public class TTZWManager {
 			TagNode dd = (TagNode) nodeList.elementAt(i);
 			chapter.setUrl(url + "/" + HtmlUtil.getFirstNodeAttr(dd, "a", "href"));
 			chapter.setTitle(dd.toPlainTextString().trim());
+			chapter.setSource(tag);
 			chapters.add(chapter);
 		}
 		parser.reset();

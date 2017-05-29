@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.htmlparser.util.ParserException;
 
-import com.justwayward.reader.view.readview.AppUtils;
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.bean.Novels;
+import com.lw.novel.common.AppUtils;
 import com.lw.novel.common.HtmlUtil;
 import com.lw.novel.common.Util;
 import com.lw.novelreader.MyApp;
@@ -52,7 +52,7 @@ public class TTZWImpl implements DataInterface{
 	@Override
 	public List<Chapter> getNovelChapers(String url) throws ParserException{
 		if(Util.isPhoneUrl(url)) {
-			return PhoneFrameworkManager.getNovelChapers(BASE_M_URL, url);
+			return PhoneFrameworkManager.getNovelChapers(BASE_M_URL, url,getTag());
 		}
 		return TTZWManager.getNovelChapers(url);
 	}
@@ -65,10 +65,10 @@ public class TTZWImpl implements DataInterface{
 		if(host.startsWith("m")) {
 			detail =  PhoneFrameworkManager.getNovelDetail(BASE_M_URL, url);
 			if(detail.getChapters() == null) {
-				detail.setChapters(PhoneFrameworkManager.getNovelChapers(url,detail.getChapterUrl()));
+				detail.setChapters(PhoneFrameworkManager.getNovelChapers(url,detail.getChapterUrl(),getTag()));
 			}
 		} else {
-			detail = TTZWManager.getNovelDetailByMeta(url);
+			detail = TTZWManager.getNovelDetailByMeta(url,getTag());
 		}
 		return detail;
 	}
@@ -121,7 +121,6 @@ public class TTZWImpl implements DataInterface{
 
 	@Override
 	public String getChapterUrl(String url) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

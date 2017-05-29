@@ -50,4 +50,8 @@
     
     <string name="online_novels">在线小说</string>
     <string name="sort_kind_novel">分类小说</string>
+    
+    <string name="change_source">换源</string>
+    <string name="current_source">当前内容源</string>
+    <string name="same_source">同章内容源</string>
 </resources>

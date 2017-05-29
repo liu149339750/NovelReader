@@ -103,6 +103,8 @@ public class BookShelftFragment extends BaseListFreshFragment implements OnDataC
 //			}
 //		});
 //		AppUtils.getAppContext().getContentResolver().registerContentObserver(NovelProvider.BOOKSHELFT_URI, false,mContentObserver);
+		getListView().setDivider(null);
+		getListView().setVerticalScrollBarEnabled(false);
 	}
 	
 	@Override

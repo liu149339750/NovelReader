@@ -18,7 +18,7 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-         <item name="android:fastScrollThumbDrawable">@android:drawable/arrow_down_float</item>
+         <item name="android:fastScrollThumbDrawable">@drawable/scroll_thumb</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>  
         <item name="android:windowBackground">@color/background_material_light</item>
@@ -43,7 +43,7 @@
         <item name="android:background">@drawable/bkshelf_addlanch_selector</item>
     </style>
     
-        <style name="loading_dialog" parent="android:style/Theme.Dialog">
+     <style name="loading_dialog" parent="android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">false</item><!--半透明-->
@@ -52,4 +52,10 @@
         <item name="android:backgroundDimEnabled">false</item><!--模糊-->
         <item name="android:windowContentOverlay">@null</item>
     </style>
+    
+     <style name="source_select__summary_style">
+         <item name="android:paddingLeft">10dp</item>
+         <item name="android:background">#F1F1F1</item>
+         <item name="android:textSize">@dimen/source_summary_size</item>
+     </style>
 </resources>

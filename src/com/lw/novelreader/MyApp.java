@@ -1,7 +1,7 @@
 package com.lw.novelreader;
 
-import com.justwayward.reader.view.readview.AppUtils;
 import com.justwayward.reader.view.readview.SharedPreferencesUtil;
+import com.lw.novel.common.AppUtils;
 import com.lw.novel.common.FileUtil;
 import com.lw.ttzw.NovelManager;
 import com.lw.ttzw.SourceSelector;

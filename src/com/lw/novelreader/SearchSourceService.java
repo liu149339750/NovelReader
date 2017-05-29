@@ -8,7 +8,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.htmlparser.util.ParserException;
 
-import com.justwayward.reader.view.readview.AppUtils;
 import com.justwayward.reader.view.readview.LogUtils;
 import com.lw.bean.BookSource;
 import com.lw.bean.Chapter;
@@ -16,6 +15,7 @@ import com.lw.bean.ChapterUrl;
 import com.lw.bean.Novel;
 import com.lw.bean.Novels;
 import com.lw.db.DBUtil;
+import com.lw.novel.common.AppUtils;
 import com.lw.ttzw.DataInterface;
 import com.lw.ttzw.SourceSelector;
 
@@ -135,7 +135,7 @@ public class SearchSourceService extends Service{
 	}
 	
 	@Subscribe(threadMode=ThreadMode.POSTING)
-	public synchronized void onBackgroudSearch(final Novel novel) {
+	public synchronized void onBackgroudSync(final Novel novel) {
 		LogUtils.v(TAG, "onBackgroudSearch");
 		List<DataInterface> sources = SourceSelector.getAllSourceInterface();
 //		String defaultTag = SourceSelector.getDefaultSourceTag();

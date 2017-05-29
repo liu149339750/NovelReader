@@ -16,6 +16,8 @@ import com.justwayward.reader.view.readview.PageWidget;
 import com.justwayward.reader.view.readview.ScreenUtils;
 import com.justwayward.reader.view.readview.SettingManager;
 import com.justwayward.reader.view.readview.SharedPreferencesUtil;
+import com.justwayward.reader.view.readview.ThemeManager;
+import com.lw.bean.Chapter;
 import com.lw.db.DBUtil;
 import com.lw.novel.common.Util;
 import com.lw.novelreader.BookShelftManager;
@@ -26,7 +28,6 @@ import com.lw.presenter.ChapterContentPresenter;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.fragment.IChapterContentView;
 import com.mingle.widget.LoadingView;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -36,6 +37,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -44,11 +46,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@SuppressLint("NewApi")
-public class NovelReadActivity extends Activity implements IChapterContentView {
+public class NovelReadActivity extends Activity implements IChapterContentView,OnSeekBarChangeListener {
 
 	private BaseReadView mPageWidget;
 	private LoadingView mLoading;
@@ -72,6 +75,13 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 	 private View topView;
 	 private View buttomView;
 	 
+	 @Bind(R.id.progress)
+	 SeekBar mBar;
+	 @Bind(R.id.chapter)
+	 TextView mChapterTextView;
+	 
+	 Handler mHandler = new Handler();
+	 
 	 private static final String CHAPTER_EXTRA = "chapter";
 	 
 	@Override
@@ -90,6 +100,9 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 		ButterKnife.bind(this);
 		bookId = NovelManager.getInstance().getCurrentNovel().getId();
 		isInBookShelft = BookShelftManager.instance().isInbookShelft(bookId);
+		if(!isInBookShelft) {
+			findViewById(R.id.change_source).setVisibility(View.GONE);
+		}
 		
 		Bundle bundle = getIntent().getExtras();
 		if (bundle == null) {
@@ -102,6 +115,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 		buttomView = findViewById(R.id.buttomview);
 		mLoading = (LoadingView) findViewById(R.id.loadView);
 		mLoading.setLoadingText("downloading");
+		ThemeManager.setReaderTheme(SettingManager.getInstance().getReadTheme(), mLoading);
 		mPresenter = new ChapterContentPresenter(this);
 //		mPresenter.prepareChapterContent(NovelManager.getInstance().getChapterId());
 
@@ -111,6 +125,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 		if(NovelManager.getInstance().getChapterSize() == 0) {
 			NovelManager.getInstance().setChapers(DBUtil.queryNovelChapterList(bookId));
 		}
+		mBar.setMax(NovelManager.getInstance().getChapterSize() - 1);
 		initPagerWidget(bookId +"");
 		
 		DBUtil.updateReadtime(bookId);
@@ -123,6 +138,14 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
         
         TextView name = (TextView) findViewById(R.id.name);
         name.setText(NovelManager.getInstance().getCurrentNovel().getName());
+        
+        mBar.setOnSeekBarChangeListener(this);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		ButterKnife.unbind(this);
 	}
 
 	private void initPagerWidget(String bookid) {
@@ -174,6 +197,11 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 		finish();
 	}
 	
+	@OnClick(R.id.detail) 
+	public void viewDetail(View v) {
+		NovelDetailActivity.startDetailActivity(this, NovelManager.getInstance().getCurrentNovel());
+	}
+	
 	@OnClick(R.id.next_chapter)
 	public void nextChapter(View v) {
 		mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterId() + 1);
@@ -197,9 +225,13 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 		Toast.makeText(this, R.string.begin_download, Toast.LENGTH_SHORT).show();
 	}
 	
+	@OnClick(R.id.change_source)
+	public void changeSource(View v) {
+		SourceActivity.startChangeSourceActivity(this);
+	}
+	
 	@Override
 	public void showLoading() {
-		// TODO Auto-generated method stub
 //		getDialog().show();
 		flReadWidget.setVisibility(View.GONE);
 		mLoading.setVisibility(View.VISIBLE);
@@ -207,7 +239,6 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 
 	@Override
 	public void hideLoading() {
-		// TODO Auto-generated method stub
 //		getDialog().hide();
 		flReadWidget.setVisibility(View.VISIBLE);
 		mLoading.setVisibility(View.GONE);
@@ -228,19 +259,16 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 	
 	@Override
 	public void onLoadFail(int chapter) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void prepareNext(String path) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void preparaPrev(String path) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -265,7 +293,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 
 		@Override
 		public void onChapterChanged(int chapter) {
-			// TODO Auto-generated method stub
+			mBar.setProgress(chapter - 1); //here crash once with null pointer
 			System.out.println("onChapterChanged chapter =" + chapter);
 			NovelManager.getInstance().setChapterId(chapter);
 			DownloadService.addToDownload(new DownloadTask(NovelManager.getInstance().getCurrentNovel(), chapter, 5));
@@ -276,7 +304,6 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 
 		@Override
 		public void onPageChanged(int chapter, int page) {
-			// TODO Auto-generated method stub
 			System.out.println("page=" + page);
 		}
 
@@ -288,14 +315,12 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 
 		@Override
 		public void onCenterClick() {
-			// TODO Auto-generated method stub
 			System.out.println("onCenterClick");
 			toggleReadBar();
 		}
 
 		@Override
 		public void onFlip() {
-			// TODO Auto-generated method stub
 
 		}
 
@@ -369,10 +394,11 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
     	Util.hideNavigationBar(this);
     }
 
-    private synchronized void showReadBar() { // 显示工具栏
+    private synchronized void showReadBar() {
     	visible(topView,buttomView);
         showStatusBar();
         decodeView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        
     }
     
     protected void hideStatusBar() {
@@ -423,4 +449,40 @@ public class NovelReadActivity extends Activity implements IChapterContentView {
 		intent.setClass(context, NovelReadActivity.class);
 		context.startActivity(intent);
 	}
+
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		mHandler.removeMessages(0);
+		Chapter chapter = NovelManager.getInstance().getChapter(progress + 1);
+		mChapterTextView.setText(chapter.getTitle());
+		
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		mChapterTextView.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		mHandler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				mChapterTextView.setVisibility(View.GONE);
+			}
+		}, 1000);
+		mPageWidget.jumpToChapter(seekBar.getProgress() + 1);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode == RESULT_OK) {
+//			initPagerWidget(bookId + "");
+			mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterId());
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	
 }

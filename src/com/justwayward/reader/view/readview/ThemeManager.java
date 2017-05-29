@@ -24,6 +24,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lw.novel.common.AppUtils;
 import com.lw.novelreader.R;
 
 /**

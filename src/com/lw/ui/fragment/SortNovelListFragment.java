@@ -126,13 +126,15 @@ public class SortNovelListFragment extends BaseListFreshFragment{
 				if(isDetached())
 					return;
 				if(result == null) {
-					
+					//show load fail or change source
+				} else {
+					mSwipeRefresh.setRefreshing(false);
+					mData.add(result);
+					mAdapter.notifyDataSetChanged();
+					mNextUrl = result.getNextUrl();
 				}
-				mSwipeRefresh.setRefreshing(false);
-				mData.add(result);
-				mAdapter.notifyDataSetChanged();
-				mNextUrl = result.getNextUrl();
-				isInEnd = false;
+				isReloadMore = false;
+				isLoading = false;
 			}
 		}.execute();
 	}
@@ -164,6 +166,8 @@ public class SortNovelListFragment extends BaseListFreshFragment{
 		System.out.println("reloadMore");
 		if(mNextUrl != null) {
 			loadLastUpdataData(mNextUrl);
+		} else {
+			isLoading = false;
 		}
 	}
 

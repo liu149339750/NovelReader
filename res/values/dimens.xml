@@ -12,4 +12,10 @@
 	<dimen name="novel_item_info_size">12sp</dimen>
 	<dimen name="unread_text_size">15sp</dimen>
 	<dimen name="length_2">2.0dip</dimen> 
+	<dimen name="novel_chapter_size">15sp</dimen>
+	
+	<dimen name="read_chapter_text_width">180dp</dimen>
+	<dimen name="source_summary_size">15sp</dimen>
+	
+	<dimen name="touch_raise_size">10dp</dimen>
 </resources>

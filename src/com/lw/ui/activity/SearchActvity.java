@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.lw.bean.Novel;
 import com.lw.bean.Novels;
+import com.lw.novel.common.SettingUtil;
 import com.lw.novelreader.NovelListAdpater;
 import com.lw.novelreader.R;
 import com.lw.presenter.SearchPresenter;
@@ -36,17 +37,24 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 	
 	private String mNextUrl;
 	
-	protected boolean isInEnd;
 	
 	private List<Novel> mListData;
 	private NovelListAdpater mAdapter;
+	
+	protected boolean isReloadMore;
+	protected boolean isLoading;
+	
+	private int mReloadSpace;
+	
+	private final int RETRY_COUNT = 3;
+	private int retry;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_layout);
-		
+		mReloadSpace = SettingUtil.getReloadSpace();
 		mSearchEdit = (EditText) findViewById(R.id.search_edit);
 		mSearch = (TextView) findViewById(R.id.search);
 		mListView = (ListView) findViewById(android.R.id.list);
@@ -64,7 +72,7 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				if(isInEnd && scrollState == SCROLL_STATE_IDLE) {
+				if(isReloadMore && !isLoading) {
 					reloadMore();
 				}
 			}
@@ -72,10 +80,10 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				if(isInEnd)
+				if(isReloadMore)
 					return;
-				if(firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > visibleItemCount) {
-					isInEnd = true;
+				if(firstVisibleItem + visibleItemCount >= totalItemCount - mReloadSpace && totalItemCount > visibleItemCount) {
+					isReloadMore = true;
 				}
 			}
 		});
@@ -119,12 +127,30 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 
 	@Override
 	public void showSearchResult(Novels sr) {
+		if(sr == null || sr.getNovels().size() == 0) {
+			onSearchFail();
+			return;
+		}
 		mNextUrl = sr.getNextUrl();
 		System.out.println(sr.getNovels().size() + "?>>"+sr.getNextUrl());
 		mListData.addAll(sr.getNovels());
 		mAdapter.notifyDataSetChanged();
+		isReloadMore = false;
+		isLoading = false;
 	}
 
+
+
+	private void onSearchFail() {
+		// TODO Auto-generated method stub
+		if(retry < RETRY_COUNT) {
+			if(mSearchEdit != null) {
+				mSearchPresenter.search(mSearchEdit.getEditableText().toString());
+			}
+		} else {
+			//show load fail pager
+		}
+	}
 
 
 	@Override

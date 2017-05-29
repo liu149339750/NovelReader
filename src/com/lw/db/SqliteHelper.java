@@ -55,6 +55,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 			+ "book_id INTEGER,"
 			+ "chapter_id INTEGER,"
 			+ "source varchar(20),"
+			+ "title varchar(50),"
 			+ "URL CHAR(100),"
 			+ "PREF INTEGER DEFAULT 0)";
 	
@@ -80,6 +81,21 @@ public class SqliteHelper extends SQLiteOpenHelper{
 			+ "UPDATE BOOKSHELFT SET chapter_count =  (SELECT COUNT(*) from CHAPTERS where CHAPTERS.book_id = book_id) "
 			+ "where book_id = new.book_id; "
 			+ "end;";
+	
+	private static final String CREATE_TRIGE_DELETE_BOOK = "CREATE trigger if not exists delete_books  "
+			+ "after delete on BOOKS "
+			+ "begin "
+			+ "delete from CHAPTERS where old.ID = book_id;"
+			+ "delete from CHAPTER_URL where old.ID = book_id;"
+			+ "delete from SOURCE where old.ID = book_id;"
+			+ "end;";
+	
+	private static final String CREATE_TRIGE_DELETE_CHAPTER = "CREATE trigger if not exists delete_chapter  "
+			+ "after delete on CHAPTERS "
+			+ "begin "
+			+ "delete from CHAPTER_URL where old.ID = chapter_id;"
+			+ "end;";
+	
 
 	private static final String CREATE_BOOKSHELFT_VIEW = "CREATE view if not exists booshelft_info AS "
 			+ "SELECT BOOKS.ID as ID,author,name,url,kind,lastUpdateTime,lastUpdateChapter,thumb,detail,readtime,chapter_count,"
@@ -112,6 +128,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 	private void createTrgger(SQLiteDatabase db) {
 //		db.execSQL(CREATE_TRIGE_INSERT_BOOKSHELFT);
 		db.execSQL(CREATE_TRIGE_CHAPTER_COUNT);
+		db.execSQL(CREATE_TRIGE_DELETE_BOOK);
 	}
 
 	private void createTable(SQLiteDatabase db) {
@@ -162,6 +179,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 		public static String URL = "URL";
 		public static String SOURCE = "source";
 		public static String BOOK_ID = "book_id";
+		public static String TITLE = "title";
 	}
 	
 	public static class Source {
@@ -171,5 +189,4 @@ public class SqliteHelper extends SQLiteOpenHelper{
 		public static String CHAPTER_URL = "chapter_url";
 	}
 	
-	private static final String SQL_QUERY_IS_IN_BOOKSHELFT = "";
 }

@@ -15,7 +15,8 @@ public class BaseListFreshFragment extends ListFragment{
 
 	protected SwipeRefreshLayout mSwipeRefresh;
 	
-	protected boolean isInEnd;
+	protected boolean isReloadMore;
+	protected boolean isLoading;
 	
 	public BaseListFreshFragment() {
 		setArguments(new Bundle());
@@ -45,19 +46,22 @@ public class BaseListFreshFragment extends ListFragment{
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				if(isInEnd ) {
+//				if(scrollState == SCROLL_STATE_IDLE) {
+				if(isReloadMore && !isLoading) {
+					isLoading = true;
 					reloadMore();
 				}
+//				}
 			}
 			
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 //				Log.v("lw", "firstVisibleItem = " + firstVisibleItem + ",visibleItemCount = " + visibleItemCount + ",totalItemCount = " + totalItemCount);
 				
-				if(isInEnd)
+				if(isReloadMore)
 					return;
 				if(firstVisibleItem + visibleItemCount >= totalItemCount - getReloadSpace() && totalItemCount > visibleItemCount) {
-					isInEnd = true;
+					isReloadMore = true;
 				}
 			}
 
@@ -65,7 +69,7 @@ public class BaseListFreshFragment extends ListFragment{
 	}
 	
 	protected void reloadMore() {
-		isInEnd = false;
+		isReloadMore = false;
 	}
 
 	protected void pullRefreshData() {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.justwayward.reader.view.readview;
+package com.lw.novel.common;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

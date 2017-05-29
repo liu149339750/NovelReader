@@ -6,7 +6,7 @@ public class Chapter extends BaseBean{
 	private String url;
 	private String contentPath;
 	private int bookId;
-	public boolean isDownload;
+	private String source;
 	
 	public Chapter() {
 	}
@@ -36,8 +36,14 @@ public class Chapter extends BaseBean{
 		this.contentPath = contentPath;
 	}
 	
-	
-	
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
 	public int getBookId() {
 		return bookId;
 	}
