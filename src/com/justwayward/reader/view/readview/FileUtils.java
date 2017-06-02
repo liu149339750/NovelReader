@@ -15,10 +15,6 @@
  */
 package com.justwayward.reader.view.readview;
 
-import android.content.Context;
-import android.os.Environment;
-
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -41,7 +37,12 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import com.lw.novel.common.AppUtils;
+import com.lw.novel.utils.AppUtils;
+import com.lw.novel.utils.LogUtils;
+import com.zhuishu.api.Constant;
+
+import android.content.Context;
+import android.os.Environment;
 
 /**
  * @author yuyh.

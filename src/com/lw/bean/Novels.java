@@ -10,6 +10,8 @@ public class Novels implements Parcelable{
 
 	private List<Novel> novels;
 	
+	private boolean isok;
+	
 	/**the url for more result*/
 	private String nextUrl;
 	
@@ -17,8 +19,23 @@ public class Novels implements Parcelable{
 	
 	
 	public Novels() {
+		isok = true;
 	}
 	
+	
+	
+	public boolean isIsok() {
+		return isok;
+	}
+
+
+
+	public void setIsok(boolean isok) {
+		this.isok = isok;
+	}
+
+
+
 	public Novels(List<Novel> novels) {
 		this.novels = novels;
 	}

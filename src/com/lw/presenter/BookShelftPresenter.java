@@ -11,7 +11,7 @@ import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.model.INovelBiz;
 import com.lw.model.NovelBiz;
-import com.lw.novel.common.SettingUtil;
+import com.lw.novel.utils.SettingUtil;
 import com.lw.ui.fragment.IBookShelftView;
 
 public class BookShelftPresenter {

@@ -11,7 +11,7 @@ import org.htmlparser.util.ParserException;
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.db.DBUtil;
-import com.lw.novel.common.FileUtil;
+import com.lw.novel.utils.FileUtil;
 import com.lw.ttzw.DataQueryManager;
 
 import android.os.AsyncTask;

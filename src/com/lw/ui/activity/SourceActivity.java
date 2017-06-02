@@ -2,10 +2,10 @@ package com.lw.ui.activity;
 
 import java.util.List;
 
-import com.justwayward.reader.view.readview.LogUtils;
 import com.lw.bean.Chapter;
 import com.lw.bean.ChapterUrl;
 import com.lw.db.DBUtil;
+import com.lw.novel.utils.LogUtils;
 import com.lw.novelreader.R;
 import com.lw.ttzw.NovelManager;
 

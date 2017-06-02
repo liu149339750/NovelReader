@@ -17,13 +17,13 @@ import org.htmlparser.tags.ParagraphTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
-import com.justwayward.reader.view.readview.LogUtils;
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.bean.Novels;
-import com.lw.novel.common.HtmlUtil;
-import com.lw.novel.common.TagAttrFilter;
+import com.lw.novel.utils.HtmlUtil;
+import com.lw.novel.utils.LogUtils;
+import com.lw.novel.utils.TagAttrFilter;
 
 import android.text.TextUtils;
 import android.util.Log;

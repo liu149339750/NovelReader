@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.justwayward.reader.view.readview.LogUtils;
 import com.lw.bean.BookSource;
 import com.lw.bean.Chapter;
 import com.lw.bean.ChapterUrl;
@@ -15,7 +14,8 @@ import com.lw.db.SqliteHelper.BookShelft;
 import com.lw.db.SqliteHelper.Books;
 import com.lw.db.SqliteHelper.ChapterURL;
 import com.lw.db.SqliteHelper.Source;
-import com.lw.novel.common.AppUtils;
+import com.lw.novel.utils.AppUtils;
+import com.lw.novel.utils.LogUtils;
 import com.lw.novelreader.BookShelftManager;
 import com.lw.ttzw.SourceSelector;
 

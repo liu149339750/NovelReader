@@ -27,7 +27,7 @@ import android.view.WindowManager;
 
 import java.lang.reflect.Field;
 
-import com.lw.novel.common.AppUtils;
+import com.lw.novel.utils.AppUtils;
 
 /**
  * 屏幕亮度工具�?

@@ -8,8 +8,8 @@ import com.lw.bean.ShelftBook;
 import com.lw.db.DBUtil;
 import com.lw.db.NovelProvider;
 import com.lw.db.SqliteHelper.BookShelft;
-import com.lw.novel.common.DataManager;
-import com.lw.novel.common.FileUtil;
+import com.lw.novel.utils.DataManager;
+import com.lw.novel.utils.FileUtil;
 import com.lw.ttzw.NovelManager;
 
 import android.content.Context;

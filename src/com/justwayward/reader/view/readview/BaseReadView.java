@@ -27,6 +27,7 @@ import android.widget.Scroller;
 import java.util.List;
 
 import com.lw.bean.Chapter;
+import com.lw.novel.utils.LogUtils;
 
 /**
  * @author yuyh.

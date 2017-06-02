@@ -24,8 +24,8 @@ import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.bean.Novels;
-import com.lw.novel.common.HtmlUtil;
-import com.lw.novel.common.TagAttrFilter;
+import com.lw.novel.utils.HtmlUtil;
+import com.lw.novel.utils.TagAttrFilter;
 
 import android.util.Log;
 
@@ -55,6 +55,7 @@ public class TTZWManager {
 	}
 	
 	public static Novels loadSearchNovel(String source) throws ParserException {
+		System.out.println("loadSearchNovel---"+source);
 		List<Novel> novels = new ArrayList<Novel>();
 		Novels sr = new Novels();
 		sr.setNovels(novels);

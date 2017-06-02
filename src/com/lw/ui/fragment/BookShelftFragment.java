@@ -3,11 +3,11 @@ package com.lw.ui.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lw.adapter.BookItemAdpater;
 import com.lw.bean.Novel;
 import com.lw.bean.ShelftBook;
-import com.lw.novel.common.DataManager;
-import com.lw.novel.common.DataManager.OnDataChangeListener;
-import com.lw.novelreader.BookItemAdpater;
+import com.lw.novel.utils.DataManager;
+import com.lw.novel.utils.DataManager.OnDataChangeListener;
 import com.lw.presenter.BookShelftPresenter;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.activity.NovelReadActivity;

@@ -5,7 +5,7 @@ import java.util.List;
 import com.justwayward.reader.view.readview.SettingManager;
 import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
-import com.lw.novel.common.FileUtil;
+import com.lw.novel.utils.FileUtil;
 import com.lw.novelreader.R;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.activity.NovelReadActivity;

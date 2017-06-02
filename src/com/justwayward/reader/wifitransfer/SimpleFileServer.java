@@ -27,7 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import com.justwayward.reader.view.readview.FileUtils;
-import com.justwayward.reader.view.readview.LogUtils;
+import com.lw.novel.utils.LogUtils;
 
 /**
  * Wifi传书 服务端

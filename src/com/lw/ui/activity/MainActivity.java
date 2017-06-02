@@ -1,9 +1,13 @@
 package com.lw.ui.activity;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import com.bumptech.glide.Glide;
+import com.lw.adapter.SourceDrawerAdpater;
 import com.lw.novelreader.R;
+import com.lw.ttzw.DataInterface;
+import com.lw.ttzw.SourceSelector;
 import com.lw.ui.fragment.BookShelftFragment;
 import com.lw.ui.fragment.LastUpdateMainFragment;
 import com.lw.ui.fragment.SortKindNovelMainFragment;
@@ -12,6 +16,7 @@ import com.lw.ui.fragment.WebNovelFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +26,11 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -31,10 +41,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	
 	private Fragment mCurrentFragment;
 	
+	@Bind(R.id.drawer_layout)
+	DrawerLayout mDrawer;
+	@Bind(R.id.start_drawer)
+	ListView mDrawerList;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		ButterKnife.bind(this);
 		System.out.println(Glide.getPhotoCacheDir(this).getPath());
 //		mLastUpdate = new LastNovelListFragment();
 		mLastUpdate = new LastUpdateMainFragment();
@@ -56,6 +72,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		toolbar.inflateMenu(R.menu.toobar_menu);
+		
+		mDrawerList.setAdapter(new SourceDrawerAdpater(this));
+		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				DataInterface di = (DataInterface) parent.getItemAtPosition(position);
+				SourceSelector.setDefaultSource(di);
+				Toast.makeText(MainActivity.this, getString(R.string.change_source_to, di.getTag()), Toast.LENGTH_SHORT).show();
+			}
+		});
 		
 	}
 

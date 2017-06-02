@@ -3,7 +3,7 @@ package com.lw.ui.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lw.novel.common.Util;
+import com.lw.novel.utils.Util;
 import com.lw.novelreader.R;
 import com.lw.ttzw.DataQueryManager;
 import com.viewpagerindicator.TitlePageIndicator;

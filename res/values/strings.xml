@@ -54,4 +54,6 @@
     <string name="change_source">换源</string>
     <string name="current_source">当前内容源</string>
     <string name="same_source">同章内容源</string>
+    
+    <string name="change_source_to">已切换源%s</string>
 </resources>

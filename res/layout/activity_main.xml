@@ -5,24 +5,44 @@
     tools:context="com.lw.ui.activity.MainActivity"
     tools:ignore="MergeRootFrame" >
 
-    
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary" >
-    </android.support.v7.widget.Toolbar>
-    
-    <include layout="@layout/buttom_radiogroup"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttom"
-        android:layout_alignParentBottom="true"/>
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_above="@id/buttom"
-        android:layout_below="@id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary" >
+            </android.support.v7.widget.Toolbar>
+
+            <include
+                android:id="@+id/buttom"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                layout="@layout/buttom_radiogroup" />
+
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/buttom"
+                android:layout_below="@id/toolbar" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/start_drawer"
+            android:layout_width="200dp"
+            android:choiceMode="singleChoice"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="#ffe1e1e1" />
+    </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>

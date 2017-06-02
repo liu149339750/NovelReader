@@ -8,6 +8,7 @@ import com.lw.bean.Chapter;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.bean.Novels;
+import com.lw.datainterfaceimpl.TTZWImpl;
 
 import android.util.Pair;
 
@@ -24,18 +25,20 @@ public class DataQueryManager implements DataInterface{
 	}
 	
 	public DataQueryManager() {
-		mDataInterface = new TTZWImpl();
-		SourceSelector.setDefaultSource(mDataInterface);
 	}
 
 	@Override
 	public Novels search(String keyword) throws ParserException {
-		return mDataInterface.search(keyword);
+		return SourceSelector.getDefaultSource().search(keyword);
 	}
 
 	@Override
-	public Novels loadSearchNovel(String source) throws ParserException {
-		return mDataInterface.loadSearchNovel(source);
+	public Novels loadSearchNovel(String url) throws ParserException {
+		DataInterface df = SourceSelector.selectDataInterface(url);
+		if(df != null) {
+			return df.loadSearchNovel(url);
+		}
+		return SourceSelector.getDefaultSource().loadSearchNovel(url);
 	}
 
 	@Override
@@ -44,7 +47,7 @@ public class DataQueryManager implements DataInterface{
 		if(df != null) {
 			return df.getChapterContent(url);
 		}
-		return mDataInterface.getChapterContent(url);
+		return SourceSelector.getDefaultSource().getChapterContent(url);
 	}
 
 	@Override
@@ -53,7 +56,7 @@ public class DataQueryManager implements DataInterface{
 		if(df != null) {
 			return df.getNovelChapers(url);
 		}
-		return mDataInterface.getNovelChapers(url);
+		return SourceSelector.getDefaultSource().getNovelChapers(url);
 	}
 
 	@Override
@@ -63,7 +66,7 @@ public class DataQueryManager implements DataInterface{
 			return df.getNovelDetail(url);
 		}
 		System.out.println("use default :>" + url);
-		return mDataInterface.getNovelDetail(url);
+		return SourceSelector.getDefaultSource().getNovelDetail(url);
 	}
 
 	@Override
@@ -72,7 +75,7 @@ public class DataQueryManager implements DataInterface{
 		if(df != null) {
 			return df.getLastUpdates(url);
 		}
-		return mDataInterface.getLastUpdates(url);
+		return SourceSelector.getDefaultSource().getLastUpdates(url);
 	}
 
 	@Override
@@ -81,7 +84,7 @@ public class DataQueryManager implements DataInterface{
 		if(df != null) {
 			return df.getSortKindNovels(url);
 		}
-		return mDataInterface.getSortKindNovels(url);
+		return SourceSelector.getDefaultSource().getSortKindNovels(url);
 	}
 
 	@Override
@@ -90,7 +93,7 @@ public class DataQueryManager implements DataInterface{
 		if(df != null) {
 			return df.getSortKindUrlPairs();
 		}
-		return mDataInterface.getSortKindUrlPairs();
+		return SourceSelector.getDefaultSource().getSortKindUrlPairs();
 	}
 
 	@Override
@@ -99,7 +102,7 @@ public class DataQueryManager implements DataInterface{
 		if(df != null) {
 			return df.getLastUpdateUrlPairs();
 		}
-		return mDataInterface.getLastUpdateUrlPairs();
+		return SourceSelector.getDefaultSource().getLastUpdateUrlPairs();
 	}
 
 	@Override
@@ -109,7 +112,7 @@ public class DataQueryManager implements DataInterface{
 
 	@Override
 	public DataInterface select(String url) {
-		return this;
+		return SourceSelector.selectDataInterface(url);
 	}
 
 	@Override
@@ -118,7 +121,32 @@ public class DataQueryManager implements DataInterface{
 		if(df != null) {
 			return df.getChapterUrl(url);
 		}
-		return mDataInterface.getChapterUrl(url);
+		return SourceSelector.getDefaultSource().getChapterUrl(url);
+	}
+
+	@Override
+	public Novels getRankNovels(String url) throws ParserException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Pair<String, String>> getWeekRankUrlPairs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Pair<String, String>> getMonthRankUrlPairs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Pair<String, String>> getAllRankUrlPairs() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

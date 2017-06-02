@@ -5,9 +5,10 @@ import java.util.List;
 
 import org.htmlparser.util.ParserException;
 
+import com.lw.adapter.NovelListAdpater;
 import com.lw.bean.Novel;
 import com.lw.bean.Novels;
-import com.lw.novelreader.NovelListAdpater;
+import com.lw.novel.utils.LogUtils;
 import com.lw.ttzw.DataQueryManager;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.activity.NovelDetailActivity;
@@ -28,6 +29,8 @@ public class SortNovelListFragment extends BaseListFreshFragment{
 	private List<Novels> mData;
 	
 	private String mNextUrl;
+	
+	private static final String TAG = "SortNovelListFragment";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -125,9 +128,11 @@ public class SortNovelListFragment extends BaseListFreshFragment{
 			protected void onPostExecute(Novels result) {
 				if(isDetached())
 					return;
-				if(result == null) {
+				if(result == null || !result.isIsok()) {
 					//show load fail or change source
+					LogUtils.i(TAG, "loadLastUpdataData result = null");
 				} else {
+					LogUtils.i(TAG, "loadLastUpdataData onPostExecute > " + result.isIsok());
 					mSwipeRefresh.setRefreshing(false);
 					mData.add(result);
 					mAdapter.notifyDataSetChanged();
@@ -163,7 +168,7 @@ public class SortNovelListFragment extends BaseListFreshFragment{
 	
 	@Override
 	protected void reloadMore() {
-		System.out.println("reloadMore");
+		System.out.println("reloadMore mNextUrl = " + mNextUrl);
 		if(mNextUrl != null) {
 			loadLastUpdataData(mNextUrl);
 		} else {

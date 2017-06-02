@@ -46,6 +46,40 @@
         <item >http://m.ttzw.com/class/66/1.html</item>
     </string-array>
     
+     <string-array name="ttzw_week_rank__urls">
+        <item >http://m.ttzw.com/paihang/week.html</item>
+        <item >http://m.ttzw.com/paihang/week1.html</item>
+        <item >http://m.ttzw.com/paihang/week2.html</item>
+        <item >http://m.ttzw.com/paihang/week3.html</item>
+        <item >http://m.ttzw.com/paihang/week4.html</item>
+        <item >http://m.ttzw.com/paihang/week5.html</item>
+        <item >http://m.ttzw.com/paihang/week6.html</item>
+        <item >http://m.ttzw.com/paihang/week7.html</item>
+        <item >http://m.ttzw.com/paihang/week66.html</item>
+    </string-array>
+    
+     <string-array name="ttzw_month_rank__urls">
+        <item >http://m.ttzw.com/paihang/month.html</item>
+        <item >http://m.ttzw.com/paihang/month1.html</item>
+        <item >http://m.ttzw.com/paihang/month2.html</item>
+        <item >http://m.ttzw.com/paihang/month3.html</item>
+        <item >http://m.ttzw.com/paihang/month4.html</item>
+        <item >http://m.ttzw.com/paihang/month5.html</item>
+        <item >http://m.ttzw.com/paihang/month6.html</item>
+        <item >http://m.ttzw.com/paihang/month7.html</item>
+        <item >http://m.ttzw.com/paihang/month66.html</item>
+    </string-array>
+   <string-array name="ttzw_all_rank__urls">
+        <item >http://m.ttzw.com/paihang/all.html</item>
+        <item >http://m.ttzw.com/paihang/all1.html</item>
+        <item >http://m.ttzw.com/paihang/all2.html</item>
+        <item >http://m.ttzw.com/paihang/all3.html</item>
+        <item >http://m.ttzw.com/paihang/all4.html</item>
+        <item >http://m.ttzw.com/paihang/all5.html</item>
+        <item >http://m.ttzw.com/paihang/all6.html</item>
+        <item >http://m.ttzw.com/paihang/all7.html</item>
+        <item >http://m.ttzw.com/paihang/all66.html</item>
+    </string-array>
     
     <string-array name="xs84_sort_novel_kinds">
         <item>@string/all</item>
@@ -73,6 +107,48 @@
         <item >http://m.xs84.me/fenlei/8-1.html</item>
         <item >http://m.xs84.me/fenlei/9-1.html</item>
         <item >http://m.xs84.me/fenlei/10-1.html</item>
+    </string-array>
+    
+    <string-array name="xs84_week_rank_urls">
+        <item >http://m.xs84.me/ph/week.html</item>
+        <item >http://m.xs84.me/ph/week1.html</item>
+        <item >http://m.xs84.me/ph/week2.html</item>
+        <item >http://m.xs84.me/ph/week3.html</item>
+        <item >http://m.xs84.me/ph/week4.html</item>
+        <item >http://m.xs84.me/ph/week5.html</item>
+        <item >http://m.xs84.me/ph/week6.html</item>
+        <item >http://m.xs84.me/ph/week7.html</item>
+        <item >http://m.xs84.me/ph/week8.html</item>
+        <item >http://m.xs84.me/ph/week9.html</item>
+        <item >http://m.xs84.me/ph/week10.html</item>
+    </string-array>
+    
+     <string-array name="xs84_month_rank_urls">
+        <item >http://m.xs84.me/ph/month.html</item>
+        <item >http://m.xs84.me/ph/month1.html</item>
+        <item >http://m.xs84.me/ph/month2.html</item>
+        <item >http://m.xs84.me/ph/month3.html</item>
+        <item >http://m.xs84.me/ph/month4.html</item>
+        <item >http://m.xs84.me/ph/month5.html</item>
+        <item >http://m.xs84.me/ph/month6.html</item>
+        <item >http://m.xs84.me/ph/month7.html</item>
+        <item >http://m.xs84.me/ph/month8.html</item>
+        <item >http://m.xs84.me/ph/month9.html</item>
+        <item >http://m.xs84.me/ph/month10.html</item>
+    </string-array>
+    
+     <string-array name="xs84_all_rank_urls">
+        <item >http://m.xs84.me/ph/all.html</item>
+        <item >http://m.xs84.me/ph/all1.html</item>
+        <item >http://m.xs84.me/ph/all2.html</item>
+        <item >http://m.xs84.me/ph/all3.html</item>
+        <item >http://m.xs84.me/ph/all4.html</item>
+        <item >http://m.xs84.me/ph/all5.html</item>
+        <item >http://m.xs84.me/ph/all6.html</item>
+        <item >http://m.xs84.me/ph/all7.html</item>
+        <item >http://m.xs84.me/ph/all8.html</item>
+        <item >http://m.xs84.me/ph/all9.html</item>
+        <item >http://m.xs84.me/ph/all10.html</item>
     </string-array>
     
      <string-array name="xs84_last_novel_kinds">

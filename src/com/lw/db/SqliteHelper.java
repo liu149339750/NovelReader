@@ -2,7 +2,7 @@ package com.lw.db;
 
 import java.io.File;
 
-import com.lw.novel.common.FileUtil;
+import com.lw.novel.utils.FileUtil;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

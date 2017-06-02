@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.htmlparser.util.ParserException;
 
+import com.lw.adapter.NovelListAdpater;
 import com.lw.bean.Novel;
 import com.lw.bean.Novels;
-import com.lw.novelreader.NovelListAdpater;
 import com.lw.ttzw.DataQueryManager;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.activity.NovelDetailActivity;

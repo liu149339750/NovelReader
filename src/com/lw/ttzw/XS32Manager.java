@@ -11,8 +11,8 @@ import org.htmlparser.util.ParserException;
 
 import com.lw.bean.Novel;
 import com.lw.bean.Novels;
-import com.lw.novel.common.HtmlUtil;
-import com.lw.novel.common.TagAttrFilter;
+import com.lw.novel.utils.HtmlUtil;
+import com.lw.novel.utils.TagAttrFilter;
 
 public class XS32Manager {
 

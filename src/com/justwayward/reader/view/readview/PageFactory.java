@@ -27,8 +27,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.lw.bean.Chapter;
-import com.lw.novel.common.AppUtils;
-import com.lw.novel.common.FileUtil;
+import com.lw.novel.utils.AppUtils;
+import com.lw.novel.utils.FileUtil;
+import com.lw.novel.utils.LogUtils;
 import com.lw.novelreader.R;
 
 import java.io.File;

@@ -3,10 +3,10 @@ package com.lw.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lw.adapter.NovelListAdpater;
 import com.lw.bean.Novel;
 import com.lw.bean.Novels;
-import com.lw.novel.common.SettingUtil;
-import com.lw.novelreader.NovelListAdpater;
+import com.lw.novel.utils.SettingUtil;
 import com.lw.novelreader.R;
 import com.lw.presenter.SearchPresenter;
 import android.app.Activity;
@@ -48,6 +48,7 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 	
 	private final int RETRY_COUNT = 3;
 	private int retry;
+	private boolean firstQuery;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +73,10 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				if(isReloadMore && !isLoading) {
-					reloadMore();
-				}
+					if(isReloadMore && !isLoading) {
+						isLoading = true;
+						reloadMore();
+					}
 			}
 			
 
@@ -92,6 +94,7 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 	
 	private void reloadMore() {
 		if(!TextUtils.isEmpty(mNextUrl)) {
+			System.out.println("load mNextUrl = " + mNextUrl);
 			mSearchPresenter.loadSearch(mNextUrl);
 		}
 	}
@@ -116,6 +119,7 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 		
 			break;
 		case R.id.search:
+			mListData.clear();
 			mSearchPresenter.search(mSearchEdit.getEditableText().toString());
 			break;
 		default:
@@ -131,6 +135,7 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 			onSearchFail();
 			return;
 		}
+		firstQuery = false;
 		mNextUrl = sr.getNextUrl();
 		System.out.println(sr.getNovels().size() + "?>>"+sr.getNextUrl());
 		mListData.addAll(sr.getNovels());
@@ -142,8 +147,10 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 
 
 	private void onSearchFail() {
-		// TODO Auto-generated method stub
+		if(!firstQuery)
+			return;
 		if(retry < RETRY_COUNT) {
+			retry ++;
 			if(mSearchEdit != null) {
 				mSearchPresenter.search(mSearchEdit.getEditableText().toString());
 			}

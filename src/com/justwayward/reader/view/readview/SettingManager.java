@@ -18,7 +18,8 @@ package com.justwayward.reader.view.readview;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lw.novel.common.AppUtils;
+import com.lw.novel.utils.AppUtils;
+import com.zhuishu.api.Constant;
 
 /**
  * @author yuyh.
@@ -54,7 +55,7 @@ public class SettingManager {
     }
 
     public int getReadFontSize(String bookId) {
-        return SharedPreferencesUtil.getInstance().getInt(getFontSizeKey(bookId), ScreenUtils.dpToPxInt(16));
+        return SharedPreferencesUtil.getInstance().getInt(getFontSizeKey(bookId), ScreenUtils.dpToPxInt(20));
     }
 
     public int getReadFontSize() {

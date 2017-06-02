@@ -9,7 +9,7 @@ import com.lw.db.DBUtil;
 import com.lw.model.INovelBiz;
 import com.lw.model.NovelBiz;
 import com.lw.model.OnDataListener;
-import com.lw.novel.common.AsyncUtil;
+import com.lw.novel.utils.AsyncUtil;
 import com.lw.novelreader.DownloadMessage;
 import com.lw.novelreader.DownloadProgress;
 import com.lw.novelreader.DownloadService;

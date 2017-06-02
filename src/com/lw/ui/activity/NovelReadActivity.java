@@ -3,13 +3,8 @@ package com.lw.ui.activity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import com.justwayward.reader.view.loadding.CustomDialog;
 import com.justwayward.reader.view.readview.BaseReadView;
-import com.justwayward.reader.view.readview.Constant;
 import com.justwayward.reader.view.readview.OnReadStateChangeListener;
 import com.justwayward.reader.view.readview.OverlappedWidget;
 import com.justwayward.reader.view.readview.PageWidget;
@@ -19,7 +14,7 @@ import com.justwayward.reader.view.readview.SharedPreferencesUtil;
 import com.justwayward.reader.view.readview.ThemeManager;
 import com.lw.bean.Chapter;
 import com.lw.db.DBUtil;
-import com.lw.novel.common.Util;
+import com.lw.novel.utils.Util;
 import com.lw.novelreader.BookShelftManager;
 import com.lw.novelreader.DownloadService;
 import com.lw.novelreader.DownloadTask;
@@ -28,6 +23,8 @@ import com.lw.presenter.ChapterContentPresenter;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.fragment.IChapterContentView;
 import com.mingle.widget.LoadingView;
+import com.zhuishu.api.Constant;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -50,6 +47,9 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class NovelReadActivity extends Activity implements IChapterContentView,OnSeekBarChangeListener {
 

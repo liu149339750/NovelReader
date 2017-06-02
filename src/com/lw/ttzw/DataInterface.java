@@ -27,8 +27,13 @@ public interface DataInterface {
 	
 	public Novels getSortKindNovels(String url) throws ParserException;
 	
+	public Novels getRankNovels(String url) throws ParserException;
+	
 	public List<Pair<String, String>> getSortKindUrlPairs();
 	public List<Pair<String, String>> getLastUpdateUrlPairs();
+	public List<Pair<String, String>> getWeekRankUrlPairs();
+	public List<Pair<String, String>> getMonthRankUrlPairs();
+	public List<Pair<String, String>> getAllRankUrlPairs();
 	
 	/**get the novel's chapters url by the novel url*/
 	public String getChapterUrl(String url);
