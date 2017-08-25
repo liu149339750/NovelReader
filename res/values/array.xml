@@ -176,4 +176,19 @@
         <item >http://www.xs84.me/fenlei/8-1.html</item>
         <item >http://www.xs84.me/fenlei/9-1.html</item>
     </string-array>
+    
+    <string-array name="update_novel_num">
+        <item >5</item>
+        <item >8</item>
+        <item >10</item>
+        <item >15</item>
+        <item >@string/all</item>
+    </string-array>
+    <string-array name="update_novel_num_value">
+        <item >5</item>
+        <item >8</item>
+        <item >10</item>
+        <item >15</item>
+        <item >999</item>
+    </string-array>
 </resources>

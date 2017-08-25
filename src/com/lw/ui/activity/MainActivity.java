@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				Toast.makeText(MainActivity.this, getString(R.string.change_source_to, di.getTag()), Toast.LENGTH_SHORT).show();
 			}
 		});
-		
 	}
 
 	@Override
@@ -104,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		case R.id.search:
 			SearchActvity.startSearchActivity(this);
 			break;
-
+		case R.id.setting:
+		    SettingActivity.startSettingActivity();
+		    break;
 		default:
 			break;
 		}

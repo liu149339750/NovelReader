@@ -1,7 +1,6 @@
 package com.lw.ui.activity;
 
 
-import org.greenrobot.eventbus.EventBus;
 import com.lw.bean.Novel;
 import com.lw.novelreader.R;
 import com.lw.ttzw.NovelManager;

@@ -8,5 +8,8 @@
         android:title="@string/search"
         app:showAsAction="ifRoom" />
 
-
+    <item
+        android:id="@+id/setting"
+        android:title="@string/setting"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.lw.adapter.BookItemAdpater.ViewHolder;
 import com.lw.bean.Chapter;
 import com.lw.novel.utils.AppUtils;
 import com.lw.novel.utils.FileUtil;
@@ -47,7 +48,6 @@ import java.util.Vector;
 
 public class PageFactory {
 	
-	private boolean isLoading = false;
 	private boolean isPreFail = false;
 	
     private Context mContext;
@@ -111,6 +111,8 @@ public class PageFactory {
 
     private OnReadStateChangeListener listener;
     private String charset = "UTF-8";
+    
+    private ReadViewAdapter mAdapter;
 
     public PageFactory(Context context, String bookId, List<Chapter> chaptersList) {
         this(context, ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(),
@@ -152,6 +154,10 @@ public class PageFactory {
 
         time = dateFormat.format(new Date());
     }
+    
+    public void setAdapter(ReadViewAdapter adpater) {
+        mAdapter = adpater;
+    }
 
     public File getBookFile(int chapter) {
 //        File file = FileUtils.getChapterFile(bookId, chapter);
@@ -169,7 +175,7 @@ public class PageFactory {
     }
 
     public void openBook(int[] position) {
-        openBook(1, position);
+        openBook(0, position);
     }
 
     /**
@@ -182,14 +188,14 @@ public class PageFactory {
     public int openBook(int chapter, int[] position) {
     	System.out.println("openBook");
         this.currentChapter = chapter;
-        this.chapterSize = chaptersList.size();
-        if (currentChapter > chapterSize) {
-            currentChapter = chapterSize;
+        this.chapterSize = mAdapter.getChapterCount();
+        if (currentChapter > chapterSize - 1) {
+            currentChapter = chapterSize - 1;
             return 1;
         }
-        String path = getBookFile(currentChapter).getPath();
+//        String path = getBookFile(currentChapter).getPath();
         try {
-            File file = new File(path);
+            File file = mAdapter.getChapterFile(currentChapter);
             long length = file.length();
             if (length > 10) {
                 mbBufferLen = (int) length;
@@ -235,7 +241,7 @@ public class PageFactory {
                 canvas.drawColor(Color.WHITE);
             }
             // 绘制标题
-            canvas.drawText(chaptersList.get(currentChapter - 1).title, marginWidth, y, mTitlePaint);
+            canvas.drawText(mAdapter.getChapterTitle(currentChapter), marginWidth, y, mTitlePaint);
             y += mLineSpace + mNumFontSize;
             // 绘制阅读页面文字
             for (String line : mLines) {
@@ -254,7 +260,7 @@ public class PageFactory {
                         mHeight - marginHeight - ScreenUtils.dpToPxInt(12), mTitlePaint);
             }
 
-            float percent = (float) currentChapter * 100 / chapterSize;
+            float percent = (float) (currentChapter + 1) * 100 / chapterSize;
             canvas.drawText(decimalFormat.format(percent) + "%", (mWidth - percentLen) / 2,
                     mHeight - marginHeight, mTitlePaint);
 
@@ -461,11 +467,15 @@ public class PageFactory {
 //    }
     
     public boolean hasNextPage() {
-        return (currentChapter < chaptersList.size()) || curEndPos < mbBufferLen;
+//        return (currentChapter < chaptersList.size()) || curEndPos < mbBufferLen;
+//        return (mHolder.hasNextChapter()) || curEndPos < mbBufferLen;
+        return (currentChapter < mAdapter.getChapterCount() - 1) || curEndPos < mbBufferLen;
     }
 
     public boolean hasPrePage() {
-        return (currentChapter > 1) || (currentChapter == 1 && curBeginPos > 0);
+//        return (currentChapter > 1) || (currentChapter == 1 && curBeginPos > 0);
+//        return mHolder.hasPreChapter() || curBeginPos > 0;
+        return (currentChapter > 0) || (currentChapter == 0 && curBeginPos > 0);
     }
 
     /**
@@ -482,7 +492,6 @@ public class PageFactory {
                 currentChapter++;
                 int ret = openBook(currentChapter, new int[]{0, 0}); // 打开下一章
                 if (ret == 0) {
-                	isLoading = true;
                     onLoadChapterFailure(currentChapter);
                     curBeginPos = 0;
                     curEndPos = 0;
@@ -492,7 +501,6 @@ public class PageFactory {
                     return BookStatus.NEXT_CHAPTER_LOAD_FAILURE;
                 } else {
                     currentPage = 0;
-                    isLoading = false;
 //                    onChapterChanged(currentChapter);
                 }
             } else {
@@ -508,7 +516,6 @@ public class PageFactory {
     public int setLoadFinish(int chapter,boolean sucess) {
     	System.out.println("chapter="+chapter+",currentChapter="+currentChapter);
 //    	if(currentChapter == chapter) {
-    		isLoading = false;
     		if(sucess) {
     			int ret = openBook(chapter, new int[]{0, 0}); // 打开下一章
     			if( ret == 0) {
@@ -547,13 +554,10 @@ public class PageFactory {
 //                    curBeginPos = 0;
 //                    curEndPos = 0;
                     onLoadChapterFailure(currentChapter);
-                    isLoading = true;
                     isPreFail = true;
 //                    currentChapter++;
                     return BookStatus.PRE_CHAPTER_LOAD_FAILURE;
                 } else { // 跳转到上一章的最后一页
-                	isLoading = false;
-                    mLines.clear();
                     mLines = pageLast();
 //                    onChapterChanged(currentChapter);
                     onPageChanged(currentChapter, currentPage);

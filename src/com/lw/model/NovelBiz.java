@@ -13,6 +13,7 @@ import com.lw.ttzw.DataQueryManager;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.util.LruCache;
 
 public class NovelBiz implements INovelBiz {
@@ -28,7 +29,6 @@ public class NovelBiz implements INovelBiz {
 			listener.onSucess(n);
 			return;
 		}
-		
 		new AsyncTask<String, Void, NovelDetail>() {
 
 			@Override
@@ -43,7 +43,7 @@ public class NovelBiz implements INovelBiz {
 //						caches.put(params[0], detail);
 //						return detail;
 //					}
-					System.out.println("begin read from net");
+					System.out.println("begin read from net,url="+url);
 					if(isCancel) {
 						return null;
 					}

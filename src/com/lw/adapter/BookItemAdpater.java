@@ -84,8 +84,8 @@ public class BookItemAdpater extends BaseAdapter {
 		holder.lastUpdateTime.setText(novel.getLastUpdateTime());
 		if(novel instanceof ShelftBook) {
 			ShelftBook sb = (ShelftBook) novel;
-			holder.chapterCount.setText( sb.getCurrentChapterPosition()  + "/" + sb.chapterCount);
-			int c = sb.chapterCount - sb.getCurrentChapterPosition();
+			holder.chapterCount.setText( sb.getCurrentChapterPosition() + 1  + "/" + sb.chapterCount);
+			int c = sb.chapterCount - sb.getCurrentChapterPosition() - 1;
 			if(c > 0) {
 				holder.unReadCount.setVisibility(View.VISIBLE);
 				holder.unReadCount.setText(mInflater.getContext().getString(R.string.unread_count,c));

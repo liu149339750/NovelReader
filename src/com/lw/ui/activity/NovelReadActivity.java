@@ -231,10 +231,11 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	}
 	
 	@Override
-	public void showLoading() {
+	public void showLoading(String msg) {
 //		getDialog().show();
 		flReadWidget.setVisibility(View.GONE);
 		mLoading.setVisibility(View.VISIBLE);
+		mLoading.setLoadingText(msg);
 	}
 
 	@Override
@@ -262,15 +263,6 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		
 	}
 
-	@Override
-	public void prepareNext(String path) {
-
-	}
-
-	@Override
-	public void preparaPrev(String path) {
-
-	}
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
@@ -293,7 +285,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 
 		@Override
 		public void onChapterChanged(int chapter) {
-			mBar.setProgress(chapter - 1); //here crash once with null pointer
+			mBar.setProgress(chapter); //here crash once with null pointer
 			System.out.println("onChapterChanged chapter =" + chapter);
 			NovelManager.getInstance().setChapterId(chapter);
 			DownloadService.addToDownload(new DownloadTask(NovelManager.getInstance().getCurrentNovel(), chapter, 5));
@@ -453,7 +445,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 		mHandler.removeMessages(0);
-		Chapter chapter = NovelManager.getInstance().getChapter(progress + 1);
+		Chapter chapter = NovelManager.getInstance().getChapter(progress);
 		mChapterTextView.setText(chapter.getTitle());
 		
 	}
@@ -472,7 +464,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 				mChapterTextView.setVisibility(View.GONE);
 			}
 		}, 1000);
-		mPageWidget.jumpToChapter(seekBar.getProgress() + 1);
+		mPageWidget.jumpToChapter(seekBar.getProgress());
 	}
 	
 	@Override

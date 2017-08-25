@@ -15,7 +15,7 @@ public class NovelManager {
 	
 	private Novel mNovel;
 	private List<Chapter> mChaper;
-	private int chapterId = 1;
+	private int chapterId = 0;
 	
 	public static NovelManager getInstance() {
 		if(manager == null) {
@@ -41,7 +41,7 @@ public class NovelManager {
 		System.out.println(novel.toString());
 		mNovel = novel;
 		mChaper = null;
-		chapterId = 1;
+		chapterId = 0;
 	}
 	
 	public Novel getCurrentNovel() {
@@ -73,11 +73,11 @@ public class NovelManager {
 	}
 
 	public Chapter getChapter() {
-		return mChaper.get(chapterId - 1);
+		return mChaper.get(chapterId);
 	}
 	
 	public Chapter getChapter(int chapter) {
-		return mChaper.get(chapter - 1);
+		return mChaper.get(chapter);
 	}
 	
 }

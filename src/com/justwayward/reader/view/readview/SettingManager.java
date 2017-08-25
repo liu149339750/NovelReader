@@ -99,7 +99,7 @@ public class SettingManager {
      */
     public int[] getReadProgress(String bookId) {
     	System.out.println("bookid="+bookId);
-        int lastChapter = SharedPreferencesUtil.getInstance().getInt(getChapterKey(bookId), 1);
+        int lastChapter = SharedPreferencesUtil.getInstance().getInt(getChapterKey(bookId), 0);
         int startPos = SharedPreferencesUtil.getInstance().getInt(getStartPosKey(bookId), 0);
         int endPos = SharedPreferencesUtil.getInstance().getInt(getEndPosKey(bookId), 0);
 

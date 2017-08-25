@@ -15,6 +15,8 @@
  */
 package com.justwayward.reader.view.readview;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -23,8 +25,6 @@ import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
-
-import java.util.List;
 
 import com.lw.bean.Chapter;
 import com.lw.novel.utils.LogUtils;
@@ -54,6 +54,8 @@ public abstract class BaseReadView extends View {
     Scroller mScroller;
     
     private int theme;
+    
+    private ReadViewAdapter mAdapter;
 
     public BaseReadView(Context context, String bookId, List<Chapter> chaptersList,
                         OnReadStateChangeListener listener) {
@@ -71,8 +73,14 @@ public abstract class BaseReadView extends View {
 
         mScroller = new Scroller(getContext());
 
+        mAdapter = new DefaultReadViewAdapter(this,bookId,chaptersList);
         pagefactory = new PageFactory(getContext(), bookId, chaptersList);
+        pagefactory.setAdapter(mAdapter);
         pagefactory.setOnReadStateChangeListener(listener);
+    }
+    
+    public void setAdapter(ReadViewAdapter adapter) {
+        mAdapter = adapter;
     }
 
     public synchronized void init(int theme) {
@@ -267,7 +275,7 @@ public abstract class BaseReadView extends View {
 
     /**总是打开第一个page*/
 	public void jumpToChapter(int chapter) {
-		if(chapter < 1 ) {
+		if(chapter < 0 ) {
 			return;
 		}
         resetTouchPoint();
@@ -282,7 +290,7 @@ public abstract class BaseReadView extends View {
     
 	/**往前翻页未下载的章节时，打开最后一个page*/
 	public void openLoadedChapter(int chapter) {
-		if(chapter < 1 ) {
+		if(chapter < 0 ) {
 			return;
 		}
         resetTouchPoint();

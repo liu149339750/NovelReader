@@ -21,7 +21,7 @@ public class ChapterContentPresenter {
 	public void prepareChapterContent(final int chapter) {
 		// System.out.println("prepareChapterContent bookid = " +
 		// NovelManager.getInstance().getCurrentNovel().getId());
-		mChapterContentView.showLoading();
+		mChapterContentView.showLoading(NovelManager.getInstance().getChapter(chapter).getTitle());
 		mChapterBiz.getChapterContent(NovelManager.getInstance().getCurrentNovel(),
 				NovelManager.getInstance().getChapter(chapter), new OnChapterContentListener() {
 

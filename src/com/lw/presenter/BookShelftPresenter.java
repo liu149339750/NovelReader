@@ -52,6 +52,7 @@ public class BookShelftPresenter {
 
 									@Override
 									public NovelDetail call(String arg0) {
+									    System.out.println("call");
 										return mINovelBiz.getNovelInfo(arg0);
 									}
 								});
@@ -70,14 +71,14 @@ public class BookShelftPresenter {
 
 					@Override
 					public void onError(Throwable arg0) {
-						// TODO Auto-generated method stub
-						
+						arg0.printStackTrace();
+						mView.hideLoading();
 					}
 
 					@Override
 					public void onNext(NovelDetail arg0) {
 						// TODO Auto-generated method stub
-						System.out.println("onNext > " + arg0.getNovel().getName());
+						System.out.println("onNext > " + (arg0 ==null ? "null":arg0.getNovel().getName()));
 					}
 				});
 	}

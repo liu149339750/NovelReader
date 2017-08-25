@@ -25,7 +25,7 @@ public class ChapterListFragment extends ListFragment{
 	private ChapterAdapter mChapterAdapter;
 	private Novel mCurrentNovel;
 	
-	private int curPos = 1;
+	private int curPos = 0;
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
@@ -39,13 +39,13 @@ public class ChapterListFragment extends ListFragment{
 		getListView().setFastScrollEnabled(true);
 		setListAdapter(mChapterAdapter);
 		
-		setSelection(curPos - 1);
+		setSelection(curPos);
 	}
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		NovelManager.getInstance().setChapterId(position + 1);
-		NovelReadActivity.startNovelReadActivity(getActivity(), position + 1);
+		NovelManager.getInstance().setChapterId(position);
+		NovelReadActivity.startNovelReadActivity(getActivity(), position);
 		getActivity().finish();
 //		EventBus.getDefault().post(new EventMessage(EventMessage.START_READ, position + 1));
 	}
@@ -92,7 +92,7 @@ public class ChapterListFragment extends ListFragment{
 			}
 			Chapter chapter = mData.get(position);
 			holder.title.setText(chapter.getTitle());
-			if(curPos == position + 1) {
+			if(curPos == position) {
 				holder.icon.setImageResource(R.drawable.red_choose);
 			} else if(FileUtil.isChapterExist(chapter)) {
 				holder.icon.setImageResource(R.drawable.point_select_green);
