@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		setSupportActionBar(toolbar);
 		toolbar.inflateMenu(R.menu.toobar_menu);
 		
+//		if(mDrawerList == null) {
+//		    System.out.println("butterKnife not work");
+//		    mDrawerList = (ListView) findViewById(R.id.start_drawer);
+//		}
 		mDrawerList.setAdapter(new SourceDrawerAdpater(this));
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 

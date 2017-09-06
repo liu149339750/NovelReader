@@ -40,7 +40,7 @@ public class ZhuishuImpl implements DataInterface{
 	public Novels search(String keyword) throws ParserException {
 		final BoolSet bool = new BoolSet(false);
 		final Novels novels = new Novels();
-		final List<Novel> ld = new ArrayList<>();
+		final List<Novel> ld = new ArrayList<Novel>();
 		novels.setNovels(ld);
 		mApi.getSearchResult(keyword).subscribe(new Observer<SearchDetail>() {
 
@@ -107,7 +107,7 @@ public class ZhuishuImpl implements DataInterface{
 	@Override
 	public List<Chapter> getNovelChapers(String bookId) throws ParserException {
 		final BoolSet bool = new BoolSet(false);
-		final List<Chapter> chapters = new ArrayList<>();
+		final List<Chapter> chapters = new ArrayList<Chapter>();
 		mApi.getBookMixAToc(bookId, "chapters").subscribe(new Observer<BookMixAToc>() {
 
 			@Override
@@ -189,7 +189,7 @@ public class ZhuishuImpl implements DataInterface{
 	public Novels getSortKindNovels(String url) throws ParserException {
 		final BoolSet bool = new BoolSet(false);
 		final Novels novels = new Novels();
-		final List<Novel> listNovel = new ArrayList<>();
+		final List<Novel> listNovel = new ArrayList<Novel>();
 		novels.setNovels(listNovel);
 		int p = url.lastIndexOf("-");
 		final String kind = url.substring(0, p == -1 ? url.length() : p);
@@ -247,7 +247,7 @@ public class ZhuishuImpl implements DataInterface{
 
 	@Override
 	public List<Pair<String, String>> getSortKindUrlPairs() {
-		final List<Pair<String, String>> result  = new ArrayList<>();
+		final List<Pair<String, String>> result  = new ArrayList<Pair<String, String>>();
 		final BoolSet bool = new BoolSet(false);
 		mApi.getCategoryList().subscribeOn(Schedulers.io())
 		.subscribe(new Observer<CategoryList>() {

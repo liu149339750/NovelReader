@@ -47,6 +47,7 @@
         <activity android:name="com.lw.ui.activity.SearchActvity"></activity>
         <activity android:name="com.lw.ui.activity.NovelChapterListActivity"></activity>
         <activity android:name="com.lw.ui.activity.SourceActivity"></activity>
+        <activity android:name="com.lw.ui.activity.SettingActivity"></activity>
     </application>
 
 </manifest>

@@ -34,6 +34,7 @@ import com.lw.novel.utils.LogUtils;
 import com.lw.novelreader.R;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
@@ -217,9 +218,18 @@ public class PageFactory {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        mbBuff = MappedByteBuffer.wrap("downloading".getBytes());
-//        mbBufferLen = "downloading".getBytes().length;
+//        mbBuff = MappedByteBuffer.wrap("download fail".getBytes());
+//        mbBufferLen = "download fail".getBytes().length;
         return 0;
+    }
+    
+    public void openFail() {
+        String failMsg = "下载失败";
+        mbBuff = MappedByteBuffer.wrap(failMsg.getBytes());
+        mbBufferLen = failMsg.getBytes().length;
+        curBeginPos = 0;
+        curEndPos = 0;
+        mLines.clear();
     }
 
     /**

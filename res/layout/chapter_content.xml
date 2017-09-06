@@ -17,6 +17,20 @@
         android:focusable="false"
         android:layerType="hardware" >
     </FrameLayout>
+    
+    <LinearLayout 
+        android:id="@+id/fail_view"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/reload_chapter"
+            android:text="重新加载"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/topview"

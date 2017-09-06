@@ -3,6 +3,7 @@ package com.lw.novelreader;
 import com.justwayward.reader.view.readview.SharedPreferencesUtil;
 import com.lw.novel.utils.AppUtils;
 import com.lw.novel.utils.FileUtil;
+import com.lw.novel.utils.LogUtils;
 import com.lw.ttzw.NovelManager;
 import com.lw.ttzw.SourceSelector;
 
@@ -19,6 +20,7 @@ public class MyApp extends Application{
 		System.out.println("MyApp::onCreate");
 		FileUtil.init();
 		AppUtils.init(this);
+		LogUtils.init(this);
 		SourceSelector.init();
 		NovelManager.getInstance().init(this);
 		SharedPreferencesUtil.init(this, getPackageName(), Context.MODE_PRIVATE);

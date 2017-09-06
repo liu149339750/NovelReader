@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ListPreference
+        android:key="pull_update_novel_num"
+        android:entries="@array/update_novel_num"
+        android:entryValues="@array/update_novel_num_value"
+        android:summary="@string/bookshelft_update_num_des"
+        android:title="@string/bookshelft_update_num" android:persistent="true" android:defaultValue="5"/>
+
+</PreferenceScreen>

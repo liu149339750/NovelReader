@@ -8,6 +8,7 @@ public class SettingUtil {
 
 	public static final String PULL_UPDATE_NOVEL_NUM = "pull_update_novel_num";
 	
+	/**书架下拉更新的更新数目*/
 	public static int getPullUpdateNovelNum() {
 		return SharedPreferencesUtil.getInstance().getInt(PULL_UPDATE_NOVEL_NUM, 8);
 	}
@@ -16,6 +17,7 @@ public class SettingUtil {
 		SharedPreferencesUtil.getInstance().putInt(PULL_UPDATE_NOVEL_NUM, num);
 	}
 	
+	/**上拉更新触发时距离结尾的数目*/
 	public static int getReloadSpace() {
 		return AppUtils.getResource().getInteger(R.integer.reload_before_end);
 	}

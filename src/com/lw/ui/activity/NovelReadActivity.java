@@ -80,6 +80,10 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	 @Bind(R.id.chapter)
 	 TextView mChapterTextView;
 	 
+	 @Bind(R.id.fail_view)
+	 View mFailView;
+	 private int mFailChapter;
+	 
 	 Handler mHandler = new Handler();
 	 
 	 private static final String CHAPTER_EXTRA = "chapter";
@@ -230,6 +234,12 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		SourceActivity.startChangeSourceActivity(this);
 	}
 	
+	@OnClick(R.id.reload_chapter)
+	public void reloadChapter(View v) {
+	     gone(mFailView);
+	     mPresenter.prepareChapterContent(mFailChapter);
+	}
+	
 	@Override
 	public void showLoading(String msg) {
 //		getDialog().show();
@@ -260,7 +270,9 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	
 	@Override
 	public void onLoadFail(int chapter) {
-		
+		mPageWidget.showError();
+		visible(mFailView);
+		mFailChapter = chapter;
 	}
 
 
@@ -286,6 +298,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		@Override
 		public void onChapterChanged(int chapter) {
 			mBar.setProgress(chapter); //here crash once with null pointer
+			gone(mFailView);
 			System.out.println("onChapterChanged chapter =" + chapter);
 			NovelManager.getInstance().setChapterId(chapter);
 			DownloadService.addToDownload(new DownloadTask(NovelManager.getInstance().getCurrentNovel(), chapter, 5));
@@ -324,7 +337,16 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		case KeyEvent.KEYCODE_MENU:
 			toggleReadBar();
 			break;
-
+		case KeyEvent.KEYCODE_VOLUME_UP:
+		    if(!isVisible(topView)) {
+		        mPageWidget.prePage();
+		        return true;
+		    }
+	      case KeyEvent.KEYCODE_VOLUME_DOWN:
+	            if(!isVisible(topView)) {
+	                mPageWidget.nextPage();
+	                return true;
+	            }
 		default:
 			break;
 		}
@@ -447,8 +469,8 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		mHandler.removeMessages(0);
 		Chapter chapter = NovelManager.getInstance().getChapter(progress);
 		mChapterTextView.setText(chapter.getTitle());
-		
 	}
+	
 
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {

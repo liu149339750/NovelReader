@@ -42,7 +42,7 @@ public abstract class BaseReadView extends View {
     protected PointF mTouch = new PointF();
     protected float actiondownX, actiondownY;
     protected float touch_down = 0; // 当前触摸点与按下时的点的差值
-
+    //current代表当前页，next代表将要翻的页，两个bitmap为主要画面。
     protected Bitmap mCurPageBitmap, mNextPageBitmap;
     protected Canvas mCurrentPageCanvas, mNextPageCanvas;
     protected PageFactory pagefactory = null;
@@ -117,6 +117,13 @@ public abstract class BaseReadView extends View {
     public void setCurrentChapter(int chapter) {
     	SettingManager.getInstance().saveReadProgress(bookId, chapter, 0, 0);
     }
+    
+    public void showError() {
+        System.out.println("showError");
+        pagefactory.openFail();
+        pagefactory.onDraw(mCurrentPageCanvas);
+        postInvalidate();
+    }
 
     private int dx, dy;
     private long et = 0;
@@ -151,6 +158,7 @@ public abstract class BaseReadView extends View {
                             abortAnimation();
                             pagefactory.onDraw(mNextPageCanvas);
                         } else {
+                            resetTouchPoint();
                             return false;
                         }
                     } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
@@ -162,6 +170,7 @@ public abstract class BaseReadView extends View {
                             abortAnimation();
                             pagefactory.onDraw(mNextPageCanvas);
                         } else {
+                            resetTouchPoint();
                             return false;
                         }
                     }

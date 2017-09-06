@@ -207,11 +207,14 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 
 	@Override
 	public void onLoadFail() {
+	    retry ++;
 		if(retry < RETRY_COUNT) {
 			showLoading();
 			mPresenter.getNovelInfo();
 		} else {
 			//show load fail pager
+		    Novel novel = NovelManager.getInstance().getCurrentNovel();
+		    showNovelInfo(novel);
 		}
 	}
 	
