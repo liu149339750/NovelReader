@@ -39,9 +39,9 @@ public class OverlappedWidget extends BaseReadView {
     GradientDrawable mBackShadowDrawableRL;
 
     public OverlappedWidget(Context context, String bookId,
-                            List<Chapter> chaptersList,
+                            ReadViewAdapter mAdapter,
                             OnReadStateChangeListener listener) {
-        super(context, bookId, chaptersList, listener);
+        super(context, bookId, mAdapter, listener);
 
         mTouch.x = 0.01f;
         mTouch.y = 0.01f;

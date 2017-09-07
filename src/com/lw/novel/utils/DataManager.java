@@ -46,7 +46,7 @@ public class DataManager {
 		return mShelftCache.size() > 0;
 	}
 	
-	public List<ShelftBook> queryShelftBookList(boolean useCache) {
+	public synchronized List<ShelftBook> queryShelftBookList(boolean useCache) {
 		if(useCache) {
 			List<ShelftBook> cacheData = mShelftCache.getCacheShelft();
 			if(cacheData != null && cacheData.size() > 0)

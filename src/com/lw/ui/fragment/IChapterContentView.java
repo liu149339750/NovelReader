@@ -1,5 +1,9 @@
 package com.lw.ui.fragment;
 
+import java.util.List;
+
+import com.lw.bean.Chapter;
+
 public interface IChapterContentView {
 
 	
@@ -8,5 +12,6 @@ public interface IChapterContentView {
 	
 	void showChapterContent(int chapter);
 	void onLoadFail(int chapter);
+	void onChapterChange(List<Chapter> chapters);
 	
 }

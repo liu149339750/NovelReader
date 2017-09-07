@@ -1,19 +1,24 @@
 package com.lw.ui.activity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.justwayward.reader.view.loadding.CustomDialog;
 import com.justwayward.reader.view.readview.BaseReadView;
+import com.justwayward.reader.view.readview.DefaultReadViewAdapter;
 import com.justwayward.reader.view.readview.OnReadStateChangeListener;
 import com.justwayward.reader.view.readview.OverlappedWidget;
 import com.justwayward.reader.view.readview.PageWidget;
+import com.justwayward.reader.view.readview.ReadViewAdapter;
 import com.justwayward.reader.view.readview.ScreenUtils;
 import com.justwayward.reader.view.readview.SettingManager;
 import com.justwayward.reader.view.readview.SharedPreferencesUtil;
 import com.justwayward.reader.view.readview.ThemeManager;
 import com.lw.bean.Chapter;
 import com.lw.db.DBUtil;
+import com.lw.novel.utils.LogUtils;
 import com.lw.novel.utils.Util;
 import com.lw.novelreader.BookShelftManager;
 import com.lw.novelreader.DownloadService;
@@ -88,11 +93,14 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	 
 	 private static final String CHAPTER_EXTRA = "chapter";
 	 
+	 private List<Chapter> mChapters;
+	 private ReadViewAdapter mAdapter;
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+		LogUtils.v(TAG, "onCreate");
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
 				&& Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 			// 透明状态栏
@@ -107,7 +115,6 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		if(!isInBookShelft) {
 			findViewById(R.id.change_source).setVisibility(View.GONE);
 		}
-		
 		Bundle bundle = getIntent().getExtras();
 		if (bundle == null) {
 			finish();
@@ -129,6 +136,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		if(NovelManager.getInstance().getChapterSize() == 0) {
 			NovelManager.getInstance().setChapers(DBUtil.queryNovelChapterList(bookId));
 		}
+		mChapters = new ArrayList<Chapter>(NovelManager.getInstance().getChapers());
 		mBar.setMax(NovelManager.getInstance().getChapterSize() - 1);
 		initPagerWidget(bookId +"");
 		
@@ -144,6 +152,8 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
         name.setText(NovelManager.getInstance().getCurrentNovel().getName());
         
         mBar.setOnSeekBarChangeListener(this);
+        
+        mPresenter.updateNovelChapters(NovelManager.getInstance().getCurrentNovel().getUrl());
 	}
 	
 	@Override
@@ -153,11 +163,12 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	}
 
 	private void initPagerWidget(String bookid) {
+	    mAdapter = new DefaultReadViewAdapter(bookid, mChapters);
 		if (SharedPreferencesUtil.getInstance().getInt(Constant.FLIP_STYLE, 0) == 0) {
 			Log.v(TAG, "new widget");
-			mPageWidget = new PageWidget(this, bookid, NovelManager.getInstance().getChapers(), new ReadListener());
+			mPageWidget = new PageWidget(this, bookid, mAdapter, new ReadListener());
 		} else {
-			mPageWidget = new OverlappedWidget(this, bookid, NovelManager.getInstance().getChapers(), new ReadListener());
+			mPageWidget = new OverlappedWidget(this, bookid, mAdapter, new ReadListener());
 		}
 		if (SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT, false)) {
 			mPageWidget.setTextColor(ContextCompat.getColor(this, R.color.chapter_content_night),
@@ -497,6 +508,12 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
+    @Override
+    public void onChapterChange(List<Chapter> chapters) {
+        LogUtils.v(TAG, "onChapterChange::chapters size = " + chapters.size());
+        mAdapter.changeData(chapters);
+    }
 	
 	
 }

@@ -19,14 +19,20 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
-
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Log工具类，可控制Log输出开关、保存Log到文件、过滤输出等级
@@ -39,7 +45,7 @@ public class LogUtils {
     private static Boolean LOG_TO_FILE = true; // 日志写入文件开关
     private static String LOG_TAG = "BookReader"; // 默认的tag
     private static char LOG_TYPE = 'v';// 输入日志类型，v代表输出所有信息,w则只输出警告...
-    private static int LOG_SAVE_DAYS = 7;// sd卡中日志文件的最多保存天数
+    private static int LOG_SAVE_DAYS = 27;// sd卡中日志文件的最多保存天数
 
     private final static SimpleDateFormat LOG_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 日志的输出格式
     private final static SimpleDateFormat FILE_SUFFIX = new SimpleDateFormat("yyyy-MM-dd");// 日志文件格式
@@ -49,6 +55,52 @@ public class LogUtils {
     public static void init(Context context) { // 在Application中初始化
         LOG_FILE_PATH = Environment.getExternalStorageDirectory().getPath() + File.separator + "hehe";
         LOG_FILE_NAME = "Log";
+        watchCrachLog();
+    }
+
+    private static void watchCrachLog() {
+        final UncaughtExceptionHandler handler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            
+            @Override
+            public void uncaughtException(Thread thread, Throwable ex) {
+                ex.printStackTrace();
+                LogOutCrash(ex);
+                handler.uncaughtException(thread, ex);
+            }
+            
+            private void LogOutCrash(Throwable e) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+                String error = sw.toString();
+                LogUtils.v(LOG_TAG, error);
+                
+                File dirFile = new File(Environment.getExternalStorageDirectory(),"crash");
+                if(!dirFile.exists()) {
+                    dirFile.mkdirs();
+                }
+                String timeString = getFormatTimeString("yyyy-MM-dd-HH:mm:ss");
+                File crashFile = new File(dirFile,timeString + "_crash.txt");
+                try {
+                    FileOutputStream fos = new FileOutputStream(crashFile);
+                    fos.write(error.getBytes("utf-8"));
+                    fos.flush();
+                    fos.close();
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            
+            public String getFormatTimeString(String format) {
+                SimpleDateFormat sdf = new SimpleDateFormat(format,Locale.CHINESE);
+                return sdf.format(new Date());
+            }
+        });
     }
 
     /****************************

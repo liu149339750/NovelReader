@@ -1,0 +1,2 @@
+1.butterknife始终无法在.apt_generated下生成代码，配置没有异常，project删除又加载都没用。
+原因：.settings目录下org.eclipse.jdt.core.prefs文件内少了一行配置org.eclipse.jdt.core.compiler.processAnnotations=enabled，加上，然后删掉项目重新导入

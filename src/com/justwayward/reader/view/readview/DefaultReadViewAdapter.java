@@ -2,6 +2,8 @@ package com.justwayward.reader.view.readview;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.lw.bean.Chapter;
 import com.lw.novel.utils.FileUtil;
@@ -11,12 +13,11 @@ public class DefaultReadViewAdapter implements ReadViewAdapter{
     private List<Chapter> mChapters;
     private int mCurrentChapter;
     private String bookId;
-    private BaseReadView mBaseReadView;
+    private Lock mLock = new ReentrantLock();
     
-    public DefaultReadViewAdapter(BaseReadView view,String bookid,List<Chapter> c) {
+    public DefaultReadViewAdapter(String bookid,List<Chapter> c) {
         mChapters = c;
         bookId = bookid;
-        mBaseReadView = view;
     }
     
     public File getChapterFile(int chapter) {
@@ -26,10 +27,35 @@ public class DefaultReadViewAdapter implements ReadViewAdapter{
     
     
     public int getChapterCount() {
-        return mChapters.size();
+        mLock.lock();
+        int size = 0;
+        try{
+            size = mChapters.size();
+        } finally {
+            mLock.unlock();
+        }
+        return size;
     }
     
     public String getChapterTitle(int position) {
-        return mChapters.get(position).getTitle();
+        mLock.lock();
+        String title = null;
+        try{
+            title = mChapters.get(position).getTitle();
+        } finally {
+            mLock.unlock();
+        }
+        return title;
+    }
+
+    @Override
+    public void changeData(List<Chapter> chapters) {
+        mLock.lock();
+        try{
+            mChapters.clear();
+            mChapters.addAll(chapters);
+        } finally {
+            mLock.unlock();
+        }
     }
 }

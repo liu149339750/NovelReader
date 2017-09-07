@@ -75,9 +75,9 @@ public class PageWidget extends BaseReadView {
     Paint mPaint;
 
     public PageWidget(Context context, String bookId,
-                      List<Chapter> chaptersList,
+                      ReadViewAdapter adapter,
                       OnReadStateChangeListener listener) {
-        super(context, bookId, chaptersList, listener);
+        super(context, bookId, adapter, listener);
         mPath0 = new Path();
         mPath1 = new Path();
         mMaxLength = (float) Math.hypot(mScreenWidth, mScreenHeight);

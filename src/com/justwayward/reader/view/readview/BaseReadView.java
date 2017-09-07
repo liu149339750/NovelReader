@@ -57,7 +57,7 @@ public abstract class BaseReadView extends View {
     
     private ReadViewAdapter mAdapter;
 
-    public BaseReadView(Context context, String bookId, List<Chapter> chaptersList,
+    public BaseReadView(Context context, String bookId, ReadViewAdapter adapter,
                         OnReadStateChangeListener listener) {
         super(context);
         this.listener = listener;
@@ -73,8 +73,8 @@ public abstract class BaseReadView extends View {
 
         mScroller = new Scroller(getContext());
 
-        mAdapter = new DefaultReadViewAdapter(this,bookId,chaptersList);
-        pagefactory = new PageFactory(getContext(), bookId, chaptersList);
+        mAdapter = adapter;
+        pagefactory = new PageFactory(getContext(), bookId);
         pagefactory.setAdapter(mAdapter);
         pagefactory.setOnReadStateChangeListener(listener);
     }

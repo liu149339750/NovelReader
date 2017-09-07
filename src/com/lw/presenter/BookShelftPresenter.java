@@ -1,6 +1,7 @@
 package com.lw.presenter;
 
 import java.util.List;
+
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -11,6 +12,7 @@ import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.model.INovelBiz;
 import com.lw.model.NovelBiz;
+import com.lw.novel.utils.LogUtils;
 import com.lw.novel.utils.SettingUtil;
 import com.lw.ui.fragment.IBookShelftView;
 
@@ -18,6 +20,7 @@ public class BookShelftPresenter {
 
 	private INovelBiz mINovelBiz;
 	private IBookShelftView mView;
+	private static final String TAG = "BookShelftPresenter";
 	
 	public BookShelftPresenter(IBookShelftView iview) {
 		mView = iview;
@@ -52,7 +55,6 @@ public class BookShelftPresenter {
 
 									@Override
 									public NovelDetail call(String arg0) {
-									    System.out.println("call");
 										return mINovelBiz.getNovelInfo(arg0);
 									}
 								});
@@ -65,20 +67,19 @@ public class BookShelftPresenter {
 					@Override
 					public void onCompleted() {
 						// TODO Auto-generated method stub
-						System.out.println("onCompleted");
+						LogUtils.v(TAG, "updateBookShelft onCompleted");
 						mView.hideLoading();
 					}
 
 					@Override
 					public void onError(Throwable arg0) {
-						arg0.printStackTrace();
+						LogUtils.e(TAG, "updateBookShelft>onError", arg0);
 						mView.hideLoading();
 					}
 
 					@Override
 					public void onNext(NovelDetail arg0) {
-						// TODO Auto-generated method stub
-						System.out.println("onNext > " + (arg0 ==null ? "null":arg0.getNovel().getName()));
+						LogUtils.v(TAG,"onNext > " + (arg0 ==null ? "null":arg0.getNovel().getName()));
 					}
 				});
 	}

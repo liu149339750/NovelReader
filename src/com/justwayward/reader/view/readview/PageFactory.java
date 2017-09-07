@@ -106,7 +106,7 @@ public class PageFactory {
     private Bitmap batteryBitmap;
 
     private String bookId;
-    private List<Chapter> chaptersList;
+ //   private List<Chapter> chaptersList;
     private int chapterSize = 0;
     private int currentPage = 1;
 
@@ -115,15 +115,14 @@ public class PageFactory {
     
     private ReadViewAdapter mAdapter;
 
-    public PageFactory(Context context, String bookId, List<Chapter> chaptersList) {
+    public PageFactory(Context context, String bookId) {
         this(context, ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight(),
                 //SettingManager.getInstance().getReadFontSize(bookId),
                 SettingManager.getInstance().getReadFontSize(),
-                bookId, chaptersList);
+                bookId);
     }
 
-    public PageFactory(Context context, int width, int height, int fontSize, String bookId,
-                       List<Chapter> chaptersList) {
+    public PageFactory(Context context, int width, int height, int fontSize, String bookId) {
         mContext = context;
         mWidth = width;
         mHeight = height;
@@ -151,7 +150,6 @@ public class PageFactory {
         // mNumPaint.setTypeface(typeface);
 
         this.bookId = bookId;
-        this.chaptersList = chaptersList;
 
         time = dateFormat.format(new Date());
     }
