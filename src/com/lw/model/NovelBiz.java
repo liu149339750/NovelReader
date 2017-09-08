@@ -6,9 +6,11 @@ import java.util.List;
 import org.htmlparser.util.ParserException;
 
 import com.lw.bean.Chapter;
+import com.lw.bean.Chapter.Chapters;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.db.DBUtil;
+import com.lw.novel.utils.FileUtil;
 import com.lw.ttzw.DataQueryManager;
 
 import android.net.Uri;
@@ -57,6 +59,9 @@ public class NovelBiz implements INovelBiz {
 					Novel old = DBUtil.queryNovelByUrl(url);
 					int id = 0;
 					int c = 0;
+					Chapters chs = new Chapters();
+					chs.source = DataQueryManager.instance().getTag();
+					chs.chapters = nd.getChapters();
 					if(old == null) {
 						Uri uri = DBUtil.saveBookInfo(nd.getNovel());
 						id = Integer.parseInt(uri.getLastPathSegment());
@@ -66,7 +71,7 @@ public class NovelBiz implements INovelBiz {
 						DBUtil.updateNovelById(old.id, novel);
 						List<Chapter> chapters = DBUtil.queryNovelChapterList(id);
 						List<Chapter> newChapters = nd.getChapters();
-						if(chapters.size() < newChapters.size()) {
+ 						if(chapters.size() < newChapters.size()) {
 							System.out.println("insert new > " + (newChapters.size() - chapters.size()));
 							List<Chapter> newInsert = new ArrayList<Chapter>();
 							for(int i=chapters.size();i<newChapters.size();i++) {
@@ -78,6 +83,8 @@ public class NovelBiz implements INovelBiz {
 							}
 						}
 					}
+					chs.bookid = id;
+					FileUtil.saveChapterList(chs);
 					novel.setId(id);
 //					int c = DBUtil.saveChaptersToDb(id, nd.getChapters());
 					System.out.println("c="+c);

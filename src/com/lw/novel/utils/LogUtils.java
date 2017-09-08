@@ -245,7 +245,7 @@ public class LogUtils {
         if (!destDir.exists()) {
             destDir.mkdirs();
         }
-        File file = new File(LOG_FILE_PATH, LOG_FILE_NAME + date);
+        File file = new File(LOG_FILE_PATH, LOG_FILE_NAME + date + ".txt");
         try {
             FileWriter filerWriter = new FileWriter(file, true);
             BufferedWriter bufWriter = new BufferedWriter(filerWriter);

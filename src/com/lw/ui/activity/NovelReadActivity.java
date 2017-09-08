@@ -238,6 +238,10 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	public void download(View v) {
 		DownloadService.addToDownload(new DownloadTask(NovelManager.getInstance().getCurrentNovel(), NovelManager.getInstance().getChapterId(), -1, true));
 		Toast.makeText(this, R.string.begin_download, Toast.LENGTH_SHORT).show();
+		if(BookShelftManager.instance().isInbookShelft(bookId)) {
+		    BookShelftManager.instance().addBookToShelft(bookId);
+		}
+		
 	}
 	
 	@OnClick(R.id.change_source)

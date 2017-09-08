@@ -1,10 +1,16 @@
 package com.lw.novel.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
+import com.google.gson.Gson;
 import com.lw.bean.Chapter;
+import com.lw.bean.Chapter.Chapters;
 import com.lw.bean.Novel;
 import com.lw.ttzw.NovelManager;
 
@@ -15,18 +21,25 @@ public class FileUtil {
 	
 	private static final String DIRECTORY = "lwreader";
 	
+	private static final String CHAPTERS_DIR = "chapters";
+	
 	public static void init() {
 		File baseDir = Environment.getExternalStorageDirectory();
 		File file = new File(baseDir, DIRECTORY);
-		if(file.exists()) {
-			if(!file.isDirectory()) {
-				file.delete();
-				file.mkdir();
-			}
-		} else {
-			file.mkdir();
-		}
+		createDir(file);
+	    createDir(new File(file,CHAPTERS_DIR));
 	}
+
+    private static void createDir(File file) {
+        if(file.exists()) {
+	            if(!file.isDirectory()) {
+	                file.delete();
+	                file.mkdir();
+	            }
+	        } else {
+	            file.mkdir();
+	        }
+    }
 	
 	public static void deleteNovel(Novel n) {
 		String base = getBaseDir();
@@ -136,6 +149,54 @@ public class FileUtil {
         }
         return dirPath;
     }
-
-
+    
+    public static void saveStringToFile(String path,String msg) {
+        try {
+            FileOutputStream fos = new FileOutputStream(path);
+            fos.write(msg.getBytes());
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static String getStringFromFile(String path) {
+        try {
+            FileInputStream fin = new FileInputStream(path);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fin));
+            StringBuffer sb = new StringBuffer();
+            String line = null;
+            while((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            br.close();
+            return sb.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public static void saveChapterList(Chapters chapters) {
+        Gson gson = new Gson();
+        String json = gson.toJson(chapters);
+        saveStringToFile(getBaseDir() + "/" +CHAPTERS_DIR + "/" + chapters.bookid + "_" + chapters.source,json);
+    }
+    
+    public static Chapters getChapters(int bookid,String source) {
+        String path = getBaseDir() + "/" + CHAPTERS_DIR + "/" + bookid + "_" + source;
+        Chapters chapters = new Chapters();
+        chapters.bookid = bookid;
+        Gson gson = new Gson();
+        String msg = getStringFromFile(path);
+        if (msg != null) {
+            chapters = gson.fromJson(msg, Chapters.class);
+        }
+        return chapters;
+    }
 }

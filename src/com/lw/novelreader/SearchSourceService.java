@@ -13,8 +13,10 @@ import com.lw.bean.Chapter;
 import com.lw.bean.ChapterUrl;
 import com.lw.bean.Novel;
 import com.lw.bean.Novels;
+import com.lw.bean.Chapter.Chapters;
 import com.lw.db.DBUtil;
 import com.lw.novel.utils.AppUtils;
+import com.lw.novel.utils.FileUtil;
 import com.lw.novel.utils.LogUtils;
 import com.lw.ttzw.DataInterface;
 import com.lw.ttzw.SourceSelector;
@@ -169,6 +171,11 @@ public class SearchSourceService extends Service{
 				@Override
 				public List<Chapter> call(List<Chapter> arg0) {
 					if(arg0 != null) {
+					    Chapters chapters = new Chapters();
+					    chapters.bookid = novel.getId();
+					    chapters.chapters = arg0;
+					    FileUtil.saveChapterList(chapters);
+					    
 						List<ChapterUrl> chapterUrls = DBUtil.queryNovelChapterURLBySource(novel.getId(), df.getTag());
 						List<Chapter> dbChapter = DBUtil.queryNovelChapterList(novel.getId());
 						LogUtils.v(TAG, df.getTag()+">chapterUrls size="+chapterUrls.size()+",dbChapter size="+dbChapter.size());
@@ -235,7 +242,7 @@ public class SearchSourceService extends Service{
 	}
 	
 	private String removeMark(String text) {
-		return text.trim().replace(" ", "").replace("：", "").replace(":", "");
+		return text.trim().replace(" ", "").replace("：", "").replace(":", "").replaceAll("\\【.+\\】", "");
 	}
 	
 }

@@ -107,7 +107,7 @@ public class DataQueryManager implements DataInterface{
 
 	@Override
 	public String getTag() {
-		return TAG;
+		return SourceSelector.getDefaultSource().getTag();
 	}
 
 	@Override

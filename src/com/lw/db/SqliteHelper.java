@@ -21,6 +21,8 @@ public class SqliteHelper extends SQLiteOpenHelper{
 	
 	public static final String ID = "ID";
 	
+	private static final int VERSION = 1;
+	
 	private static final String CREATE_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS HISTORY ("
 			+ "ID INTEGER PRIMARY KEY,"
 			+ "author varchar(50),"
@@ -107,11 +109,12 @@ public class SqliteHelper extends SQLiteOpenHelper{
 			+ "book_id INTEGER,"
 			+ "source varchar(20),"
 			+ "url varchar(100),"
-			+ "chapter_url varchar(100))";
+			+ "chapter_url varchar(100),"
+			+ Source.CHAPTER_LIST + " varchar(100))";
 			
 	
 	public SqliteHelper(Context context) {
-		super(context, FileUtil.getBaseDir() + "/" + DB_NAME, null, 1);
+		super(context, FileUtil.getBaseDir() + "/" + DB_NAME, null, VERSION);
 	}
 
 	@Override
@@ -141,7 +144,9 @@ public class SqliteHelper extends SQLiteOpenHelper{
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
+	    if(newVersion == 2) {
+	        db.execSQL("alter " + SOURCE_TABLE + " add " + Source.CHAPTER_LIST + " varchar(100)");
+	    }
 		
 	}
 	
@@ -187,6 +192,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 		public static String URL = "url";
 		public static String SOURCE = "source";
 		public static String CHAPTER_URL = "chapter_url";
+		public static String CHAPTER_LIST = "chapter_list";
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.lw.bean;
 
+import java.util.List;
+
 public class Chapter extends BaseBean{
 
 	public String title;
@@ -55,6 +57,12 @@ public class Chapter extends BaseBean{
 	@Override
 	public String toString() {
 		return title+">"+url;
+	}
+	
+	public static class Chapters {
+	    public int bookid;
+	    public String source;
+	    public List<Chapter> chapters;
 	}
 	
 }
