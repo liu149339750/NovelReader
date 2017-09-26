@@ -3,6 +3,7 @@ package com.lw.ttzw;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lw.datainterfaceimpl.BiqugeImpl;
 import com.lw.datainterfaceimpl.TTZWImpl;
 import com.lw.datainterfaceimpl.XS84Impl;
 import com.lw.datainterfaceimpl.ZhuishuImpl;
@@ -23,6 +24,7 @@ public class SourceSelector {
 		mDataInterfaces.add(tt);
 		mDataInterfaces.add(new XS84Impl());
 		mDataInterfaces.add(new ZhuishuImpl());
+		mDataInterfaces.add(new BiqugeImpl());
 	}
 	
 	public static DataInterface selectDataInterface(String url) {
