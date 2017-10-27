@@ -160,6 +160,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	protected void onDestroy() {
 		super.onDestroy();
 		ButterKnife.unbind(this);
+		mPresenter.cancel();
 	}
 
 	private void initPagerWidget(String bookid) {
@@ -238,7 +239,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	public void download(View v) {
 		DownloadService.addToDownload(new DownloadTask(NovelManager.getInstance().getCurrentNovel(), NovelManager.getInstance().getChapterId(), -1, true));
 		Toast.makeText(this, R.string.begin_download, Toast.LENGTH_SHORT).show();
-		if(BookShelftManager.instance().isInbookShelft(bookId)) {
+		if(!BookShelftManager.instance().isInbookShelft(bookId)) {
 		    BookShelftManager.instance().addBookToShelft(bookId);
 		}
 		
@@ -518,6 +519,8 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
         LogUtils.v(TAG, "onChapterChange::chapters size = " + chapters.size());
         mAdapter.changeData(chapters);
     }
+    
+    
 	
 	
 }

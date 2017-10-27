@@ -53,7 +53,7 @@ public class LogUtils {
     private static String LOG_FILE_NAME;// 日志文件保存名称
 
     public static void init(Context context) { // 在Application中初始化
-        LOG_FILE_PATH = Environment.getExternalStorageDirectory().getPath() + File.separator + "hehe";
+        LOG_FILE_PATH = Environment.getExternalStorageDirectory().getPath() + File.separator + "lwreader/log";
         LOG_FILE_NAME = "Log";
         watchCrachLog();
     }
@@ -76,7 +76,7 @@ public class LogUtils {
                 String error = sw.toString();
                 LogUtils.v(LOG_TAG, error);
                 
-                File dirFile = new File(Environment.getExternalStorageDirectory(),"crash");
+                File dirFile = new File(LOG_FILE_PATH,"crash");
                 if(!dirFile.exists()) {
                     dirFile.mkdirs();
                 }
@@ -199,7 +199,7 @@ public class LogUtils {
                 Log.v(tag, createMessage(msg), tr);
             }
             if (LOG_TO_FILE)
-                log2File(String.valueOf(level), tag, msg + tr == null ? "" : "\n" + Log.getStackTraceString(tr));
+                log2File(String.valueOf(level), tag, msg + (tr == null ? "" : "\n" + Log.getStackTraceString(tr)));
         }
     }
 

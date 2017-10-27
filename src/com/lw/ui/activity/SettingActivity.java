@@ -30,6 +30,7 @@ public class SettingActivity extends PreferenceActivity implements OnPreferenceC
     
     public static void startSettingActivity() {
         Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClass(AppUtils.getAppContext(), SettingActivity.class);
         AppUtils.getAppContext().startActivity(intent);
     }

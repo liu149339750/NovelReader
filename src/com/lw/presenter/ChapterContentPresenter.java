@@ -1,10 +1,7 @@
 package com.lw.presenter;
 
-import java.util.List;
 
 import rx.Observable;
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -28,6 +25,7 @@ public class ChapterContentPresenter {
 	
 	private INovelBiz mINovelBiz;
 	private static final String TAG = "ChapterContentPresenter";
+	private boolean isCancel;
 
 	public ChapterContentPresenter(IChapterContentView chapterContentView) {
 		mChapterContentView = chapterContentView;
@@ -38,12 +36,17 @@ public class ChapterContentPresenter {
 	public void prepareChapterContent(final int chapter) {
 		// System.out.println("prepareChapterContent bookid = " +
 		// NovelManager.getInstance().getCurrentNovel().getId());
+	    isCancel = false;
 		mChapterContentView.showLoading(NovelManager.getInstance().getChapter(chapter).getTitle());
 		mChapterBiz.getChapterContent(NovelManager.getInstance().getCurrentNovel(),
 				NovelManager.getInstance().getChapter(chapter), new OnChapterContentListener() {
 
 					@Override
 					public void onFile(String path) {
+					    if(isCancel) {
+					        LogUtils.v(TAG, "cancel prepareChapterContent");
+					        return;
+					    }
 						if (TextUtils.isEmpty(path)) {
 							mChapterContentView.hideLoading();
 							mChapterContentView.onLoadFail(chapter);
@@ -56,8 +59,10 @@ public class ChapterContentPresenter {
 				});
 	}
 	
+	/**when open a novel,update the novel detail info*/
 	public void updateNovelChapters(String url) {
 	    LogUtils.v(TAG, "updateNovelChapters url = " + url);
+	    isCancel = false;
 	    Observable.just(url).observeOn(Schedulers.io())
 	    .map(new Func1<String, NovelDetail>() {
 
@@ -74,6 +79,10 @@ public class ChapterContentPresenter {
                     LogUtils.v(TAG, "updateNovelChapters fail");
                     return;
                 }
+                if(isCancel) {
+                    LogUtils.v(TAG, "cancel updateNovelChapters");
+                    return;
+                }
                 int size =  NovelManager.getInstance().getChapterSize();
                 LogUtils.v(TAG, "updateNovelChapters size ");
                 if(arg0.getChapters().size() > size) {
@@ -82,6 +91,10 @@ public class ChapterContentPresenter {
                 }
             }
         });
+	}
+	
+	public void cancel() {
+	    isCancel = true;
 	}
 
 }
