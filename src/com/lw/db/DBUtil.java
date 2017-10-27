@@ -23,6 +23,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.TextUtils;
 
 public class DBUtil {
 
@@ -87,13 +88,15 @@ public class DBUtil {
 		return cr.insert(NovelProvider.NOVEL_URI, cv);
 	}
 
-	public static Uri saveBookSource(int bookid, String source, String url, String chapterUrl) {
+	public static Uri saveBookSource(int bookid, String source, String url, String chapterUrl,String chaptersFile) {
 		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
 		ContentValues cv = new ContentValues();
 		cv.put(Source.BOOK_ID, bookid);
 		cv.put(Source.SOURCE, source);
 		cv.put(Source.URL, url);
 		cv.put(Source.CHAPTER_URL, chapterUrl);
+		if(!TextUtils.isEmpty(chaptersFile))
+		    cv.put(Source.CHAPTER_LIST, chaptersFile);
 		return cr.insert(NovelProvider.SOURCE_URI, cv);
 	}
 
@@ -409,6 +412,14 @@ public class DBUtil {
 		cv.put(ChapterURL.URL, url);
 		cr.update(NovelProvider.CHAPTER_URL_URI, cv, SqliteHelper.ID + " = " + id, null);
 	}
+	
+    public static void updateChaptersFileUrl(int bookid, String tag, String path) {
+        ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+        ContentValues cv = new ContentValues();
+        cv.put(Source.CHAPTER_LIST, path);
+        cr.update(NovelProvider.SOURCE_URI, cv, SqliteHelper.Source.BOOK_ID + " = " + bookid
+                + " and source = '" + tag + "'", null);
+    }
 
 	// ----------------------------------------
 

@@ -187,7 +187,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		Log.v(TAG, "onNewIntent");
-		mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterId());
+		mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterPosition());
 	}
 	
 	@Override
@@ -220,14 +220,14 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	
 	@OnClick(R.id.next_chapter)
 	public void nextChapter(View v) {
-		mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterId() + 1);
+		mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterPosition() + 1);
 //		mPageWidget.openLoadedChapter(NovelManager.getInstance().getChapterId() + 1);
 	}
 	
 	@OnClick(R.id.pre_chapter)
 	public void preChapter(View v) {
-//		mPageWidget.openLoadedChapter(NovelManager.getInstance().getChapterId() - 1);
-		mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterId() - 1);
+//		mPageWidget.openLoadedChapter(NovelManager.getInstance().getChapterPosition() - 1);
+		mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterPosition() - 1);
 	}
 	
 	@OnClick(R.id.setting)
@@ -237,7 +237,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	
 	@OnClick(R.id.cache)
 	public void download(View v) {
-		DownloadService.addToDownload(new DownloadTask(NovelManager.getInstance().getCurrentNovel(), NovelManager.getInstance().getChapterId(), -1, true));
+		DownloadService.addToDownload(new DownloadTask(NovelManager.getInstance().getCurrentNovel(), NovelManager.getInstance().getChapterPosition(), -1, true));
 		Toast.makeText(this, R.string.begin_download, Toast.LENGTH_SHORT).show();
 		if(!BookShelftManager.instance().isInbookShelft(bookId)) {
 		    BookShelftManager.instance().addBookToShelft(bookId);
@@ -247,7 +247,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	
 	@OnClick(R.id.change_source)
 	public void changeSource(View v) {
-		SourceActivity.startChangeSourceActivity(this);
+		SourceActivity.startChangeSourceActivity(this,NovelManager.getInstance().getChapterPosition());
 	}
 	
 	@OnClick(R.id.reload_chapter)
@@ -316,7 +316,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 			mBar.setProgress(chapter); //here crash once with null pointer
 			gone(mFailView);
 			System.out.println("onChapterChanged chapter =" + chapter);
-			NovelManager.getInstance().setChapterId(chapter);
+			NovelManager.getInstance().setChapterPosition(chapter);
 			DownloadService.addToDownload(new DownloadTask(NovelManager.getInstance().getCurrentNovel(), chapter, 5));
 			if(isInBookShelft) {
 				int c = DBUtil.setCurrentReadChapterPosition(bookId, chapter);
@@ -509,7 +509,7 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == RESULT_OK) {
 //			initPagerWidget(bookId + "");
-			mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterId());
+			mPageWidget.jumpToChapter(NovelManager.getInstance().getChapterPosition());
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

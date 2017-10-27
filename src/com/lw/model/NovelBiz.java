@@ -60,12 +60,13 @@ public class NovelBiz implements INovelBiz {
 					int id = 0;
 					int c = 0;
 					Chapters chs = new Chapters();
-					chs.source = DataQueryManager.instance().getTag();
+					chs.source = DataQueryManager.instance().queryTag(url);
 					chs.chapters = nd.getChapters();
 					if(old == null) {
 						Uri uri = DBUtil.saveBookInfo(nd.getNovel());
 						id = Integer.parseInt(uri.getLastPathSegment());
 						c = DBUtil.saveChaptersToDb(id, nd.getChapters());
+						DBUtil.saveBookSource(id, DataQueryManager.instance().queryTag(url), url, nd.getChapterUrl(),null);
 					} else {
 						id = old.id;
 						DBUtil.updateNovelById(old.id, novel);
@@ -84,7 +85,8 @@ public class NovelBiz implements INovelBiz {
 						}
 					}
 					chs.bookid = id;
-					FileUtil.saveChapterList(chs);
+					String path = FileUtil.saveChapterList(chs);
+					DBUtil.updateChaptersFileUrl(id, DataQueryManager.instance().queryTag(url), path);
 					novel.setId(id);
 //					int c = DBUtil.saveChaptersToDb(id, nd.getChapters());
 					System.out.println("c="+c);
@@ -112,7 +114,7 @@ public class NovelBiz implements INovelBiz {
 		
 	}
 	
-	
+	/**this methon is used when pull to update bookshelft*/
 	public NovelDetail getNovelInfo(String url) {
 //		NovelDetail n = caches.get(url);
 //		if(n != null) {
@@ -136,10 +138,16 @@ public class NovelBiz implements INovelBiz {
 			Novel old = DBUtil.queryNovelByUrl(url);
 			int id = 0;
 			int c = 0;
+			//save chapters to file
+            Chapters chs = new Chapters();
+            chs.source = DataQueryManager.instance().queryTag(url);
+            chs.chapters = nd.getChapters();
+            
 			if(old == null) {
 				Uri uri = DBUtil.saveBookInfo(nd.getNovel());
 				id = Integer.parseInt(uri.getLastPathSegment());
 				c = DBUtil.saveChaptersToDb(id, nd.getChapters());
+				DBUtil.saveBookSource(id, DataQueryManager.instance().queryTag(url), url, nd.getChapterUrl(),null);
 			} else {
 				id = old.id;
 				DBUtil.updateNovelById(old.id, novel);
@@ -157,6 +165,11 @@ public class NovelBiz implements INovelBiz {
 					}
 				}
 			}
+			
+			chs.bookid = id;
+            String path = FileUtil.saveChapterList(chs);
+            DBUtil.updateChaptersFileUrl(id, DataQueryManager.instance().queryTag(url), path);
+            
 			novel.setId(id);
 			System.out.println("c="+c);
 			caches.put(url, nd);

@@ -31,6 +31,8 @@ public class BiqugeManager {
 				.parse(new TagAttrFilter("DIV", "id", "list"));
 		
 		getChapters(chapters, nodeList);
+		novel.setChapterUrl(url);
+		detail.setChapterUrl(url);
 		parser.reset();
 		getDetailByMeta(novel, parser);
 		return detail;

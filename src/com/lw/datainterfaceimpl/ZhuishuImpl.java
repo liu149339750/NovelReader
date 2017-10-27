@@ -163,12 +163,14 @@ public class ZhuishuImpl implements DataInterface{
 				novel.setLastUpdateChapter(arg0.lastChapter);
 				novel.setLastUpdateTime(filterUpdate(arg0.updated));
 				novel.setUrl(url);
+				novel.setChapterUrl(url);
 				novel.setKind(arg0.cat);
 				bool.setValue(true);
 			}
 
 		});
 		bool.lockThread();
+		nd.setChapterUrl(url);
 		nd.setChapters(getNovelChapers(url));
 		return nd;
 	}

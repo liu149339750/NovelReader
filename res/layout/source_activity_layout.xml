@@ -26,7 +26,9 @@
         android:layout_width="fill_parent"
         android:text="@string/current_source"/>
 
-	<include layout="@layout/source_select_item"/>
+	<include layout="@layout/source_select_item"
+	    android:id="@+id/current_source"
+	    android:clickable="true"/>
     
     <TextView 
         style="@style/source_select__summary_style"

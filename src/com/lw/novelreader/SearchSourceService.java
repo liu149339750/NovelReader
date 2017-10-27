@@ -82,7 +82,7 @@ public class SearchSourceService extends Service{
 			@Override
 			public void call(Subscriber<? super Novel> arg0) {
 				Novels novels = null;
-				LogUtils.v(TAG, "getChapterUrlFromNet");
+				LogUtils.v(TAG, "getChapterUrlFromNet : " + df.getTag());
 				for(int i=0;i<3;i++ ) {
 					try {
 						LogUtils.v(TAG, "search");
@@ -117,11 +117,12 @@ public class SearchSourceService extends Service{
 
 			@Override
 			public String call(Novel arg0) {
-				LogUtils.v(TAG, "saveBookSource");
 				String url = df.getChapterUrl(arg0.getUrl());
+				LogUtils.v(TAG, "saveBookSource : url = " + url + ",baseUrl="+arg0.getUrl());
 				if(TextUtils.isEmpty(url)) {
 					try {
 						url = df.getNovelDetail(arg0.getUrl()).getChapterUrl();
+						LogUtils.v(TAG, "saveBookSource : lasturl = " + url);
 						arg0.setChapterUrl(url);
 					} catch (ParserException e) {
 						e.printStackTrace();
@@ -129,7 +130,7 @@ public class SearchSourceService extends Service{
 				}
 				if(!TextUtils.isEmpty(url)) {
 					LogUtils.v(TAG, "url = " +url);
-					DBUtil.saveBookSource(novel.getId(), df.getTag(), arg0.getUrl(), url);
+					DBUtil.saveBookSource(novel.getId(), df.getTag(), arg0.getUrl(), url,null);
 				}
 				return url;
 			}
@@ -174,7 +175,9 @@ public class SearchSourceService extends Service{
 					    Chapters chapters = new Chapters();
 					    chapters.bookid = novel.getId();
 					    chapters.chapters = arg0;
-					    FileUtil.saveChapterList(chapters);
+					    chapters.source = df.getTag();
+					    String path = FileUtil.saveChapterList(chapters);
+					    DBUtil.updateChaptersFileUrl(novel.getId(), df.getTag(), path);
 					    
 						List<ChapterUrl> chapterUrls = DBUtil.queryNovelChapterURLBySource(novel.getId(), df.getTag());
 						List<Chapter> dbChapter = DBUtil.queryNovelChapterList(novel.getId());

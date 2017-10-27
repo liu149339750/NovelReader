@@ -126,7 +126,12 @@ public class TTZWImpl implements DataInterface{
 
 	@Override
 	public String getChapterUrl(String url) {
-		return null;
+	    URI uri = URI.create(url); 
+	    String host = uri.getHost();
+	    if(!host.startsWith("m")) {
+	        return url;
+	    }
+		return url + "all.html";
 	}
 
 	@Override

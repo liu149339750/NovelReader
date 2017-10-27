@@ -186,7 +186,6 @@ public class PhoneFrameworkManager {
 		novels.setNovels(listNovel);
 		Parser parser = new Parser(url);
 		NodeList nodelist = parser.parse(new TagAttrFilter("div", "class","hot_sale"));
-		System.out.println(nodelist.size());
 		for(int i=0;i<nodelist.size();i++) {
 			Node novelNode = nodelist.elementAt(i);
 			Novel novel = parseNovelNode(BASE_XS84_URL,novelNode);

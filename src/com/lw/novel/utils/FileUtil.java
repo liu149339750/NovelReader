@@ -18,6 +18,7 @@ import android.os.Environment;
 
 public class FileUtil {
 
+    private static final String TAG = "FileUtil";
 	
 	private static final String DIRECTORY = "lwreader";
 	
@@ -52,6 +53,14 @@ public class FileUtil {
 		}
 		dir.delete();
 	}
+	
+    public static void deleteChapter(Novel n, String title) {
+        String base = getBaseDir();
+        File dir = new File(new File(base), n.getName() + "/" + n.getAuthor());
+        File chapterFile = new File(dir, title.trim() + ".txt");
+        LogUtils.v(TAG, "delete chapter File " + chapterFile.getPath());
+        chapterFile.delete();
+    }
 	
 	public static String getBaseDir() {
 		File baseDir = Environment.getExternalStorageDirectory();
@@ -182,10 +191,12 @@ public class FileUtil {
         return null;
     }
     
-    public static void saveChapterList(Chapters chapters) {
+    public static String saveChapterList(Chapters chapters) {
         Gson gson = new Gson();
         String json = gson.toJson(chapters);
-        saveStringToFile(getBaseDir() + "/" +CHAPTERS_DIR + "/" + chapters.bookid + "_" + chapters.source,json);
+        String fileName = getBaseDir() + "/" +CHAPTERS_DIR + "/" + chapters.bookid + "_" + chapters.source;
+        saveStringToFile(fileName,json);
+        return fileName;
     }
     
     public static Chapters getChapters(int bookid,String source) {

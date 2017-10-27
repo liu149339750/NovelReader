@@ -1,11 +1,15 @@
 package com.lw.ui.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.lw.bean.BookSource;
 import com.lw.bean.Chapter;
 import com.lw.bean.ChapterUrl;
 import com.lw.db.DBUtil;
+import com.lw.novel.utils.FileUtil;
 import com.lw.novel.utils.LogUtils;
+import com.lw.novel.utils.Util;
 import com.lw.novelreader.R;
 import com.lw.ttzw.NovelManager;
 
@@ -26,6 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SourceActivity extends AppCompatActivity implements OnItemClickListener{
 
@@ -52,7 +57,40 @@ public class SourceActivity extends AppCompatActivity implements OnItemClickList
 		
 		String tag = mChapter.getSource();
 		LogUtils.v(TAG, "tag = " + tag + ",ID = " + mChapter.getId());
-		mChapterUrls = DBUtil.queryNovelChapterURLByChapterID(mChapter.getId());
+//		mChapterUrls = DBUtil.queryNovelChapterURLByChapterID(mChapter.getId());
+		mChapterUrls = new ArrayList<ChapterUrl>();
+		
+		int bookId = NovelManager.getInstance().getCurrentNovel().getId();
+		
+		List<BookSource> sources = DBUtil.queryBookSource(bookId);
+		String title = Util.removeMark(mChapter.getTitle());
+		int cp = getIntent().getIntExtra("position", -1);
+		for(BookSource source : sources) {
+		    if(tag.equals(source.getSource()))
+		        continue;
+		    List<Chapter> chapters = FileUtil.getChapters(bookId, source.getSource()).chapters;
+		    if(chapters == null)
+		        continue;
+		    int startp = 0;
+		    int endp = chapters.size();
+		    if(cp != -1 && cp <= endp) {
+		        startp = (cp - 5 > 0 ? cp-5:0);
+		        endp = (cp + 5 < endp?cp + 5:endp);
+		    }
+		    for(int i=startp;i < endp;i++) {
+		        Chapter chapter = chapters.get(i);
+		        if(title.equals(Util.removeMark(chapter.getTitle()))) {
+		            ChapterUrl cu = new ChapterUrl();
+		            cu.setBookId(bookId);
+		            cu.setSource(source.getSource());
+		            cu.setTitle(chapter.getTitle());
+		            cu.setUrl(chapter.getUrl());
+		            mChapterUrls.add(cu);
+		            break;
+		        }
+		    }
+		}
+		
 		for(int i=0;i<mChapterUrls.size();i++) {
 			String source = mChapterUrls.get(i).getSource();
 			if(tag.equals(source)) {
@@ -79,8 +117,14 @@ public class SourceActivity extends AppCompatActivity implements OnItemClickList
 		toolbar.setNavigationIcon(R.drawable.kd_back_white);
 		toolbar.setTitle("");
 		setSupportActionBar(toolbar);
-		
 	}
+	
+    @OnClick(R.id.current_source)
+    public void reload(View view) {
+        FileUtil.deleteChapter(NovelManager.getInstance().getCurrentNovel(), mChapter.getTitle());
+        setResult(RESULT_OK);
+        finish();
+    }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -102,8 +146,9 @@ public class SourceActivity extends AppCompatActivity implements OnItemClickList
 	}
 	
 	
-	public static void startChangeSourceActivity(Context context) {
+	public static void startChangeSourceActivity(Context context,int chapterP) {
 		Intent intent = new Intent();
+		intent.putExtra("position", chapterP);
 		intent.setClass(context, SourceActivity.class);
 		if(context instanceof Activity) {
 			Activity activity = (Activity) context;
@@ -168,6 +213,7 @@ public class SourceActivity extends AppCompatActivity implements OnItemClickList
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		ChapterUrl cu = (ChapterUrl) parent.getItemAtPosition(position);
+		FileUtil.deleteChapter(NovelManager.getInstance().getCurrentNovel(), cu.getTitle());
 		setResultOk(cu);
 	}
 

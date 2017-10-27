@@ -85,7 +85,7 @@ public class BiqugeImpl implements DataInterface{
 
 	@Override
 	public String getChapterUrl(String url) {
-		return null;
+		return url;
 	}
 
 	@Override

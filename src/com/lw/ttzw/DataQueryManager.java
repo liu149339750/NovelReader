@@ -149,6 +149,11 @@ public class DataQueryManager implements DataInterface{
 		return null;
 	}
 
-	
+	public String queryTag(String url) {
+	    DataInterface di = SourceSelector.selectDataInterface(url);
+	    if(di != null)
+	        return di.getTag();
+	    return "";
+	}
 	
 }

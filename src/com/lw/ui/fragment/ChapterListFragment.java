@@ -44,7 +44,7 @@ public class ChapterListFragment extends ListFragment{
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		NovelManager.getInstance().setChapterId(position);
+		NovelManager.getInstance().setChapterPosition(position);
 		NovelReadActivity.startNovelReadActivity(getActivity(), position);
 		getActivity().finish();
 //		EventBus.getDefault().post(new EventMessage(EventMessage.START_READ, position + 1));

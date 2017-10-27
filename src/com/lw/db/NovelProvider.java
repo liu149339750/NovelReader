@@ -197,10 +197,13 @@ public class NovelProvider extends ContentProvider{
 		case CHAPTER_URL_ID:
 			c = mSql.getWritableDatabase().update(SqliteHelper.CHAPTER_URL_TABLE, values, selection, selectionArgs);
 			break;
+		case SOURCE_ID:
+		    c = mSql.getWritableDatabase().update(SqliteHelper.SOURCE_TABLE, values, selection, selectionArgs);
+		    break;
 		default:
 			break;
 		}
-		System.out.println("update uri =" +uri);
+		System.out.println("update uri =" +uri + ",update count = " + c);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return c;
 	}

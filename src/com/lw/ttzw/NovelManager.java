@@ -63,11 +63,11 @@ public class NovelManager {
 		return mChaper.size();
 	}
 
-	public int getChapterId() {
+	public int getChapterPosition() {
 		return chapterId;
 	}
 
-	public void setChapterId(int chapterId) {
+	public void setChapterPosition(int chapterId) {
 		System.out.println("setChapterId id =" + chapterId);
 		this.chapterId = chapterId;
 	}

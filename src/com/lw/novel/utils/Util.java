@@ -60,4 +60,9 @@ public class Util {
 		LogUtils.i(TAG, "imei = " + imei);
 		return tm.getDeviceId();
 	}
+	
+    public static String removeMark(String text) {
+        return text.trim().replace(" ", "").replace("：", "").replace(":", "")
+                .replaceAll("\\【.+\\】", "");
+    }
 }
