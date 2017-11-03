@@ -11,6 +11,7 @@ import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.db.DBUtil;
 import com.lw.novel.utils.FileUtil;
+import com.lw.novel.utils.LogUtils;
 import com.lw.ttzw.DataQueryManager;
 
 import android.net.Uri;
@@ -21,7 +22,7 @@ import android.util.LruCache;
 public class NovelBiz implements INovelBiz {
 
 	private static LruCache<String, NovelDetail> caches = new LruCache<String, NovelDetail>(10);
-	
+	private static final String TAG = "NovelBiz";
 	private boolean isCancel;
 	@Override
 	public void getNovelInfo(String url, final OnDataListener listener) {
@@ -128,10 +129,10 @@ public class NovelBiz implements INovelBiz {
 				return null;
 			}
 			NovelDetail nd = DataQueryManager.instance().getNovelDetail(url);
-			System.out.println("read over");
+			System.out.println("NovelBiz read over");
 			Novel novel = nd.getNovel();
-			if(novel.getName() == null) {
-				  
+			if(novel == null || novel.getName() == null) {
+				LogUtils.v(TAG, "get novel info fail,url="+url);
 				return null;
 			}
 //			DBUtil.deleteNovelByNameAndAuthor(novel.getName(), novel.getAuthor());

@@ -16,6 +16,8 @@ public class DataManager {
 	
 	private DataCache mShelftCache;
 	
+	private int pos = -1;
+	
 	public static DataManager instance() {
 		if(mDataManager == null) 
 			mDataManager = new DataManager();
@@ -40,6 +42,14 @@ public class DataManager {
 	
 	public void setDataListener(OnDataChangeListener listener) {
 		mChangeListener = listener;
+	}
+	
+	public void setPosition(int p) {
+	    pos = p;
+	}
+	
+	public int getPosition() {
+	    return pos;
 	}
 	
 	public boolean isShelftCached() {

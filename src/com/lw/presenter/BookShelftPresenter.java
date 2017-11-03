@@ -12,8 +12,10 @@ import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.model.INovelBiz;
 import com.lw.model.NovelBiz;
+import com.lw.novel.utils.AppUtils;
 import com.lw.novel.utils.LogUtils;
 import com.lw.novel.utils.SettingUtil;
+import com.lw.novelreader.SearchSourceService;
 import com.lw.ui.fragment.IBookShelftView;
 
 public class BookShelftPresenter {
@@ -44,11 +46,12 @@ public class BookShelftPresenter {
 							e.printStackTrace();
 						}
 						return Observable.just(arg0)
-								.subscribeOn(Schedulers.io())
+								.subscribeOn(Schedulers.from(AppUtils.getExecutor()))
 								.map(new Func1<Novel, String>() {
 
 									@Override
 									public String call(Novel arg0) {
+									    System.out.println(arg0.getName());
 										return arg0.getUrl();
 									}
 								}).map(new Func1<String, NovelDetail>() {
@@ -79,7 +82,11 @@ public class BookShelftPresenter {
 
 					@Override
 					public void onNext(NovelDetail arg0) {
+					    System.out.println("onNext > " + (arg0 ==null ? "null":arg0.getNovel().getName()));
 						LogUtils.v(TAG,"onNext > " + (arg0 ==null ? "null":arg0.getNovel().getName()));
+						//太耗性能与流量，先不开启，改成在打开小说的时候更新。
+//						if(arg0 != null)
+//						    SearchSourceService.postBackgroundSearch(arg0.getNovel());
 					}
 				});
 	}

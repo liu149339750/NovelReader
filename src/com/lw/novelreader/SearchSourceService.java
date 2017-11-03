@@ -58,7 +58,8 @@ public class SearchSourceService extends Service{
 	
 	public static void postBackgroundSearch(Novel novel) {
 		LogUtils.v(TAG, "postBackgroundSearch");
-		EventBus.getDefault().post(novel);
+		if(novel != null && novel.getId() != 0)
+		    EventBus.getDefault().post(novel);
 	}
 	
 	private Observable<String> getChapterUrlFromDb(final DataInterface df,final Novel novel) {

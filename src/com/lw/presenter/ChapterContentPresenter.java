@@ -6,6 +6,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.model.ChapterBiz;
 import com.lw.model.IChapterBiz;
@@ -13,6 +14,7 @@ import com.lw.model.INovelBiz;
 import com.lw.model.NovelBiz;
 import com.lw.model.OnChapterContentListener;
 import com.lw.novel.utils.LogUtils;
+import com.lw.novelreader.SearchSourceService;
 import com.lw.ttzw.NovelManager;
 import com.lw.ui.fragment.IChapterContentView;
 
@@ -59,7 +61,7 @@ public class ChapterContentPresenter {
 				});
 	}
 	
-	/**when open a novel,update the novel detail info*/
+	/**when open a novel,update the novel detail info and update the chapter list*/
 	public void updateNovelChapters(String url) {
 	    LogUtils.v(TAG, "updateNovelChapters url = " + url);
 	    isCancel = false;
@@ -88,6 +90,13 @@ public class ChapterContentPresenter {
                 if(arg0.getChapters().size() > size) {
                     NovelManager.getInstance().setChapers(arg0.getChapters());
                     mChapterContentView.onChapterChange(arg0.getChapters());
+                    Novel novel = arg0.getNovel();
+                    if(novel != null) {
+                        int id = novel.getId();
+                        if(NovelManager.getInstance().isInbookShelft(id)) {
+                            SearchSourceService.postBackgroundSearch(novel);
+                        }
+                    }
                 }
             }
         });

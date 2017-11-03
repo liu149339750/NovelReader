@@ -47,15 +47,18 @@ public class BookShelftFragment extends BaseListFreshFragment implements OnDataC
 	private void saveData() {
 //		Bundle b = getArguments();
 //		b.putParcelableArrayList("data", (ArrayList)mAdapter.getNovels());
-		Bundle b = getArguments();
-		b.putInt("y", getListView().getFirstVisiblePosition());
+	    
+//		Bundle b = getArguments();
+//		b.putInt("y", getListView().getFirstVisiblePosition());
+	    DataManager.instance().setPosition(getListView().getFirstVisiblePosition());
 		System.out.println(" getListView().getScrollY()="+ getListView().getScrollY());
 	}
 	
 	private int getScrollY() {
-		Bundle b = getArguments();
-		System.out.println("b.getInt(="+b.getInt("y"));
-		return b.getInt("y");
+//		Bundle b = getArguments();
+//		System.out.println("b.getInt(="+b.getInt("y"));
+//		return b.getInt("y");
+	    return DataManager.instance().getPosition();
 	}
 	
 	@Override
@@ -76,6 +79,7 @@ public class BookShelftFragment extends BaseListFreshFragment implements OnDataC
 		
 		DataManager.instance().setDataListener(this);
 		mAdapter = new BookItemAdpater(LayoutInflater.from(getActivity()));
+		mAdapter.setListView(getListView());
 		setListAdapter(mAdapter);
 		
 		loadMyShelft(true);
@@ -109,8 +113,7 @@ public class BookShelftFragment extends BaseListFreshFragment implements OnDataC
 	
 	@Override
 	public void onStop() {
-		System.out.println(getListView().getFirstVisiblePosition());
-		System.out.println("mm>"+getListView().getScrollY());
+		System.out.println("mm>"+getListView().getFirstVisiblePosition());
 		saveData();
 		super.onStop();
 	}
@@ -120,6 +123,9 @@ public class BookShelftFragment extends BaseListFreshFragment implements OnDataC
 		if(cache) {
 			if(DataManager.instance().isShelftCached()) {
 				mAdapter.changeData(DataManager.instance().queryShelftBookList(cache));
+				if(DataManager.instance().getPosition() == 0) {
+				    getListView().setSelection(0);
+				}
 				return;
 			}
 		}
@@ -151,6 +157,8 @@ public class BookShelftFragment extends BaseListFreshFragment implements OnDataC
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
+	    getListView().setSelection(0);
+	    //this is not in using.click listener is in adpater
 		Novel novel = (Novel) l.getItemAtPosition(position);
 		NovelManager.getInstance().setCurrentNovel(novel);
 		NovelReadActivity.startNovelReadActivity(getActivity(), -1);
@@ -158,6 +166,7 @@ public class BookShelftFragment extends BaseListFreshFragment implements OnDataC
 	
 	@Override
 	protected void pullRefreshData() {
+	    DataManager.instance().setPosition(-1);
 		mPresenter.updateBookShelft();
 	}
 

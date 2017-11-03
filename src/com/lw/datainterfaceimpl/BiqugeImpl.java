@@ -35,12 +35,12 @@ public class BiqugeImpl implements DataInterface{
 
 	@Override
 	public List<Chapter> getNovelChapers(String url) throws ParserException {
-		return BiqugeManager.getChapters(url);
+		return BiqugeManager.getChapters(url,TAG);
 	}
 
 	@Override
 	public NovelDetail getNovelDetail(String url) throws ParserException {
-		return BiqugeManager.getNovelDetailByMeta(url);
+		return BiqugeManager.getNovelDetailByMeta(url,TAG);
 	}
 
 	@Override

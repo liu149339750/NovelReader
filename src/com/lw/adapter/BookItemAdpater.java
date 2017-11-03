@@ -6,6 +6,7 @@ import java.util.List;
 import com.bumptech.glide.Glide;
 import com.lw.bean.Novel;
 import com.lw.bean.ShelftBook;
+import com.lw.novel.utils.DataManager;
 import com.lw.novelreader.BookShelftManager;
 import com.lw.novelreader.R;
 import com.lw.novelreader.R.drawable;
@@ -25,6 +26,7 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -34,6 +36,8 @@ public class BookItemAdpater extends BaseAdapter {
 	private List<Novel>  mNovels;
 	private LayoutInflater mInflater;
 	private List<Integer> mShowMore = new ArrayList<Integer>();
+	
+	private ListView mListView;
 	
 	public BookItemAdpater(List<? extends  Novel> n,LayoutInflater inflate) {
 		mNovels =   (List<Novel>) n;
@@ -47,6 +51,10 @@ public class BookItemAdpater extends BaseAdapter {
 	
 	public List<Novel> getNovels() {
 		return mNovels;
+	}
+	
+	public void setListView(ListView listView) {
+	    mListView = listView;
 	}
 	
 	public void changeData(List<? extends  Novel> novel) {
@@ -195,6 +203,10 @@ public class BookItemAdpater extends BaseAdapter {
 			case R.id.cardview:
 				NovelManager.getInstance().setCurrentNovel(mNovel);
 				NovelReadActivity.startNovelReadActivity(mInflater.getContext(), -1);
+				if(mListView != null) {
+//				    mListView.setSelection(0);
+				    DataManager.instance().setPosition(0);
+				}
 				break;
 			default:
 				break;

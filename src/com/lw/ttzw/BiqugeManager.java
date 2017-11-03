@@ -19,7 +19,8 @@ import com.lw.novel.utils.TagAttrFilter;
 public class BiqugeManager {
 
 	
-	public static NovelDetail getNovelDetailByMeta(String url) throws ParserException {
+    /**get novel detail and chapter list*/
+	public static NovelDetail getNovelDetailByMeta(String url, String tag) throws ParserException {
 		NovelDetail detail = new NovelDetail();
 		List<Chapter> chapters = new ArrayList<Chapter>();
 		Novel novel = new Novel();
@@ -30,7 +31,7 @@ public class BiqugeManager {
 		NodeList nodeList = parser
 				.parse(new TagAttrFilter("DIV", "id", "list"));
 		
-		getChapters(chapters, nodeList);
+		getChapters(chapters, nodeList,tag);
 		novel.setChapterUrl(url);
 		detail.setChapterUrl(url);
 		parser.reset();
@@ -72,16 +73,16 @@ public class BiqugeManager {
 		return TTZWManager.getChapterContent(url);
 	}
 	
-	public static List<Chapter> getChapters(String url) throws ParserException {
+	public static List<Chapter> getChapters(String url,String source) throws ParserException {
 		List<Chapter> chapters = new ArrayList<Chapter>();
 		Parser parser = new Parser(url);
 		NodeList nodeList = parser
 				.parse(new TagAttrFilter("DIV", "id", "list"));
-		getChapters(chapters, nodeList);
+		getChapters(chapters, nodeList,source);
 		return chapters;
 	}
 
-	private static void getChapters(List<Chapter> chapters, NodeList nodeList) {
+	private static void getChapters(List<Chapter> chapters, NodeList nodeList, String source) {
 		nodeList = nodeList.extractAllNodesThatMatch(new TagNameFilter("dl"),
 				true);
 		int size = nodeList.size();
@@ -107,6 +108,7 @@ public class BiqugeManager {
 			Chapter chapter = new Chapter();
 			chapter.setUrl(HtmlUtil.getFirstNodeAttr(ddt, "a", "href"));
 			chapter.setTitle(title);
+			chapter.setSource(source);
 			chapters.add(chapter);
 		}
 	}
