@@ -47,11 +47,14 @@ public class NovelBiz implements INovelBiz {
 //						return detail;
 //					}
 					System.out.println("begin read from net,url="+url);
+					LogUtils.v(TAG, "begin read from net,url="+url);
 					if(isCancel) {
+					    LogUtils.v(TAG, "cancel,url="+url);
 						return null;
 					}
 					NovelDetail nd = DataQueryManager.instance().getNovelDetail(url);
 					System.out.println("read over");
+					LogUtils.v(TAG, "read over,Novel = " + nd.getNovel());
 					Novel novel = nd.getNovel();
 					if(novel.getName() == null) {
 						return null;
@@ -96,6 +99,7 @@ public class NovelBiz implements INovelBiz {
 				} catch (ParserException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					LogUtils.e(TAG, "getNovelInfo",e);
 				}
 				return null;
 			}

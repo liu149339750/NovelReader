@@ -10,6 +10,7 @@ import com.lw.model.INovelBiz;
 import com.lw.model.NovelBiz;
 import com.lw.model.OnDataListener;
 import com.lw.novel.utils.AsyncUtil;
+import com.lw.novel.utils.LogUtils;
 import com.lw.novelreader.DownloadMessage;
 import com.lw.novelreader.DownloadProgress;
 import com.lw.novelreader.DownloadService;
@@ -21,6 +22,7 @@ import com.lw.ui.fragment.INovelInfoView;
 
 public class NovelInfoPresenter {
 
+    private static final String TAG = "NovelInfoPresenter";
 	private INovelInfoView mIView;
 	private INovelBiz mBiz;
 	
@@ -34,6 +36,7 @@ public class NovelInfoPresenter {
 	public void getNovelInfo() {
 		mIView.showLoading();
 		final Novel novel = NovelManager.getInstance().getCurrentNovel();
+		LogUtils.v(TAG, "getNovelInfo novel = " + novel);
 		mBiz.getNovelInfo(novel.getUrl(), new OnDataListener() {
 			
 			@Override
@@ -56,6 +59,7 @@ public class NovelInfoPresenter {
 			
 			@Override
 			public void onFail() {
+			    LogUtils.v(TAG, "onFail");
 				mIView.hideLoading();
 				mIView.onLoadFail();
 			}

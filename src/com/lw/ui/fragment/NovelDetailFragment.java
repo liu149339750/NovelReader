@@ -4,6 +4,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import com.bumptech.glide.Glide;
 import com.lw.bean.Novel;
+import com.lw.novel.utils.LogUtils;
 import com.lw.novelreader.BookShelftManager;
 import com.lw.novelreader.DownloadStatus;
 import com.lw.novelreader.R;
@@ -51,6 +52,8 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 	private final int RETRY_COUNT = 3;
 	private int retry;
 	
+	private final String TAG = "NovelDetailFragment";
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -97,12 +100,14 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 
 	@Override
 	public void showLoading() {
+	    LogUtils.v(TAG, "showLoading");
 		mContentView.setVisibility(View.GONE);
 		mLoadView.setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public void hideLoading() {
+	    LogUtils.v(TAG, "hideLoading");
 		mContentView.setVisibility(View.VISIBLE);
 		mLoadView.setVisibility(View.GONE);
 	}
@@ -207,9 +212,10 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 
 	@Override
 	public void onLoadFail() {
+	    LogUtils.v(TAG, "onLoadFail retry = " + retry);
 	    retry ++;
 		if(retry < RETRY_COUNT) {
-			showLoading();
+//			showLoading();
 			mPresenter.getNovelInfo();
 		} else {
 			//show load fail pager

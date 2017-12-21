@@ -18,8 +18,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.util.SparseArray;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class DownloadTask implements Runnable {
 

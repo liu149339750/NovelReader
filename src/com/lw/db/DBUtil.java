@@ -310,6 +310,7 @@ public class DBUtil {
 			novel.kind = cursor.getString(cursor.getColumnIndex(Books.kind));
 			novel.lastUpdateChapter = cursor.getString(cursor.getColumnIndex("lastUpdateChapter"));
 			novel.lastUpdateTime = cursor.getString(cursor.getColumnIndex("lastUpdateTime"));
+			novel.ChapterUrl = cursor.getString(cursor.getColumnIndex("chapter_url"));
 			novel.setCurrentChapterPosition(
 					cursor.getInt(cursor.getColumnIndex(SqliteHelper.BookShelft.current_chapterposition)));
 			novels.add(novel);

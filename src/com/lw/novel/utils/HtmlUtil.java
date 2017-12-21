@@ -138,7 +138,7 @@ public class HtmlUtil {
 	}
 	
 	public static String readHtml(String url) {
-		OkHttpClient client = new OkHttpClient();
+		OkHttpClient client = OkHttpUtils.getClient();
 		Request request = new Request.Builder().url(url).build();
 		try {
 			Response response = client.newCall(request).execute();
@@ -150,6 +150,16 @@ public class HtmlUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return "";
+	}
+	
+	public static String getHtml(String source) {
+	       String html = null;
+	        if(Util.isUrl(source)) {
+	            html = HtmlUtil.readHtml(source);
+	        } else {
+	            html = source;
+	        }
+	        return html;
 	}
 }

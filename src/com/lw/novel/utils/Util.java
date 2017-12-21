@@ -1,6 +1,8 @@
 package com.lw.novel.utils;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.lw.novelreader.R;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -54,6 +56,20 @@ public class Util {
 		return false;
 	}
 	
+	public static boolean isUrl(String resource) {
+	    int length = resource.length ();
+        for (int i = 0; i < length; i++)
+        {
+            char ch = resource.charAt (i);
+            if (!Character.isWhitespace (ch))
+            {
+                if ('<' == ch)
+                    return false;
+            }
+        }
+        return true;
+	}
+	
 	public static String getDeviceId() {
 		TelephonyManager tm = (TelephonyManager) AppUtils.getAppContext().getSystemService(Context.TELEPHONY_SERVICE);
 		String imei = tm.getDeviceId();
@@ -62,7 +78,103 @@ public class Util {
 	}
 	
     public static String removeMark(String text) {
-        return text.trim().replace(" ", "").replace("：", "").replace(":", "")
-                .replaceAll("\\【.+\\】", "");
+        return replaceDigitToChinese(text.trim().replace(" ", "").replace("：", "").replace(":", "")
+                .replaceAll("\\【.+\\】|\\(|\\)|\\（|\\）", "")); //去掉【】与其中内容,去掉括号
+    }
+    
+    public static String replaceDigitToChinese(String str) {
+        int len = str.length();
+        StringBuffer sb = new StringBuffer();
+        List<A> numbers = new ArrayList<A>();
+        int s = -1;
+        for(int i=0;i<len;i++) {
+            char ch = str.charAt(i);
+            if(Character.isDigit(ch)) {
+                if(s != -1)
+                    continue;
+                s = i;
+            } else {
+                if(s != -1) {
+                    A a = new A();
+                    a.start = s;
+                    a.end = i;
+                    a.str = str.substring(s, i);
+                    numbers.add(a);
+                    s = -1;
+                }
+                sb.append(ch);
+            }
+        }
+        for(A num : numbers) {
+            String rStr = DigitStrToChinese(num.str);
+            System.out.println(num.start + ":" + num.end + ":" + num.str);
+            str = str.replace(str.substring(num.start, num.end), rStr);
+        }
+        return str;
+    }
+    
+    public static String DigitStrToChinese(String str) {
+        int len = str.length();
+        StringBuffer sb = new StringBuffer();
+        for(int i=0;i<len;i++){
+            char ch = str.charAt(i);
+            if(Character.isDigit(ch)) {
+                sb.append(getChineseNumByDigit(ch));
+            } else {
+                sb.append(ch);
+            }
+        }
+        if(len == 2) {
+            if(str.charAt(1) == '0') {
+                sb.delete(1, 2);
+            }
+            sb.insert(1, "十");
+        }
+        return sb.toString();
+    }
+
+    private static String getChineseNumByDigit(char ch) {
+        String r = ch + "";
+        switch (ch) {
+            case '0':
+                r = "零";
+                break;
+            case '1':
+                r = "一";
+                break;
+            case '2':
+                r = "二";
+                break;
+            case '3':
+                r = "三";
+                break;
+            case '4':
+                r = "四";
+                break;
+            case '5':
+                r = "五";
+                break;
+            case '6':
+                r = "六";
+                break;
+            case '7':
+                r = "七";
+                break;
+            case '8':
+                r = "八";
+                break;
+            case '9':
+                r = "九";
+                break;
+            default:
+                break;
+        }
+        return r;
+    }
+    
+    static class A {
+        int start;
+        int end;
+        String str;
     }
 }

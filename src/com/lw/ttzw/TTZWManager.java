@@ -26,6 +26,7 @@ import com.lw.bean.NovelDetail;
 import com.lw.bean.Novels;
 import com.lw.novel.utils.HtmlUtil;
 import com.lw.novel.utils.TagAttrFilter;
+import com.lw.novel.utils.Util;
 
 import android.util.Log;
 
@@ -59,7 +60,7 @@ public class TTZWManager {
 		List<Novel> novels = new ArrayList<Novel>();
 		Novels sr = new Novels();
 		sr.setNovels(novels);
-		Parser parser = new Parser(source);
+		Parser parser = new Parser(HtmlUtil.getHtml(source));
 		parser.setEncoding("utf-8");
 		// get novel list;
 		NodeList nodeList = parser.parse(new TagAttrFilter("DIV", "class",
@@ -176,7 +177,7 @@ public class TTZWManager {
 
 	/** get the chapterContent by the content url or the file or the html*/
 	public static String getChapterContent(String source) throws ParserException {
-		Parser parser = new Parser(source);
+		Parser parser = new Parser(HtmlUtil.getHtml(source));
 		NodeList nodeList = parser.parse(new TagAttrFilter("DIV", "id",
 				"content"));
 		String content = "";
@@ -193,7 +194,7 @@ public class TTZWManager {
 	public static List<Chapter> getNovelChapers(String url)
 			throws ParserException {
 		List<Chapter> chapters = new ArrayList<Chapter>();
-		Parser parser = new Parser(url);
+		Parser parser = new Parser(HtmlUtil.getHtml(url));
 		NodeList nodeList = parser
 				.parse(new TagAttrFilter("DIV", "id", "list"));
 		nodeList = nodeList.extractAllNodesThatMatch(new TagNameFilter("dd"),
@@ -217,7 +218,7 @@ public class TTZWManager {
 		detail.setNovel(novel);
 		detail.setChapters(chapters);
 		
-		Parser parser = new Parser(url);
+		Parser parser = new Parser(HtmlUtil.getHtml(url));
 		NodeList nodeList = parser
 				.parse(new TagAttrFilter("DIV", "id", "list"));
 		nodeList = nodeList.extractAllNodesThatMatch(new TagNameFilter("dd"),
@@ -273,7 +274,7 @@ public class TTZWManager {
 		detail.setNovel(novel);
 		detail.setChapters(chapters);
 		
-		Parser parser = new Parser(url);
+		Parser parser = new Parser(HtmlUtil.getHtml(url));
 		NodeList nodeList = parser
 				.parse(new TagAttrFilter("DIV", "id", "list"));
 		nodeList = nodeList.extractAllNodesThatMatch(new TagNameFilter("dd"),
@@ -337,7 +338,13 @@ public class TTZWManager {
 			throws ParserException {
 		System.out.println("getLastUpdates");
 		List<Novel> novels = new ArrayList<Novel>();
-		Parser parser = new Parser(url);
+		String html = null;
+		if(Util.isUrl(url)) {
+		    html = HtmlUtil.readHtml(url);
+		} else {
+            html = url;
+        }
+		Parser parser = new Parser(html);
 		NodeList nodeList = parser.parse(new TagAttrFilter("DIV", "id",
 				"newscontent"));
 		Node fnode = null;

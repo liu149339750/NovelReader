@@ -17,7 +17,9 @@ import com.justwayward.reader.view.readview.SettingManager;
 import com.justwayward.reader.view.readview.SharedPreferencesUtil;
 import com.justwayward.reader.view.readview.ThemeManager;
 import com.lw.bean.Chapter;
+import com.lw.bean.Novel;
 import com.lw.db.DBUtil;
+import com.lw.novel.utils.FileUtil;
 import com.lw.novel.utils.LogUtils;
 import com.lw.novel.utils.Util;
 import com.lw.novelreader.BookShelftManager;
@@ -26,6 +28,7 @@ import com.lw.novelreader.DownloadTask;
 import com.lw.novelreader.R;
 import com.lw.presenter.ChapterContentPresenter;
 import com.lw.ttzw.NovelManager;
+import com.lw.ttzw.SourceSelector;
 import com.lw.ui.fragment.IChapterContentView;
 import com.mingle.widget.LoadingView;
 import com.zhuishu.api.Constant;
@@ -96,6 +99,8 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	 private List<Chapter> mChapters;
 	 private ReadViewAdapter mAdapter;
 	 
+	 private Novel mNovel;
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -110,7 +115,9 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		}
 		setContentView(R.layout.chapter_content);
 		ButterKnife.bind(this);
-		bookId = NovelManager.getInstance().getCurrentNovel().getId();
+		mNovel = NovelManager.getInstance().getCurrentNovel();
+		System.out.println(mNovel);
+		bookId = mNovel.getId();
 		isInBookShelft = BookShelftManager.instance().isInbookShelft(bookId);
 		if(!isInBookShelft) {
 			findViewById(R.id.change_source).setVisibility(View.GONE);
@@ -134,7 +141,8 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		intentFilter.addAction(Intent.ACTION_TIME_TICK);
 
 		if(NovelManager.getInstance().getChapterSize() == 0) {
-			NovelManager.getInstance().setChapers(DBUtil.queryNovelChapterList(bookId));
+//			NovelManager.getInstance().setChapers(DBUtil.queryNovelChapterList(bookId));
+		    NovelManager.getInstance().setChapers(FileUtil.getChapters(bookId, SourceSelector.selectDataInterface(mNovel.getUrl()).getTag()).chapters);
 		}
 		mChapters = new ArrayList<Chapter>(NovelManager.getInstance().getChapers());
 		mBar.setMax(NovelManager.getInstance().getChapterSize() - 1);

@@ -25,7 +25,7 @@ public class XS32Manager {
 		novels.setCurrentUrl(url);
 		List<Novel> listNovel = new ArrayList<Novel>();
 		novels.setNovels(listNovel);
-		Parser parser = new Parser(url);
+		Parser parser = new Parser(HtmlUtil.getHtml(url));
 		parser.setEncoding("GBK");
 		NodeList nodelist = parser.parse(new TagAttrFilter("ul", "class","item-con"));
 		if(nodelist.size() < 1) {

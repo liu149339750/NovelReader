@@ -9,6 +9,7 @@ import java.util.List;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.http.ConnectionManager;
 import org.htmlparser.nodes.TagNode;
 import org.htmlparser.tags.Html;
 import org.htmlparser.tags.ImageTag;
@@ -24,6 +25,7 @@ import com.lw.bean.Novels;
 import com.lw.novel.utils.HtmlUtil;
 import com.lw.novel.utils.LogUtils;
 import com.lw.novel.utils.TagAttrFilter;
+import com.lw.novel.utils.Util;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -51,6 +53,8 @@ public class PhoneFrameworkManager {
 	
 	public static List<Chapter> getNovelChapers(String baseUrl,String source,String tag) throws ParserException {
 		List<Chapter> chapters = new ArrayList<Chapter>();
+		if(Util.isUrl(source))
+		    source = HtmlUtil.readHtml(source);
 		Parser parser = new Parser(source);
 		NodeList nodeList = parser
 				.parse(new TagAttrFilter("DIV", "id", "chapterlist"));
@@ -92,7 +96,7 @@ public class PhoneFrameworkManager {
 		NovelDetail detail = new NovelDetail();
 		detail.setNovel(novel);
 		novel.setUrl(url);
-		Parser parser = new Parser(url);
+		Parser parser = new Parser(HtmlUtil.readHtml(url));
 		NodeList nl = parser.parse(null);
 		Node html = null;
 		for (int i = 0; i < nl.size(); i++) {
@@ -208,7 +212,13 @@ public class PhoneFrameworkManager {
 		novels.setCurrentUrl(url);
 		List<Novel> listNovel = new ArrayList<Novel>();
 		novels.setNovels(listNovel);
-		Parser parser = new Parser(url);
+		String html = null;
+		if(Util.isUrl(url)) {
+		    html = HtmlUtil.readHtml(url);
+		} else {
+            html = url;
+        }
+		Parser parser = new Parser(html);
 		NodeList nodelist = parser.parse(new TagAttrFilter("div", "class","hot_sale"));
 		for(int i=0;i<nodelist.size();i++) {
 			Node novelNode = nodelist.elementAt(i);

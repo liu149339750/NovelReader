@@ -6,9 +6,11 @@ import java.util.List;
 import com.lw.adapter.NovelListAdpater;
 import com.lw.bean.Novel;
 import com.lw.bean.Novels;
+import com.lw.novel.utils.LogUtils;
 import com.lw.novel.utils.SettingUtil;
 import com.lw.novelreader.R;
 import com.lw.presenter.SearchPresenter;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -49,6 +51,8 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 	private final int RETRY_COUNT = 3;
 	private int retry;
 	private boolean firstQuery;
+	
+	private final String TAG = "SearchActvity";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +167,7 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Novel novel = (Novel) parent.getItemAtPosition(position);
+		LogUtils.v(TAG, "onItemClick = " + novel);
 		NovelDetailActivity.startDetailActivity(this, novel);
 	}
 
