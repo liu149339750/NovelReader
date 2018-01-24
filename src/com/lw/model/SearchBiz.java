@@ -14,7 +14,7 @@ public class SearchBiz implements ISearchBiz{
 		try {
 			sr = DataQueryManager.instance().search(keyword);
 			DBUtil.addSearchKeyword(keyword);
-		} catch (ParserException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -26,7 +26,7 @@ public class SearchBiz implements ISearchBiz{
 		Novels sr = null;
 		try {
 			sr = DataQueryManager.instance().loadSearchNovel(source);
-		} catch (ParserException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.lw.bean.Novel;
 import com.lw.bean.ShelftBook;
 import com.lw.novel.utils.DataManager;
+import com.lw.novel.utils.LogUtils;
 import com.lw.novelreader.BookShelftManager;
 import com.lw.novelreader.R;
 import com.lw.novelreader.R.drawable;
@@ -37,6 +38,7 @@ public class BookItemAdpater extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private List<Integer> mShowMore = new ArrayList<Integer>();
 	
+	private static final String TAG = "BookItemAdpater";
 	private ListView mListView;
 	
 	public BookItemAdpater(List<? extends  Novel> n,LayoutInflater inflate) {
@@ -92,8 +94,9 @@ public class BookItemAdpater extends BaseAdapter {
 		holder.lastUpdateTime.setText(novel.getLastUpdateTime());
 		if(novel instanceof ShelftBook) {
 			ShelftBook sb = (ShelftBook) novel;
-			holder.chapterCount.setText( sb.getCurrentChapterPosition() + 1  + "/" + sb.chapterCount);
-			int c = sb.chapterCount - sb.getCurrentChapterPosition() - 1;
+			holder.chapterCount.setText( sb.getCurrentChapterId() + 1  + "/" + sb.chapterCount);
+			int c = sb.chapterCount - sb.getCurrentChapterId() - 1;
+			LogUtils.v(TAG, "chapterCount = " + sb.chapterCount + ",currentChapter = " + sb.getCurrentChapterId());
 			if(c > 0) {
 				holder.unReadCount.setVisibility(View.VISIBLE);
 				holder.unReadCount.setText(mInflater.getContext().getString(R.string.unread_count,c));

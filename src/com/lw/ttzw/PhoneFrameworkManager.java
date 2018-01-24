@@ -44,7 +44,7 @@ public class PhoneFrameworkManager {
 	private static final String KIND = "类别：";
 	private static final String AUTHOR = "作者：";
 
-	public static final String TTZW_BASE_URL = "http://m.ttzw.com/";
+	public static final String TTZW_BASE_URL = "https://m.ttzw.com/";
 	
 	public static final String BASE_XS84_URL = "http://m.xs84.me";
 	
@@ -53,8 +53,12 @@ public class PhoneFrameworkManager {
 	
 	public static List<Chapter> getNovelChapers(String baseUrl,String source,String tag) throws ParserException {
 		List<Chapter> chapters = new ArrayList<Chapter>();
-		if(Util.isUrl(source))
+		if(Util.isUrl(source)) {
+			String u = source;
 		    source = HtmlUtil.readHtml(source);
+		    if(TextUtils.isEmpty(source))
+		    	source = HtmlUtil.readHtml(u);
+		}
 		Parser parser = new Parser(source);
 		NodeList nodeList = parser
 				.parse(new TagAttrFilter("DIV", "id", "chapterlist"));
@@ -106,6 +110,12 @@ public class PhoneFrameworkManager {
 				break;
 			}
 		}
+		if(html == null) {
+			LogUtils.e(TAG, "html == null,url =" + url );
+			LogUtils.w(TAG, nl.toHtml());
+			return detail;
+		}
+		LogUtils.v(TAG, "html download finish");
 		NodeList spans = html.getChildren().extractAllNodesThatMatch(new TagAttrFilter("span", "class", "title"), true);
 		if (spans.size() > 0) {
 			TagNode span = (TagNode) spans.elementAt(0);
@@ -131,7 +141,7 @@ public class PhoneFrameworkManager {
 						novel.setThumb(tag.getAttribute("src"));
 					} else if (tag instanceof LinkTag) {
 						if (HtmlUtil.hasChild(tag)) {
-							System.out.println(tag.toHtml());
+							System.out.println("phone::" + tag.toHtml());
 							TagNode t = HtmlUtil.getFistrtTagNode(tag, "p");
 							if (t != null) {
 								novel.setAuthor(t.toPlainTextString().replace(AUTHOR, "").trim());

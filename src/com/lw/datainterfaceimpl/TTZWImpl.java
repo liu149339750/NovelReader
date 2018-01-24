@@ -12,6 +12,7 @@ import com.lw.bean.NovelDetail;
 import com.lw.bean.Novels;
 import com.lw.novel.utils.AppUtils;
 import com.lw.novel.utils.HtmlUtil;
+import com.lw.novel.utils.LogUtils;
 import com.lw.novel.utils.Util;
 import com.lw.novelreader.R;
 import com.lw.ttzw.DataInterface;
@@ -65,8 +66,10 @@ public class TTZWImpl implements DataInterface{
 		NovelDetail detail = null;
 		if(host.startsWith("m")) {
 			detail =  PhoneFrameworkManager.getNovelDetail(BASE_M_URL, url);
-			if(detail.getChapters() == null) {
+			LogUtils.v(TAG, "getBrief over,begain get Chapters");
+			if(detail.getChapters() == null && detail.getChapterUrl() != null) {
 				detail.setChapters(PhoneFrameworkManager.getNovelChapers(url,detail.getChapterUrl(),getTag()));
+				LogUtils.v(TAG, "get chapters over");
 			}
 		} else {
 			detail = TTZWManager.getNovelDetailByMeta(url,getTag());

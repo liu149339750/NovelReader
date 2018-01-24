@@ -13,6 +13,7 @@ import com.lw.bean.ShelftBook;
 import com.lw.db.SqliteHelper.BookShelft;
 import com.lw.db.SqliteHelper.Books;
 import com.lw.db.SqliteHelper.ChapterURL;
+import com.lw.db.SqliteHelper.SearchHistory;
 import com.lw.db.SqliteHelper.Source;
 import com.lw.novel.utils.AppUtils;
 import com.lw.novel.utils.LogUtils;
@@ -103,7 +104,18 @@ public class DBUtil {
 	public static int setCurrentReadChapterPosition(int bookid, int p) {
 		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(BookShelft.current_chapterposition, p);
+		cv.put(BookShelft.current_chapter_id, p);
+		cv.put(BookShelft.current_chapterposition, 0);
+		return cr.update(Uri.withAppendedPath(NovelProvider.BOOKSHELFT_URI, bookid + ""), cv, "book_id = " + bookid,
+				null);
+	}
+	
+	public static int saveReadPosition(int bookid,int cp,int startp) {
+		LogUtils.v(TAG, "saveReadPosition bookid = " + bookid + ",chapter = " + cp + ",startp = " + startp);
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(BookShelft.current_chapter_id, cp);
+		cv.put(BookShelft.current_chapterposition, startp);
 		return cr.update(Uri.withAppendedPath(NovelProvider.BOOKSHELFT_URI, bookid + ""), cv, "book_id = " + bookid,
 				null);
 	}
@@ -127,7 +139,10 @@ public class DBUtil {
 	}
 
 	public static void addSearchKeyword(String keyword) {
-
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(SearchHistory.KEYWORDS, keyword);
+		cr.insert(NovelProvider.SEARCH_HISTORY_URI, cv);
 	}
 
 	// --------------delete from db --------------
@@ -141,8 +156,26 @@ public class DBUtil {
 		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
 		cr.delete(NovelProvider.NOVEL_URI, Books.name + " = " + name + " and " + Books.author + " = " + author, null);
 	}
+	
+	public static void deleteNovelChapters(int bookid) {
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		cr.delete(NovelProvider.CHAPTER_URI, com.lw.db.SqliteHelper.Chapter.book_id + " = " + bookid, null);
+	}
 
 	// -------------query db ------------
+	
+	public static List<String>querySearchHistory() {
+		List<String>keywords = new ArrayList<>();
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		Cursor cursor = cr.query(NovelProvider.SEARCH_HISTORY_URI, null, null, null, null);
+		if(cursor == null) {
+			return keywords;
+		}
+		while(cursor.moveToNext()) {
+			keywords.add(cursor.getString(cursor.getColumnIndex(SearchHistory.KEYWORDS)));
+		}
+		return keywords;
+	}
 	
 	public static List<BookSource> queryBookSource(int bookId) {
 		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
@@ -311,6 +344,7 @@ public class DBUtil {
 			novel.lastUpdateChapter = cursor.getString(cursor.getColumnIndex("lastUpdateChapter"));
 			novel.lastUpdateTime = cursor.getString(cursor.getColumnIndex("lastUpdateTime"));
 			novel.ChapterUrl = cursor.getString(cursor.getColumnIndex("chapter_url"));
+			novel.setCurrentChapterId(cursor.getInt(cursor.getColumnIndex(SqliteHelper.BookShelft.current_chapter_id)));
 			novel.setCurrentChapterPosition(
 					cursor.getInt(cursor.getColumnIndex(SqliteHelper.BookShelft.current_chapterposition)));
 			novels.add(novel);
@@ -357,6 +391,19 @@ public class DBUtil {
 			return novel;
 		}
 		return null;
+	}
+	
+	public static int[] queryReadPosition(String bookid) {
+		ContentResolver cr = AppUtils.getAppContext().getContentResolver();
+		Cursor cursor = cr.query(NovelProvider.BOOKSHELFT_URI, null, "book_id = " + bookid, null, null);
+		System.out.println("c size = " + cursor.getCount());
+		int result[] = new int[2];
+		if (cursor.moveToNext()) {
+			result[0] = cursor.getInt(cursor.getColumnIndex(SqliteHelper.BookShelft.current_chapter_id));
+			result[1] = cursor.getInt(cursor.getColumnIndex(SqliteHelper.BookShelft.current_chapterposition));
+		}
+		LogUtils.v(TAG, "queryReadPosition chapter = " + result[0] + " startp = " + result[1]);
+		return result;
 	}
 
 	// ------------update db -------------

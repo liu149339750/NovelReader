@@ -19,9 +19,15 @@ public class SqliteHelper extends SQLiteOpenHelper{
 	public static final String SOURCE_TABLE = "SOURCE";
 	public static final String BOOKSHELFT_VIEW = "booshelft_info";
 	
+	public static final String SEARCH_HISTORY_TABLE = "search_history";
+	
 	public static final String ID = "ID";
 	
 	private static final int VERSION = 2;
+	
+	private static final String CREATE_SEARCH_HISTORY_TABLE = "create table if not exists search_history ("
+			+ "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+			"keywords varchar(50)";
 	
 	private static final String CREATE_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS HISTORY ("
 			+ "ID INTEGER PRIMARY KEY,"
@@ -67,8 +73,8 @@ public class SqliteHelper extends SQLiteOpenHelper{
 			+ "readtime varchar(50),"
 			+ "chapter_count INTEGER default 0,"
 			+ "source varchar(20),"
-			+ "current_chapter_id INTEGER default 1,"
-			+ "current_chapterposition INTEGER default 1)";
+			+ "current_chapter_id INTEGER default 0,"
+			+ "current_chapterposition INTEGER default 0)";
 	
 	private static final String CREATE_TRIGE_INSERT_BOOKSHELFT = "CREATE trigger if not exists auto_insert_book "
 			+ "after insert on BOOKS "
@@ -101,7 +107,9 @@ public class SqliteHelper extends SQLiteOpenHelper{
 
 	private static final String CREATE_BOOKSHELFT_VIEW = "CREATE view if not exists booshelft_info AS "
 			+ "SELECT BOOKS.ID as ID,author,name,url,kind,lastUpdateTime,lastUpdateChapter,thumb,detail,readtime,chapter_count,"
-			+ "current_chapterposition," + Books.CHAPTER_URL
+			+ "current_chapterposition,"
+			+ "current_chapter_id,"
+			+ Books.CHAPTER_URL
 			+ " FROM BOOKS,BOOKSHELFT WHERE BOOKS.ID = BOOKSHELFT.book_id";
 	
 	private static final String CREATE_SOURCE_TABLE = "create table if not exists " + SOURCE_TABLE + " ("
@@ -140,12 +148,15 @@ public class SqliteHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_CHAPTER_URL_TABLE);
 		db.execSQL(CREATE_MY_BOOKSHELFT);
 		db.execSQL(CREATE_SOURCE_TABLE);
+		db.execSQL(CREATE_SEARCH_HISTORY_TABLE);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 	    if(newVersion == 2) {
 	        db.execSQL("alter table " + SOURCE_TABLE + " add " + Source.CHAPTER_LIST + " varchar(100)");
+	    } else if(newVersion == 3) {
+	    	
 	    }
 		
 	}
@@ -193,6 +204,10 @@ public class SqliteHelper extends SQLiteOpenHelper{
 		public static String SOURCE = "source";
 		public static String CHAPTER_URL = "chapter_url";
 		public static String CHAPTER_LIST = "chapter_list"; //not used
+	}
+	
+	public static class SearchHistory {
+		public static String KEYWORDS = "keywords";
 	}
 	
 }

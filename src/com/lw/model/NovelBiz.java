@@ -9,10 +9,12 @@ import com.lw.bean.Chapter;
 import com.lw.bean.Chapter.Chapters;
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
+import com.lw.bean.ShelftBook;
 import com.lw.db.DBUtil;
 import com.lw.novel.utils.FileUtil;
 import com.lw.novel.utils.LogUtils;
 import com.lw.ttzw.DataQueryManager;
+import com.lw.ttzw.NovelManager;
 
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -69,22 +71,27 @@ public class NovelBiz implements INovelBiz {
 					if(old == null) {
 						Uri uri = DBUtil.saveBookInfo(nd.getNovel());
 						id = Integer.parseInt(uri.getLastPathSegment());
-						c = DBUtil.saveChaptersToDb(id, nd.getChapters());
+//						c = DBUtil.saveChaptersToDb(id, nd.getChapters());
 						DBUtil.saveBookSource(id, DataQueryManager.instance().queryTag(url), url, nd.getChapterUrl(),null);
 					} else {
 						id = old.id;
 						DBUtil.updateNovelById(old.id, novel);
-						List<Chapter> chapters = DBUtil.queryNovelChapterList(id);
-						List<Chapter> newChapters = nd.getChapters();
- 						if(chapters.size() < newChapters.size()) {
-							System.out.println("insert new > " + (newChapters.size() - chapters.size()));
-							List<Chapter> newInsert = new ArrayList<Chapter>();
-							for(int i=chapters.size();i<newChapters.size();i++) {
-								newInsert.add(newChapters.get(i));
-							}
-							c = DBUtil.saveChaptersToDb(id, newInsert);
-							if(c > 0) {
-								DBUtil.updateChapterCount(id, newChapters.size());
+						if (NovelManager.getInstance().isInbookShelft(id)) {
+							List<Chapter> chapters = DBUtil
+									.queryNovelChapterList(id);
+							List<Chapter> newChapters = nd.getChapters();
+
+							if (chapters.size() < newChapters.size()) {
+								List<Chapter> newInsert = new ArrayList<Chapter>();
+								for (int i = chapters.size(); i < newChapters
+										.size(); i++) {
+									newInsert.add(newChapters.get(i));
+								}
+								c = DBUtil.saveChaptersToDb(id, newInsert);
+								if (c > 0) {
+									DBUtil.updateChapterCount(id,
+											newChapters.size());
+								}
 							}
 						}
 					}
@@ -127,7 +134,7 @@ public class NovelBiz implements INovelBiz {
 //			return n;
 //		}
 		try {
-			System.out.println("begin read from net");
+			System.out.println("begin read from net url = " + url);
 			if(isCancel) {
 //				listener.onCancel();
 				return null;
@@ -135,7 +142,7 @@ public class NovelBiz implements INovelBiz {
 			NovelDetail nd = DataQueryManager.instance().getNovelDetail(url);
 			System.out.println("NovelBiz read over");
 			Novel novel = nd.getNovel();
-			if(novel == null || novel.getName() == null) {
+			if(novel == null || novel.getName() == null || nd.getChapters() == null) {
 				LogUtils.v(TAG, "get novel info fail,url="+url);
 				return null;
 			}

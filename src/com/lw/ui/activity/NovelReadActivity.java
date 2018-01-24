@@ -141,8 +141,8 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		intentFilter.addAction(Intent.ACTION_TIME_TICK);
 
 		if(NovelManager.getInstance().getChapterSize() == 0) {
-//			NovelManager.getInstance().setChapers(DBUtil.queryNovelChapterList(bookId));
-		    NovelManager.getInstance().setChapers(FileUtil.getChapters(bookId, SourceSelector.selectDataInterface(mNovel.getUrl()).getTag()).chapters);
+			NovelManager.getInstance().setChapers(DBUtil.queryNovelChapterList(bookId));
+//		    NovelManager.getInstance().setChapers(FileUtil.getChapters(bookId, SourceSelector.selectDataInterface(mNovel.getUrl()).getTag()).chapters);
 		}
 		mChapters = new ArrayList<Chapter>(NovelManager.getInstance().getChapers());
 		mBar.setMax(NovelManager.getInstance().getChapterSize() - 1);
@@ -188,7 +188,9 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 		int chapter = getIntent().getIntExtra(CHAPTER_EXTRA, -1);
 		if(chapter > 0)
 			mPageWidget.setCurrentChapter(chapter);
-		mPageWidget.init(SettingManager.getInstance().getReadTheme());
+//		mPageWidget.init(SettingManager.getInstance().getReadTheme());
+		int pos[] = DBUtil.queryReadPosition(bookid);
+		mPageWidget.open(pos[0], pos[1]);
 	}
 	
 	@Override
@@ -202,6 +204,14 @@ public class NovelReadActivity extends Activity implements IChapterContentView,O
 	protected void onStart() {
 		super.onStart();
 		registerReceiver(receiver, intentFilter);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		int pos[] = mPageWidget.getReadPos();
+		int a = DBUtil.saveReadPosition(bookId, pos[0], pos[1]);
+		LogUtils.v(TAG, "saveReadPosition result = " + a);
 	}
 
 	@Override

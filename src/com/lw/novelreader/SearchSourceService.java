@@ -216,11 +216,11 @@ public class SearchSourceService extends Service{
 
 				@Override
 				public Integer call(List<Chapter> arg0) {
-					if(arg0 != null) {
+					if(arg0 != null && arg0.size() > 0) {
 						LogUtils.v(TAG, "saveChapterUrlToDB  " );
 						return DBUtil.saveChapterUrlToDB(novel.getId(),arg0, df.getTag());
 					}
-					return null;
+					return 0;
 				}
 			})
 			.observeOn(AndroidSchedulers.mainThread())

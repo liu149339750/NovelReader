@@ -15,6 +15,7 @@ import com.lw.bean.Novel;
 import com.lw.ttzw.NovelManager;
 
 import android.os.Environment;
+import android.util.Base64;
 
 public class FileUtil {
 
@@ -69,11 +70,15 @@ public class FileUtil {
 	}
 	
 	public static String saveChapter(String novelName,String author,String chapterTitle,String content) throws IOException {
+		LogUtils.v(TAG, "saveChapter novelName = " + novelName + ",chapterTitle = " + chapterTitle);
+		chapterTitle = Base64.encodeToString(chapterTitle.getBytes(), Base64.DEFAULT);
 		File baseDir = Environment.getExternalStorageDirectory();
-		File distFile = new File(baseDir, DIRECTORY + "/" +novelName +"/" + author  + "/" + chapterTitle.trim() + ".txt");
+		File distFile = new File(baseDir, DIRECTORY + "/" +novelName +"/" + author  + "/" + chapterTitle.trim());
 		if(!distFile.getParentFile().exists()) {
 			boolean b= distFile.getParentFile().mkdirs();
 		}
+		boolean b = distFile.createNewFile();
+		LogUtils.v(TAG, "create file " + distFile.getPath() + ":" + b);
 		FileOutputStream fos = new FileOutputStream(distFile.getPath());
 		fos.write(content.getBytes("utf-8"));
 		fos.flush();
@@ -85,15 +90,14 @@ public class FileUtil {
 	}
 	
 	public static String getChapterPath(Novel novel,int c) {
-		File baseDir = Environment.getExternalStorageDirectory();
 		Chapter chapter = NovelManager.getInstance().getChapter(c);
-		File distFile = new File(baseDir, DIRECTORY + "/" +novel.getName() +"/" + novel.getAuthor()  + "/" + chapter.getTitle().trim() + ".txt");
-		return distFile.getPath();
+		return getChapterPath(novel, chapter);
 	}
 	
 	public static String getChapterPath(Novel novel,Chapter chapter) {
 		File baseDir = Environment.getExternalStorageDirectory();
-		File distFile = new File(baseDir, DIRECTORY + "/" +novel.getName() +"/" + novel.getAuthor()  + "/" + chapter.getTitle().trim() + ".txt");
+		String fileName = Base64.encodeToString(chapter.getTitle().getBytes(), Base64.DEFAULT).trim();
+		File distFile = new File(baseDir, DIRECTORY + "/" +novel.getName() +"/" + novel.getAuthor()  + "/" + fileName);
 		return distFile.getPath();
 	}
 

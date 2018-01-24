@@ -4,7 +4,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import com.bumptech.glide.Glide;
 import com.lw.bean.Novel;
+import com.lw.db.DBUtil;
 import com.lw.novel.utils.LogUtils;
+import com.lw.novel.utils.Util;
 import com.lw.novelreader.BookShelftManager;
 import com.lw.novelreader.DownloadStatus;
 import com.lw.novelreader.R;
@@ -15,7 +17,9 @@ import com.lw.ui.activity.NovelReadActivity;
 import com.mingle.widget.LoadingView;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +57,9 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 	private int retry;
 	
 	private final String TAG = "NovelDetailFragment";
+	
+	private Dialog mDialog;
+	 
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -121,13 +128,11 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 	@Override
 	public void removeBookShelt(int id) {
 		System.out.println("removeBookShelt id = " + id);
-		BookShelftManager.instance().rmBookFromShelft(id);
 		mAddBookShelt.setText(R.string.addtobookshelft);
 	}
 
 	@Override
-	public void addBookShelft(int id) {
-		BookShelftManager.instance().addBookToShelft(id);
+	public void addBookShelft(int id) {		
 		mAddBookShelt.setText(R.string.removebookshelft);
 	}
 	
@@ -235,6 +240,24 @@ public class NovelDetailFragment extends Fragment implements INovelInfoView,OnCl
 	public void onStop() {
 		super.onStop();
 		EventBus.getDefault().unregister(mPresenter);
+	}
+
+	@Override
+	public void showProgress() {
+		LogUtils.v(TAG, "showProgress");
+		if(mDialog == null) {
+			mDialog = Util.CreateProgressDialog(getActivity());
+			mDialog.setCanceledOnTouchOutside(false);
+		}
+		mDialog.show();
+	}
+
+	@Override
+	public void hideProgress() {
+		LogUtils.v(TAG, "hideProgress");
+		if(mDialog != null) {
+			mDialog.hide();
+		}
 	}
 
 	

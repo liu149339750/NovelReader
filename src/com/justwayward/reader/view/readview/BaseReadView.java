@@ -35,6 +35,8 @@ import com.lw.novel.utils.LogUtils;
  */
 @SuppressLint("WrongCall")
 public abstract class BaseReadView extends View {
+	
+	private static final String TAG = "BaseReadView";
 
     protected int mScreenWidth;
     protected int mScreenHeight;
@@ -94,6 +96,29 @@ public abstract class BaseReadView extends View {
                 LogUtils.i("上次阅读位置：chapter=" + pos[0] + " startPos=" + pos[1] + " endPos=" + pos[2]);
                 if (ret == 0) {
                     listener.onLoadChapterFailure(pos[0]);
+                    return;
+                }
+                pagefactory.onDraw(mCurrentPageCanvas);
+                postInvalidate();
+            } catch (Exception e) {
+            }
+            isPrepared = true;
+        }
+    }
+    
+    public void open(int chapterP,int startp) {
+        if (!isPrepared) {
+            try {
+            	LogUtils.v(TAG, "open chapterP = " + chapterP);
+            	this.theme = SettingManager.getInstance().getReadTheme();
+                pagefactory.setBgBitmap(ThemeManager.getThemeDrawable(theme));
+                // 自动跳转到上次阅读位置
+                if(chapterP < 0)
+                	chapterP = 0;
+                int ret = pagefactory.openBook(chapterP, new int[]{startp, 0});
+                LogUtils.i("上次阅读位置：chapter=" + chapterP + " startPos=" + startp );
+                if (ret == 0) {
+                    listener.onLoadChapterFailure(chapterP);
                     return;
                 }
                 pagefactory.onDraw(mCurrentPageCanvas);

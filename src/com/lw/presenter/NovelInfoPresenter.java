@@ -3,6 +3,13 @@ package com.lw.presenter;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import rx.Observable;
+import rx.Observer;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
 import com.lw.bean.Novel;
 import com.lw.bean.NovelDetail;
 import com.lw.db.DBUtil;
@@ -11,6 +18,7 @@ import com.lw.model.NovelBiz;
 import com.lw.model.OnDataListener;
 import com.lw.novel.utils.AsyncUtil;
 import com.lw.novel.utils.LogUtils;
+import com.lw.novelreader.BookShelftManager;
 import com.lw.novelreader.DownloadMessage;
 import com.lw.novelreader.DownloadProgress;
 import com.lw.novelreader.DownloadService;
@@ -78,10 +86,70 @@ public class NovelInfoPresenter {
 	
 	public void addOrRemoveShelft() {
 		if(mIView.isInbookShelf(mNovel.id)) {
+			mIView.showProgress();
+			Observable.just(mNovel.id)
+			.map(new Func1<Integer, Integer>() {
+
+				@Override
+				public Integer call(Integer arg0) {
+					BookShelftManager.instance().rmBookFromShelft(arg0);
+					return arg0;
+				}
+			})
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribeOn(Schedulers.newThread())
+			.subscribe(new Observer<Integer>() {
+
+				@Override
+				public void onCompleted() {
+					mIView.hideProgress();
+				}
+
+				@Override
+				public void onError(Throwable arg0) {
+					mIView.hideProgress();
+					LogUtils.e(TAG, arg0);
+				}
+
+				@Override
+				public void onNext(Integer arg0) {
+				}
+			});
 			mIView.removeBookShelt(mNovel.id);
+			
 		} else {
+			mIView.showProgress();
+			Observable.just(mNovel.id)
+			.map(new Func1<Integer, Integer>() {
+
+				@Override
+				public Integer call(Integer arg0) {
+					BookShelftManager.instance().addBookToShelft(arg0);
+					return arg0;
+				}
+			})
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribeOn(Schedulers.newThread())
+			.subscribe(new Observer<Integer>() {
+
+				@Override
+				public void onCompleted() {
+					LogUtils.v(TAG, "addBookToShelft onCompleted");
+					mIView.hideProgress();
+					SearchSourceService.postBackgroundSearch(mNovel);
+				}
+
+				@Override
+				public void onError(Throwable arg0) {
+					mIView.hideProgress();
+					LogUtils.e(TAG, arg0);
+				}
+
+				@Override
+				public void onNext(Integer arg0) {
+				}
+			});
 			mIView.addBookShelft(mNovel.id);
-			SearchSourceService.postBackgroundSearch(mNovel);
 		}
 	}
 	

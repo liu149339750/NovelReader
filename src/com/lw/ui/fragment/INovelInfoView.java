@@ -8,6 +8,9 @@ public interface INovelInfoView {
 	void showLoading();
 	void hideLoading();
 	
+	void showProgress();
+	void hideProgress();
+	
 	int getDownloadState();
 	boolean isInbookShelf(int bookid);
 	void onLoadFail();

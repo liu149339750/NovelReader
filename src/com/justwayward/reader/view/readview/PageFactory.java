@@ -192,6 +192,10 @@ public class PageFactory {
             currentChapter = chapterSize - 1;
             return 1;
         }
+        if(currentChapter < 0) {
+        	currentChapter = 0;
+        	return 1;
+        }
 //        String path = getBookFile(currentChapter).getPath();
         try {
             File file = mAdapter.getChapterFile(currentChapter);

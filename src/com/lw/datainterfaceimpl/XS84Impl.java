@@ -102,8 +102,9 @@ public class XS84Impl implements DataInterface{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		LogUtils.v(TAG, "getNovelDetail  url = " + url);
 		detail = PhoneFrameworkManager.getNovelDetail(BASE_XS86_URL, url);
-		if (detail.getChapters() == null) {
+		if (detail.getChapters() == null && detail.getChapterUrl() != null) {
 			detail.setChapters(getNovelChapers(HtmlUtil.readHtml(detail.getChapterUrl())));
 		}
 		return detail;

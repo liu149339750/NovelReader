@@ -45,6 +45,15 @@ public class SourceSelector {
 		return mDataInterfaces;
 	}
 	
+	public static List<String> getAllSourceString() {
+		List<DataInterface> list = getAllSourceInterface();
+		List<String> data = new ArrayList<>();
+		for(DataInterface di : list) {
+			data.add(di.getTag());
+		}
+		return data;
+	}
+	
 	public static DataInterface getDefaultSource() {
 		return mDataInterface;
 	}
@@ -52,6 +61,15 @@ public class SourceSelector {
 	public static void setDefaultSource(DataInterface d) {
 		System.out.println("current source " + d.getTag());
 		mDataInterface = d;
+	}
+	
+	public static void setDefaultSource(String tag) {
+		for(DataInterface d : mDataInterfaces) {
+			if(d.getTag().equals(tag)) {
+				mDataInterface = d;
+				break;
+			}
+		}
 	}
 	
 	public static String getDefaultSourceTag() {

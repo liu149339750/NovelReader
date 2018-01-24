@@ -36,7 +36,7 @@ public class TTZWManager {
 	
 	private static final String s="4548207915219874571";
 	private static final String BASE_QUERY_URL = "http://zhannei.baidu.com/cse/";
-	public static final String BASE_URL = "http://www.ttzw.com/";
+	public static final String BASE_URL = "https://www.ttzw.com/";
 	
 	private static String TEXT_1 = "类型：";
 	private static String TEXT_2 = "更新时间：";

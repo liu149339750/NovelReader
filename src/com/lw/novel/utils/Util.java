@@ -9,7 +9,11 @@ import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TitlePageIndicator.IndicatorStyle;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -34,6 +38,11 @@ public class Util {
     }
     
 
+	public static Dialog CreateProgressDialog(Activity activity){
+		ProgressDialog dialog= new ProgressDialog(activity);
+		dialog.setCanceledOnTouchOutside(false);
+		return dialog;
+	}
     
     public static void setIndicatorTheme(Context context,TitlePageIndicator indicator) {
         final float density = context.getResources().getDisplayMetrics().density;

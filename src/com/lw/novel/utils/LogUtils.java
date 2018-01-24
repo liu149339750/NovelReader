@@ -126,7 +126,10 @@ public class LogUtils {
     }
 
     public static void e(String tag, Object msg) {
-        e(tag, msg, null);
+    	if(msg instanceof Throwable) {
+    		e(tag, "", (Throwable)msg);
+    	} else 
+    		e(tag, msg, null);
     }
 
     public static void e(String tag, Object msg, Throwable tr) {

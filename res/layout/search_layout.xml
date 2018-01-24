@@ -21,14 +21,30 @@
             android:layout_width="30dp"
             android:layout_height="25dp"
             android:background="@drawable/kd_back_white"/>
-        <EditText 
+      <!--  <EditText 
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:singleLine="true"
             android:hint="@string/search_hint"
             android:id="@+id/search_edit"/>
-        
+         -->
+     <Button 
+            android:id="@+id/source"
+            android:layout_margin="10dp"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="zhuishushenqi"
+            />
+     <SearchView
+        android:id="@+id/search_edit"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="请输入搜索内容" />
         <TextView 
             android:id="@+id/search"
             android:layout_width="wrap_content"
