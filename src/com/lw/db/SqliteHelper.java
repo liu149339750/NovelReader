@@ -3,6 +3,7 @@ package com.lw.db;
 import java.io.File;
 
 import com.lw.novel.utils.FileUtil;
+import com.lw.novel.utils.LogUtils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,7 +24,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 	
 	public static final String ID = "ID";
 	
-	private static final int VERSION = 2;
+	private static final int VERSION = 3;
 	
 	private static final String CREATE_SEARCH_HISTORY_TABLE = "create table if not exists search_history ("
 			+ "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -135,6 +136,9 @@ public class SqliteHelper extends SQLiteOpenHelper{
 	private void createView(SQLiteDatabase db) {
 		db.execSQL(CREATE_BOOKSHELFT_VIEW);
 	}
+	private void deleteView(SQLiteDatabase db) {
+		db.execSQL("DROP VIEW IF EXISTS  booshelft_info");
+	}
 
 	private void createTrgger(SQLiteDatabase db) {
 //		db.execSQL(CREATE_TRIGE_INSERT_BOOKSHELFT);
@@ -153,10 +157,12 @@ public class SqliteHelper extends SQLiteOpenHelper{
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-	    if(newVersion == 2) {
+		LogUtils.v("onUpgrade oldVersion = " + oldVersion + ",newVersion = " + newVersion);
+	    if(newVersion == 2) { 
 	        db.execSQL("alter table " + SOURCE_TABLE + " add " + Source.CHAPTER_LIST + " varchar(100)");
 	    } else if(newVersion == 3) {
-	    	
+	        deleteView(db);
+	        createView(db);
 	    }
 		
 	}
