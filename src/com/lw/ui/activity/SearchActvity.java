@@ -34,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -96,6 +97,7 @@ public class SearchActvity extends Activity implements OnClickListener,ISearchVi
 	    int search_mag_icon_id = mSearchEdit.getContext().getResources().getIdentifier("android:id/search_mag_icon", null, null);
 	    ImageView mSearchViewIcon = (ImageView) mSearchEdit.findViewById(search_mag_icon_id);// 获取搜索图标
 	    mSearchViewIcon.setImageResource(0);
+	    mSearchViewIcon.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
 	    mSearchEdit.setOnQueryTextListener(this);
 	    
 		mSearch.setOnClickListener(this);

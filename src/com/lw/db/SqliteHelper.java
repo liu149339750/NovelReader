@@ -24,11 +24,11 @@ public class SqliteHelper extends SQLiteOpenHelper{
 	
 	public static final String ID = "ID";
 	
-	private static final int VERSION = 3;
+	private static final int VERSION = 5;
 	
 	private static final String CREATE_SEARCH_HISTORY_TABLE = "create table if not exists search_history ("
 			+ "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-			"keywords varchar(50)";
+			"keywords varchar(50))";
 	
 	private static final String CREATE_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS HISTORY ("
 			+ "ID INTEGER PRIMARY KEY,"
@@ -142,7 +142,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 
 	private void createTrgger(SQLiteDatabase db) {
 //		db.execSQL(CREATE_TRIGE_INSERT_BOOKSHELFT);
-		db.execSQL(CREATE_TRIGE_CHAPTER_COUNT);
+//		db.execSQL(CREATE_TRIGE_CHAPTER_COUNT);
 		db.execSQL(CREATE_TRIGE_DELETE_BOOK);
 	}
 
@@ -163,6 +163,10 @@ public class SqliteHelper extends SQLiteOpenHelper{
 	    } else if(newVersion == 3) {
 	        deleteView(db);
 	        createView(db);
+	    } else if(newVersion == 4) {
+	    	db.execSQL(CREATE_SEARCH_HISTORY_TABLE);
+	    } else if(newVersion == 5) {
+	    	db.execSQL("drop TRIGGER insert_book_chapter_count");
 	    }
 		
 	}

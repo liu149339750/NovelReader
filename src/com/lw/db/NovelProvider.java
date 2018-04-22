@@ -113,7 +113,6 @@ public class NovelProvider extends ContentProvider{
 		System.out.println("bulkInsert > " + uri.toString());
 		SQLiteDatabase db = mSql.getWritableDatabase();
 		int match = mUriMatcher.match(uri);
-		
 		long count = 0;
 		try{
 			switch (match) {
@@ -136,7 +135,6 @@ public class NovelProvider extends ContentProvider{
 //					statement.bindString(4, cv.getAsString(Chapter.chapter_content_uri));
 					statement.bindString(5, cv.getAsString(Chapter.SOURCE));
 					lastId = statement.executeInsert();
-					
 //					if(i > 0)
 //						count ++;
 //					else
