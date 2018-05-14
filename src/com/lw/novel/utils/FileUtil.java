@@ -56,9 +56,10 @@ public class FileUtil {
 	}
 	
     public static void deleteChapter(Novel n, String title) {
-        String base = getBaseDir();
-        File dir = new File(new File(base), n.getName() + "/" + n.getAuthor());
-        File chapterFile = new File(dir, title.trim() + ".txt");
+//        String base = getBaseDir();
+//        File dir = new File(new File(base), n.getName() + "/" + n.getAuthor());
+//        File chapterFile = new File(dir, title.trim() + ".txt");
+    	File chapterFile = new File(getChapterPath(n, title));
         LogUtils.v(TAG, "delete chapter File " + chapterFile.getPath());
         chapterFile.delete();
     }
@@ -97,6 +98,13 @@ public class FileUtil {
 	public static String getChapterPath(Novel novel,Chapter chapter) {
 		File baseDir = Environment.getExternalStorageDirectory();
 		String fileName = Base64.encodeToString(chapter.getTitle().getBytes(), Base64.DEFAULT).trim();
+		File distFile = new File(baseDir, DIRECTORY + "/" +novel.getName() +"/" + novel.getAuthor()  + "/" + fileName);
+		return distFile.getPath();
+	}
+	
+	public static String getChapterPath(Novel novel,String chapter) {
+		File baseDir = Environment.getExternalStorageDirectory();
+		String fileName = Base64.encodeToString(chapter.getBytes(), Base64.DEFAULT).trim();
 		File distFile = new File(baseDir, DIRECTORY + "/" +novel.getName() +"/" + novel.getAuthor()  + "/" + fileName);
 		return distFile.getPath();
 	}
